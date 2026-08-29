@@ -126,6 +126,7 @@ It is responsible for:
 - collision geometry,
 - visual geometry,
 - robot bodies and joints,
+- linear rails, carriages, and prismatic rail joints,
 - gripper finger dynamics,
 - scene furniture,
 - object spawning,
@@ -247,6 +248,7 @@ The Robot Control layer is responsible for:
 - exposing joint state,
 - receiving joint trajectory commands,
 - enforcing controller interfaces,
+- controlling the linear rail prismatic joint,
 - controlling the Franka arm joints,
 - controlling the Franka Hand,
 - mapping ROS controller commands to MuJoCo actuators,
@@ -289,7 +291,8 @@ MoveIt 2
 MoveIt 2 is responsible for:
 
 - robot model representation,
-- kinematic chains,
+- kinematic chains including the rail joint,
+- coordinated rail + arm planning,
 - inverse kinematics,
 - joint-space planning,
 - Cartesian planning,
@@ -735,8 +738,8 @@ without rewriting the manipulation and task layers.
 Early phases:
 
 ```text
-Panda 1 → active
-Panda 2 → present but inactive
+Panda 1 + Rail 1 → active
+Panda 2 + Rail 2 → present but inactive
 ```
 
 The complete scene still includes both robots.
@@ -759,11 +762,13 @@ Example:
 ```text
 /panda1/joint_states
 /panda1/controller_manager
+/panda1/rail
 /panda1/gripper
 /panda1/follow_joint_trajectory
 
 /panda2/joint_states
 /panda2/controller_manager
+/panda2/rail
 /panda2/gripper
 /panda2/follow_joint_trajectory
 ```
@@ -786,6 +791,7 @@ workspace map
 but maintain separate:
 
 ```text
+rail state
 joint state
 controllers
 gripper state
@@ -794,7 +800,50 @@ execution state
 
 ---
 
-## 16. Workspace Ownership
+## 16. Linear Rail Architecture
+
+Each Panda is mounted on an independent side rail.
+
+Canonical kinematic chain:
+
+```text
+world
+  ↓
+pandaN_rail
+  ↓
+pandaN_carriage  ← prismatic joint
+  ↓
+pandaN_base
+  ↓
+7-DOF Panda arm
+  ↓
+Franka Hand
+```
+
+The nominal rail direction is world X.
+
+The rail is a first-class robot DOF and must be represented consistently in MuJoCo, ros2_control, TF, MoveIt, reset logic, collision checking, and benchmarking.
+
+For normal manipulation, MoveIt should be able to coordinate the rail joint and the seven Panda arm joints.
+
+The rail must never be implemented as direct base teleportation.
+
+Each rail has independent:
+
+```text
+travel limits
+home position
+velocity limit
+acceleration limit
+controller state
+collision geometry
+```
+
+Later dual-arm coordination must include carriage positions and simultaneous rail motion.
+
+---
+
+## 17. Workspace Ownership
 
 Dual-arm support must be considered from the beginning even though it is implemented later.
 

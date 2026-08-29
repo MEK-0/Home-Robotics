@@ -7,7 +7,8 @@ This document defines the physical and semantic specification of the Home Roboti
 Its purpose is to ensure that:
 
 - the world layout is fixed early,
-- robot placement remains stable,
+- rail placement remains stable,
+- robot carriage travel ranges remain stable,
 - work surfaces are explicitly defined,
 - objects have known semantic roles,
 - collision geometry is predictable,
@@ -170,18 +171,26 @@ Collision should remain a simple plane or box.
 
 ---
 
-### 6.2 Central Robot Mounting Area
+### 6.2 Central Linear-Rail Manipulation Corridor
 
-The two Franka Panda robots are mounted in a central manipulation corridor.
+The two Franka Panda robots operate on two independent linear rails located in the central manipulation corridor.
 
-The mounting area should:
+Each rail supports one Panda through a movable carriage.
 
-- support both robots physically,
-- keep their bases fixed,
-- create realistic access to nearby work surfaces,
-- and leave enough clearance for future dual-arm operation.
+The rail system must:
 
-The robot bases must not be repositioned after Phase 1 validation without an explicit architectural change.
+- translate the robot longitudinally along the work-surface row,
+- provide access to near, middle, and far table sections,
+- keep the fixed rail assembly stationary in the world,
+- define hard prismatic travel limits,
+- provide safe carriage collision geometry,
+- and preserve future dual-arm clearance.
+
+The nominal rail axis is aligned with world X.
+
+A robot base world pose is derived from rail position. It is not manually rewritten during normal execution.
+
+The fixed rail assemblies must not be repositioned after Phase 1 scene lock without an explicit layout revision.
 
 ---
 
@@ -284,7 +293,7 @@ Early phases:
 active = true
 ```
 
-Panda 1 is the primary manipulation robot.
+Panda 1 and Rail 1 form the primary manipulation system.
 
 Its workspace should include several object and destination locations.
 
@@ -296,7 +305,7 @@ Early phases:
 active = false
 ```
 
-Panda 2 remains physically present in the scene.
+Panda 2 and Rail 2 remain physically present in the scene.
 
 Its geometry remains relevant for:
 
@@ -309,19 +318,32 @@ Panda 2 must not be deleted simply because it is inactive.
 
 ---
 
-## 9. Robot Base Placement Principles
+## 9. Rail and Robot Placement Principles
 
-Robot base poses must satisfy all of the following:
+The fixed rail assemblies must satisfy:
 
 1. realistic mounting,
 2. no initial collisions,
-3. usable reach to intended work surfaces,
-4. reasonable joint posture at home,
+3. longitudinal travel covering intended work surfaces,
+4. usable Panda posture throughout the valid rail range,
 5. future dual-arm compatibility,
-6. sufficient separation between robot bases,
-7. access to a future shared workspace.
+6. sufficient separation between rail assemblies,
+7. access to a shared workspace,
+8. safe carriage travel without furniture collision.
 
-The final numeric poses will be validated empirically in MuJoCo before they are locked.
+The Panda base transform is derived from:
+
+```text
+world
+→ fixed rail
+→ rail prismatic joint
+→ carriage
+→ Panda base
+```
+
+The fixed rail pose and travel limits are locked during Phase 1.
+
+The carriage position remains dynamic during robot execution.
 
 ---
 
@@ -1348,7 +1370,7 @@ Target:
 When Codex implements the scene:
 
 1. Do not invent object coordinates outside configuration.
-2. Do not move robot bases to solve a local grasp problem.
+2. Do not move rail assemblies to solve a local grasp problem.
 3. Do not change table dimensions without updating scene documentation.
 4. Do not use visual meshes as collision meshes by default.
 5. Do not disable collision checks to hide geometry problems.
