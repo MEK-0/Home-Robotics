@@ -1,0 +1,71 @@
+robots:
+  panda1:
+    active: true
+    namespace: panda1
+    status: pending_scene_construction
+    rail:
+      frame: panda1_rail
+      carriage_frame: panda1_carriage
+      joint: panda1_rail_joint
+      world_pose: null
+      axis:
+      - 1.0
+      - 0.0
+      - 0.0
+      mechanical_zero: null
+      lower_limit: null
+      upper_limit: null
+      home_position: null
+      max_velocity: null
+      max_acceleration: null
+      carriage_collision_geometry: null
+    arm:
+      model: franka_panda
+      base_frame: panda1_base
+      home_joints: null
+    gripper:
+      model: franka_hand
+      home_joints: null
+      tcp_frame: panda1_tcp
+    workspace:
+      primary: panda1_primary_workspace
+      shared: shared_workspace
+    model: franka_panda
+    nominal_facing_yaw: null
+    reachable_surfaces: null
+    shared_workspace_access: null
+  panda2:
+    active: false
+    namespace: panda2
+    status: pending_scene_construction
+    rail:
+      frame: panda2_rail
+      carriage_frame: panda2_carriage
+      joint: panda2_rail_joint
+      world_pose: null
+      axis:
+      - 1.0
+      - 0.0
+      - 0.0
+      mechanical_zero: null
+      lower_limit: null
+      upper_limit: null
+      home_position: null
+      max_velocity: null
+      max_acceleration: null
+      carriage_collision_geometry: null
+    arm:
+      model: franka_panda
+      base_frame: panda2_base
+      home_joints: null
+    gripper:
+      model: franka_hand
+      home_joints: null
+      tcp_frame: panda2_tcp
+    workspace:
+      primary: panda2_primary_workspace
+      shared: shared_workspace
+    model: franka_panda
+    nominal_facing_yaw: null
+    reachable_surfaces: null
+    shared_workspace_access: null

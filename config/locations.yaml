@@ -1,0 +1,22 @@
+locations:
+  bowl:
+    type: container_region
+    reference_frame: bowl_inner
+    region: null
+    allowed_orientation: null
+    clearance: null
+    supported_object_classes:
+    - manipulable
+    status: pending_validation
+    object_ref: bowl
+    valid_region: null
+  handover_zone:
+    type: workspace_region
+    reference_frame: world
+    region: null
+    allowed_orientation: null
+    clearance: null
+    supported_object_classes:
+    - manipulable
+    status: pending_validation
+    workspace_ref: shared_workspace

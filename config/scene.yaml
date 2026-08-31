@@ -1,0 +1,141 @@
+scene:
+  version: '0.1'
+  frame: world
+  build_stage: foundation
+  expected_entities:
+  - floor
+  floor:
+    id: floor
+    enabled: true
+    pose:
+      frame: world
+      position:
+      - 0.0
+      - 0.0
+      - 0.0
+      quaternion_wxyz:
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+    visual_half_size:
+    - 5.0
+    - 5.0
+    friction_profile: default_tabletop
+  surfaces:
+    surface_left_1:
+      status: pending_validation
+      pose: null
+      dimensions: null
+      top_height: null
+      workspace: panda1_primary_workspace
+      id: surface_left_1
+      visual_bounds: null
+      physical_collision_bounds: null
+      usable_top_region: null
+      safe_spawn_region: null
+      safe_place_region: null
+      edge_clearance: null
+      collision_geometry: null
+      visual_asset: null
+      semantic_role: null
+    surface_left_2:
+      status: pending_validation
+      pose: null
+      dimensions: null
+      top_height: null
+      workspace: panda1_primary_workspace
+      id: surface_left_2
+      visual_bounds: null
+      physical_collision_bounds: null
+      usable_top_region: null
+      safe_spawn_region: null
+      safe_place_region: null
+      edge_clearance: null
+      collision_geometry: null
+      visual_asset: null
+      semantic_role: null
+    surface_left_3:
+      status: pending_validation
+      pose: null
+      dimensions: null
+      top_height: null
+      workspace: panda1_primary_workspace
+      id: surface_left_3
+      visual_bounds: null
+      physical_collision_bounds: null
+      usable_top_region: null
+      safe_spawn_region: null
+      safe_place_region: null
+      edge_clearance: null
+      collision_geometry: null
+      visual_asset: null
+      semantic_role: null
+    surface_right_1:
+      status: pending_validation
+      pose: null
+      dimensions: null
+      top_height: null
+      workspace: panda2_primary_workspace
+      id: surface_right_1
+      visual_bounds: null
+      physical_collision_bounds: null
+      usable_top_region: null
+      safe_spawn_region: null
+      safe_place_region: null
+      edge_clearance: null
+      collision_geometry: null
+      visual_asset: null
+      semantic_role: null
+    surface_right_2:
+      status: pending_validation
+      pose: null
+      dimensions: null
+      top_height: null
+      workspace: panda2_primary_workspace
+      id: surface_right_2
+      visual_bounds: null
+      physical_collision_bounds: null
+      usable_top_region: null
+      safe_spawn_region: null
+      safe_place_region: null
+      edge_clearance: null
+      collision_geometry: null
+      visual_asset: null
+      semantic_role: null
+    surface_right_3:
+      status: pending_validation
+      pose: null
+      dimensions: null
+      top_height: null
+      workspace: panda2_primary_workspace
+      id: surface_right_3
+      visual_bounds: null
+      physical_collision_bounds: null
+      usable_top_region: null
+      safe_spawn_region: null
+      safe_place_region: null
+      edge_clearance: null
+      collision_geometry: null
+      visual_asset: null
+      semantic_role: null
+  workspaces:
+    panda1_primary_workspace:
+      status: pending_validation
+      region: null
+    panda2_primary_workspace:
+      status: pending_validation
+      region: null
+    shared_workspace:
+      status: pending_validation
+      region: null
+    handover_zone:
+      status: pending_validation
+      region: null
+  units: SI
+  static_structures:
+    central_mount:
+      status: pending_validation
+      pose: null
+      collision_geometry: null
+      visual_asset: null

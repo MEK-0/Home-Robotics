@@ -1,0 +1,83 @@
+objects:
+  cube:
+    category: manipulable
+    dynamic: true
+    pickable: true
+    place_target: false
+    status: pending_scene_construction
+    visual_asset: null
+    collision: {type: box, size: null}
+    mass: null
+    inertia_strategy: derived_from_primitive
+    friction_profile: default_tabletop
+    initial: {frame: world, pose: null, support_surface: surface_left_1}
+    grasp_profile: cube_standard
+    aliases: [cube, block]
+    planning_scene_enabled: true
+    benchmark_enabled: true
+  apple:
+    category: manipulable
+    dynamic: true
+    pickable: true
+    place_target: false
+    status: pending_scene_construction
+    visual_asset: null
+    collision: {type: sphere, radius: null}
+    mass: null
+    inertia_strategy: derived_from_primitive
+    friction_profile: default_tabletop
+    initial: {frame: world, pose: null, support_surface: surface_left_1}
+    grasp_profile: apple_standard
+    aliases: [apple, red apple]
+    planning_scene_enabled: true
+    benchmark_enabled: true
+  purple_ball:
+    category: manipulable
+    dynamic: true
+    pickable: true
+    place_target: false
+    status: pending_scene_construction
+    visual_asset: null
+    collision: {type: sphere, radius: null}
+    mass: null
+    inertia_strategy: derived_from_primitive
+    friction_profile: round_object
+    initial: {frame: world, pose: null, support_surface: surface_left_1}
+    grasp_profile: sphere_standard
+    aliases: [purple_ball, purple ball]
+    planning_scene_enabled: true
+    benchmark_enabled: true
+  bowl:
+    category: container
+    dynamic: false
+    pickable: false
+    place_target: true
+    status: pending_scene_construction
+    visual_asset: null
+    collision: {type: primitive_compound, primitives: null}
+    mass: null
+    inertia_strategy: fixed
+    friction_profile: container
+    initial: {frame: world, pose: null, support_surface: surface_left_2}
+    grasp_profile: null
+    semantic_frames: {bowl_inner: null, bowl_rim: null}
+    aliases: [bowl]
+    planning_scene_enabled: true
+    benchmark_enabled: true
+  pan:
+    category: future_manipulable
+    dynamic: false
+    pickable: false
+    place_target: false
+    status: pending_scene_construction
+    visual_asset: null
+    collision: {type: primitive_compound, primitives: null}
+    mass: null
+    inertia_strategy: fixed
+    friction_profile: container
+    initial: {frame: world, pose: null, support_surface: surface_right_1}
+    grasp_profile: null
+    semantic_frames: {pan_handle: null, pan_inner: null}
+    aliases: [pan]
+    planning_scene_enabled: true
+    benchmark_enabled: false

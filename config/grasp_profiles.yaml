@@ -1,0 +1,4 @@
+grasp_profiles:
+  cube_standard: &pending_profile {status: pending_phase_4_validation, candidate_orientations: null, approach_direction: null, pregrasp_distance: null, finger_opening_target: null, closure_policy: null, verification_thresholds: null, lift_clearance: null}
+  apple_standard: *pending_profile
+  sphere_standard: *pending_profile
