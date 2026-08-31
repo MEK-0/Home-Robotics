@@ -1,8 +1,13 @@
-<mujoco model="home_robotics_phase_1a">
+<mujoco model="home_robotics_phase_1b">
   <compiler angle="radian" coordinate="local" autolimits="true"/>
   <!-- SceneBuilder injects authoritative physics.yaml values before loading. -->
   <option/>
-  <visual><headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.1 0.1 0.1"/></visual>
+  <default>
+    <geom condim="3"/>
+  </default>
+  <visual>
+    <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.1 0.1 0.1"/>
+  </visual>
   <worldbody>
     <!-- SceneBuilder injects authoritative scene.yaml pose, size, and friction. -->
     <geom name="floor" type="plane"/>

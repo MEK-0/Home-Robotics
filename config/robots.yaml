@@ -2,70 +2,250 @@ robots:
   panda1:
     active: true
     namespace: panda1
-    status: pending_scene_construction
+    model: franka_panda
+    status: model_integrated_active_ready
+    nominal_facing_yaw: 1.5707963267948966
+    reachable_surfaces:
+    - surface_left_1
+    - surface_left_2
+    - surface_left_3
+    shared_workspace_access: true
     rail:
       frame: panda1_rail
       carriage_frame: panda1_carriage
       joint: panda1_rail_joint
-      world_pose: null
+      world_pose:
+        frame: world
+        position:
+        - 1.15
+        - 0.42
+        - 0.08
+        quaternion_wxyz:
+        - 1.0
+        - 0.0
+        - 0.0
+        - 0.0
       axis:
       - 1.0
       - 0.0
       - 0.0
-      mechanical_zero: null
-      lower_limit: null
-      upper_limit: null
-      home_position: null
-      max_velocity: null
-      max_acceleration: null
-      carriage_collision_geometry: null
+      mechanical_zero: rail_center
+      lower_limit: -1.45
+      upper_limit: 1.45
+      home_position: -1.15
+      max_velocity: 0.5
+      max_acceleration: 1.0
+      support_dimensions:
+      - 3.4
+      - 0.16
+      - 0.16
+      carriage_dimensions:
+      - 0.38
+      - 0.32
+      - 0.08
+      carriage_offset:
+      - 0.0
+      - 0.0
+      - 0.125
+      mount_dimensions:
+      - 0.24
+      - 0.24
+      - 0.16
+      mount_offset:
+      - 0.0
+      - 0.0
+      - 0.2
+      rgba:
+      - 0.2
+      - 0.22
+      - 0.25
+      - 1.0
+      carriage_rgba:
+      - 0.34
+      - 0.37
+      - 0.42
+      - 1.0
+      mount_rgba:
+      - 0.82
+      - 0.82
+      - 0.84
+      - 1.0
+      mount_site_size: 0.025
     arm:
       model: franka_panda
       base_frame: panda1_base
-      home_joints: null
+      link0_frame: panda1_link0
+      joint_names:
+      - panda1_joint1
+      - panda1_joint2
+      - panda1_joint3
+      - panda1_joint4
+      - panda1_joint5
+      - panda1_joint6
+      - panda1_joint7
+      home_joints:
+      - 0.0
+      - 0.0
+      - 0.0
+      - -1.57079
+      - 0.0
+      - 1.57079
+      - -0.7853
     gripper:
       model: franka_hand
-      home_joints: null
+      hand_frame: panda1_hand
+      finger_joint_names:
+      - panda1_finger_joint1
+      - panda1_finger_joint2
+      home_joints:
+      - 0.04
+      - 0.04
+      opening_range_per_finger:
+      - 0.0
+      - 0.04
+      coupling: source_equality_constraint
       tcp_frame: panda1_tcp
+      tcp_offset:
+        frame: panda1_hand
+        position:
+        - 0.0
+        - 0.0
+        - 0.1
+        quaternion_wxyz:
+        - 1.0
+        - 0.0
+        - 0.0
+        - 0.0
+        source: vendored mjx_panda.xml gripper site
     workspace:
       primary: panda1_primary_workspace
       shared: shared_workspace
-    model: franka_panda
-    nominal_facing_yaw: null
-    reachable_surfaces: null
-    shared_workspace_access: null
+    model_reference: simulation/mujoco/assets/franka_emika_panda/panda.xml
+    prefix: panda1_
+    home_validation:
+      minimum_tcp_height: 0.5
   panda2:
     active: false
     namespace: panda2
-    status: pending_scene_construction
+    model: franka_panda
+    status: model_integrated_inactive
+    nominal_facing_yaw: -1.5707963267948966
+    reachable_surfaces:
+    - surface_right_1
+    - surface_right_2
+    - surface_right_3
+    shared_workspace_access: true
     rail:
       frame: panda2_rail
       carriage_frame: panda2_carriage
       joint: panda2_rail_joint
-      world_pose: null
+      world_pose:
+        frame: world
+        position:
+        - 1.15
+        - -0.42
+        - 0.08
+        quaternion_wxyz:
+        - 1.0
+        - 0.0
+        - 0.0
+        - 0.0
       axis:
       - 1.0
       - 0.0
       - 0.0
-      mechanical_zero: null
-      lower_limit: null
-      upper_limit: null
-      home_position: null
-      max_velocity: null
-      max_acceleration: null
-      carriage_collision_geometry: null
+      mechanical_zero: rail_center
+      lower_limit: -1.45
+      upper_limit: 1.45
+      home_position: -1.15
+      max_velocity: 0.5
+      max_acceleration: 1.0
+      support_dimensions:
+      - 3.4
+      - 0.16
+      - 0.16
+      carriage_dimensions:
+      - 0.38
+      - 0.32
+      - 0.08
+      carriage_offset:
+      - 0.0
+      - 0.0
+      - 0.125
+      mount_dimensions:
+      - 0.24
+      - 0.24
+      - 0.16
+      mount_offset:
+      - 0.0
+      - 0.0
+      - 0.2
+      rgba:
+      - 0.2
+      - 0.22
+      - 0.25
+      - 1.0
+      carriage_rgba:
+      - 0.34
+      - 0.37
+      - 0.42
+      - 1.0
+      mount_rgba:
+      - 0.82
+      - 0.82
+      - 0.84
+      - 1.0
+      mount_site_size: 0.025
     arm:
       model: franka_panda
       base_frame: panda2_base
-      home_joints: null
+      link0_frame: panda2_link0
+      joint_names:
+      - panda2_joint1
+      - panda2_joint2
+      - panda2_joint3
+      - panda2_joint4
+      - panda2_joint5
+      - panda2_joint6
+      - panda2_joint7
+      home_joints:
+      - 0.0
+      - 0.0
+      - 0.0
+      - -1.57079
+      - 0.0
+      - 1.57079
+      - -0.7853
     gripper:
       model: franka_hand
-      home_joints: null
+      hand_frame: panda2_hand
+      finger_joint_names:
+      - panda2_finger_joint1
+      - panda2_finger_joint2
+      home_joints:
+      - 0.04
+      - 0.04
+      opening_range_per_finger:
+      - 0.0
+      - 0.04
+      coupling: source_equality_constraint
       tcp_frame: panda2_tcp
+      tcp_offset:
+        frame: panda2_hand
+        position:
+        - 0.0
+        - 0.0
+        - 0.1
+        quaternion_wxyz:
+        - 1.0
+        - 0.0
+        - 0.0
+        - 0.0
+        source: vendored mjx_panda.xml gripper site
     workspace:
       primary: panda2_primary_workspace
       shared: shared_workspace
-    model: franka_panda
-    nominal_facing_yaw: null
-    reachable_surfaces: null
-    shared_workspace_access: null
+    model_reference: simulation/mujoco/assets/franka_emika_panda/panda.xml
+    prefix: panda2_
+    home_validation:
+      minimum_tcp_height: 0.5
