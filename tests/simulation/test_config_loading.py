@@ -27,3 +27,21 @@ def test_duplicate_canonical_id_is_rejected(tmp_path):
     path.write_text("objects:\n  cube: {}\n  cube: {}\n")
     with pytest.raises(ConfigError, match="Duplicate canonical ID"):
         ConfigLoader(tmp_path / "config").load()
+
+def test_unsafe_shared_rail_home_separation_is_rejected(tmp_path):
+    shutil.copytree(ROOT / "config", tmp_path / "config")
+    path = tmp_path / "config" / "robots.yaml"
+    document = yaml.safe_load(path.read_text())
+    document["robots"]["panda2"]["rail"]["home_position"] = -0.3
+    path.write_text(yaml.safe_dump(document))
+    with pytest.raises(ConfigError, match="minimum separation or ordering"):
+        ConfigLoader(tmp_path / "config").load()
+
+def test_carriage_geometry_must_remain_on_shared_support(tmp_path):
+    shutil.copytree(ROOT / "config", tmp_path / "config")
+    path = tmp_path / "config" / "robots.yaml"
+    document = yaml.safe_load(path.read_text())
+    document["robots"]["panda1"]["rail"]["lower_limit"] = -1.6
+    path.write_text(yaml.safe_dump(document))
+    with pytest.raises(ConfigError, match="limits must lie inside shared rail limits|geometry can leave"):
+        ConfigLoader(tmp_path / "config").load()

@@ -14,22 +14,73 @@ TEST_RAIL_DISPLACEMENT = 0.25
 def _config():
     return ConfigLoader(ROOT / "config").load()
 
+def test_arena_uses_one_floor_and_four_raised_border_boxes():
+    config = _config()
+    border = config.scene["floor"]["arena_border"]
+    with SceneBuilder(config).build(headless=True) as simulator:
+        import mujoco
+        plane_geoms = [index for index in range(simulator.model.ngeom) if int(simulator.model.geom_type[index]) == int(mujoco.mjtGeom.mjGEOM_PLANE)]
+        assert len(plane_geoms) == 1
+        assert mujoco.mj_id2name(simulator.model, mujoco.mjtObj.mjOBJ_GEOM, plane_geoms[0]) == "floor"
+        floor_id = plane_geoms[0]
+        assert tuple(simulator.model.geom_size[floor_id]) == pytest.approx(config.scene["floor"]["geom_size"])
+        forbidden = ("workspace_floor", "arena_floor", "outer_floor", "background_floor", "outside_front", "outside_back", "outside_left", "outside_right")
+        assert all(not simulator.geom_exists(name) for name in forbidden)
+        expected = {
+            "arena_front": ([border["width"], border["dimensions"][1], border["height"]]),
+            "arena_back": ([border["width"], border["dimensions"][1], border["height"]]),
+            "arena_left": ([border["dimensions"][0] - 2 * border["width"], border["width"], border["height"]]),
+            "arena_right": ([border["dimensions"][0] - 2 * border["width"], border["width"], border["height"]]),
+        }
+        for name, dimensions in expected.items():
+            assert simulator.geom_exists(name)
+            assert simulator.geom_dimensions(name) == pytest.approx(dimensions)
+            geom_id = mujoco.mj_name2id(simulator.model, mujoco.mjtObj.mjOBJ_GEOM, name)
+            assert simulator.model.geom_pos[geom_id][2] - simulator.model.geom_size[geom_id][2] == pytest.approx(border["floor_clearance"])
+            assert simulator.model.geom_contype[geom_id] == 0
+            assert simulator.model.geom_conaffinity[geom_id] == 0
+
 def test_six_work_surfaces_exist():
     config = _config()
     with SceneBuilder(config).build(headless=True) as simulator:
         assert tuple(config.scene["surfaces"]) == SURFACE_IDS
         assert all(simulator.body_exists(name) for name in SURFACE_IDS)
 
-def test_two_rails_and_carriages_exist():
+def test_one_shared_rail_and_two_carriages_exist():
     config = _config()
     with SceneBuilder(config).build(headless=True) as simulator:
-        assert all(simulator.body_exists(name) for name in ("panda1_rail", "panda2_rail"))
+        assert simulator.body_exists("shared_rail")
+        assert not simulator.body_exists("panda1_rail")
+        assert not simulator.body_exists("panda2_rail")
         assert all(simulator.body_exists(name) for name in ("panda1_carriage", "panda2_carriage"))
 
 def test_rail_joint_ids_exist():
     config = _config()
     with SceneBuilder(config).build(headless=True) as simulator:
         assert all(simulator.joint_exists(robot["rail"]["joint"]) for robot in config.robots.values())
+
+def test_shared_rail_is_static_and_axis_is_positive_x():
+    config = _config()
+    with SceneBuilder(config).build(headless=True) as simulator:
+        assert simulator.body_joint_count("shared_rail") == 0
+        assert config.scene["shared_rail"]["axis"] == [1.0, 0.0, 0.0]
+        assert all(simulator.joint_axis(robot["rail"]["joint"]) == (1.0, 0.0, 0.0) for robot in config.robots.values())
+
+def test_elevated_shared_rail_has_static_floor_supports():
+    config = _config()
+    shared_rail = config.scene["shared_rail"]
+    with SceneBuilder(config).build(headless=True) as simulator:
+        assert simulator.body_position("shared_rail") == pytest.approx([1.15, 0.0, 0.60], abs=KINEMATIC_TOLERANCE)
+        for support_name in shared_rail["supports"]["names"]:
+            assert simulator.geom_exists(support_name)
+            assert simulator.geom_dimensions(support_name) == pytest.approx(shared_rail["supports"]["dimensions"])
+
+def test_distinct_rail_homes_have_safe_ordered_separation():
+    config = _config()
+    q1 = config.robots["panda1"]["rail"]["home_position"]
+    q2 = config.robots["panda2"]["rail"]["home_position"]
+    assert q1 != q2
+    assert q2 - q1 >= config.scene["shared_rail"]["minimum_carriage_separation"]
 
 def test_rail_home_inside_limits():
     config = _config()
@@ -57,6 +108,21 @@ def test_positive_rail_motion_moves_carriage_and_mount_positive_x():
             simulator.set_joint_position(rail["joint"], rail["home_position"])
             simulator.forward()
 
+def test_each_carriage_moves_independently():
+    config = _config()
+    with SceneBuilder(config).build(headless=True) as simulator:
+        for moving_id, fixed_id in (("panda1", "panda2"), ("panda2", "panda1")):
+            moving = config.robots[moving_id]["rail"]
+            fixed = config.robots[fixed_id]["rail"]
+            moving_before = simulator.body_position(moving["carriage_frame"])
+            fixed_before = simulator.body_position(fixed["carriage_frame"])
+            simulator.set_joint_position(moving["joint"], moving["home_position"] + 0.1)
+            simulator.forward()
+            assert simulator.body_position(moving["carriage_frame"])[0] - moving_before[0] == pytest.approx(0.1, abs=KINEMATIC_TOLERANCE)
+            assert simulator.body_position(fixed["carriage_frame"]) == pytest.approx(fixed_before, abs=KINEMATIC_TOLERANCE)
+            simulator.set_joint_position(moving["joint"], moving["home_position"])
+            simulator.forward()
+
 def test_reset_restores_rail_home_and_clears_velocity():
     config = _config()
     with SceneBuilder(config).build(headless=True) as simulator:
@@ -78,6 +144,20 @@ def test_no_initial_illegal_penetration():
         assert simulator.penetrating_contacts() == []
         validate_no_initial_penetration(simulator)
 
+def test_table_rows_are_symmetric_and_have_target_rail_clearance():
+    config = _config()
+    surfaces = config.scene["surfaces"]
+    for index in range(1, 4):
+        left = surfaces[f"surface_left_{index}"]
+        right = surfaces[f"surface_right_{index}"]
+        assert left["pose"]["position"][0] == right["pose"]["position"][0]
+        assert left["pose"]["position"][1] == pytest.approx(-right["pose"]["position"][1])
+        assert left["top_height"] == right["top_height"] == pytest.approx(0.68)
+        assert left["dimensions"] == right["dimensions"] == [0.825, 0.75, 0.08]
+    nearest_edge = abs(surfaces["surface_left_1"]["pose"]["position"][1]) - surfaces["surface_left_1"]["dimensions"][1] / 2.0
+    assert nearest_edge == pytest.approx(0.115)
+    assert config.scene["layout"]["corridor_clear_width"] == pytest.approx(2.0 * nearest_edge)
+
 def test_scene_geometry_matches_configuration():
     config = _config()
     with SceneBuilder(config).build(headless=True) as simulator:
@@ -88,7 +168,7 @@ def test_scene_geometry_matches_configuration():
 
 def test_scene_layout_is_deterministic():
     config = _config()
-    names = (*SURFACE_IDS, "panda1_rail", "panda2_rail", "panda1_carriage", "panda2_carriage", "panda1_base", "panda2_base")
+    names = (*SURFACE_IDS, "shared_rail", "panda1_carriage", "panda2_carriage", "panda1_base", "panda2_base")
     snapshots = []
     for _ in range(3):
         with SceneBuilder(config).build(headless=True) as simulator:
