@@ -54,21 +54,20 @@ panda1
 panda2
 ```
 
-Each robot has its own independent rail:
+Both robots share one fixed physical rail:
 
 ```text
-panda1_rail
-panda2_rail
+shared_rail
 ```
 
-Each rail has one carriage:
+The shared rail has two independent carriages:
 
 ```text
 panda1_carriage
 panda2_carriage
 ```
 
-The robots are physically independent but share the same simulated world.
+The carriage and arm joints are independently controlled while the physical rail support is shared and fixed.
 
 ---
 
@@ -77,9 +76,9 @@ The robots are physically independent but share the same simulated world.
 During early project phases:
 
 ```text
-Panda 1 + Rail 1 → active
+Panda 1 + carriage 1 → active
 
-Panda 2 + Rail 2 → present but inactive
+Panda 2 + carriage 2 → present but inactive
 ```
 
 The second robot remains fully modeled in the scene.
@@ -100,10 +99,10 @@ Panda 2 must not be removed simply because it is inactive.
 The final project contains:
 
 ```text
-Robot System 1
+Shared rail system
 world
-└── panda1_rail
-    └── panda1_carriage
+└── shared_rail
+    ├── panda1_carriage
         └── panda1_base
             └── 7-DOF Panda
                 └── Franka Hand
@@ -113,9 +112,6 @@ world
 and:
 
 ```text
-Robot System 2
-world
-└── panda2_rail
     └── panda2_carriage
         └── panda2_base
             └── 7-DOF Panda
@@ -212,7 +208,7 @@ Joint type:
 prismatic
 ```
 
-Each rail joint must expose:
+Each carriage prismatic joint must expose:
 
 ```text
 position
@@ -226,7 +222,7 @@ to the control stack.
 
 ## 9. Rail Limits
 
-Each rail must define:
+Each carriage must define:
 
 ```text
 lower position limit
@@ -251,7 +247,7 @@ No planner may command outside the valid rail range.
 
 ## 10. Rail Home Position
 
-Each rail has a deterministic home position.
+Each carriage has a distinct deterministic home position on the shared rail.
 
 Conceptually:
 
@@ -990,8 +986,8 @@ Even before Panda 2 is active, Panda 1 must avoid it physically.
 Later dual-arm operation must include:
 
 ```text
-rail 1
-rail 2
+panda1 carriage joint
+panda2 carriage joint
 Panda 1
 Panda 2
 held objects
@@ -1377,7 +1373,7 @@ Before Phase 7 activation, the project must validate:
 
 ```text
 namespace isolation
-rail 2 control
+panda2_rail_joint control
 arm 2 control
 gripper 2 control
 cross-robot planning scene
@@ -1754,7 +1750,7 @@ no object launch
 
 The robot-control stack is accepted when:
 
-- Rail 1 can be commanded reliably.
+- panda1_rail_joint can be commanded reliably.
 - Panda 1 arm can be commanded reliably.
 - Franka Hand can open and close reliably.
 - Joint states are correct.

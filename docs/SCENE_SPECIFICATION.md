@@ -173,15 +173,15 @@ Collision should remain a simple plane or box.
 
 ### 6.2 Central Linear-Rail Manipulation Corridor
 
-The two Franka Panda robots operate on two independent linear rails located in the central manipulation corridor.
+The two Franka Panda robots operate on independent carriages along one fixed shared linear rail in the central manipulation corridor.
 
-Each rail supports one Panda through a movable carriage.
+The shared rail supports two movable carriages, each carrying one Panda.
 
-The rail system must:
+The shared-rail system must:
 
 - translate the robot longitudinally along the work-surface row,
 - provide access to near, middle, and far table sections,
-- keep the fixed rail assembly stationary in the world,
+- keep the shared fixed rail support stationary in the world,
 - define hard prismatic travel limits,
 - provide safe carriage collision geometry,
 - and preserve future dual-arm clearance.
@@ -190,7 +190,7 @@ The nominal rail axis is aligned with world X.
 
 A robot base world pose is derived from rail position. It is not manually rewritten during normal execution.
 
-The fixed rail assemblies must not be repositioned after Phase 1 scene lock without an explicit layout revision.
+The fixed shared rail assembly must not be repositioned after Phase 1 scene lock without an explicit layout revision.
 
 ---
 
@@ -293,7 +293,7 @@ Early phases:
 active = true
 ```
 
-Panda 1 and Rail 1 form the primary manipulation system.
+Panda 1 and carriage 1 form the primary manipulation system.
 
 Its workspace should include several object and destination locations.
 
@@ -305,7 +305,7 @@ Early phases:
 active = false
 ```
 
-Panda 2 and Rail 2 remain physically present in the scene.
+Panda 2 and carriage 2 remain physically present in the scene.
 
 Its geometry remains relevant for:
 
@@ -320,14 +320,14 @@ Panda 2 must not be deleted simply because it is inactive.
 
 ## 9. Rail and Robot Placement Principles
 
-The fixed rail assemblies must satisfy:
+The fixed shared rail assembly and two carriages must satisfy:
 
 1. realistic mounting,
 2. no initial collisions,
 3. longitudinal travel covering intended work surfaces,
 4. usable Panda posture throughout the valid rail range,
 5. future dual-arm compatibility,
-6. sufficient separation between rail assemblies,
+6. configured minimum separation between carriages,
 7. access to a shared workspace,
 8. safe carriage travel without furniture collision.
 
@@ -1370,7 +1370,7 @@ Target:
 When Codex implements the scene:
 
 1. Do not invent object coordinates outside configuration.
-2. Do not move rail assemblies to solve a local grasp problem.
+2. Do not move shared rail assembly to solve a local grasp problem.
 3. Do not change table dimensions without updating scene documentation.
 4. Do not use visual meshes as collision meshes by default.
 5. Do not disable collision checks to hide geometry problems.

@@ -92,7 +92,7 @@ Verify:
 ```text
 all documented scene IDs exist
 six work surfaces exist
-two rails exist
+one shared rail and two carriages exist
 two carriages exist
 two Pandas exist
 initial objects exist

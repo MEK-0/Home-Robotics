@@ -185,12 +185,10 @@ The following IDs are canonical and should remain stable.
 ## 6.1 Robots and Linear Rails
 
 ```text
+shared_rail
 panda1
-panda1_rail
 panda1_carriage
-
 panda2
-panda2_rail
 panda2_carriage
 ```
 
@@ -478,16 +476,14 @@ Panda 2 must not be omitted from the world.
 
 # 15. Linear Rail Mapping
 
-Each Panda is mounted on one independent side rail.
+Both Pandas are mounted on independent carriages on one shared fixed rail.
 
 Canonical entities:
 
 ```text
-panda1_rail
+shared_rail
 panda1_rail_joint
 panda1_carriage
-
-panda2_rail
 panda2_rail_joint
 panda2_carriage
 ```
@@ -539,7 +535,7 @@ The carriage is mobile.
 
 Directly teleporting the Panda base is prohibited.
 
-Each rail configuration must define:
+The shared rail and carriage configurations must define:
 
 ```text
 axis
@@ -1488,7 +1484,7 @@ solver tuning
 Requires architecture / scene revision:
 
 ```text
-moving fixed rail assemblies
+moving the fixed shared rail assembly
 moving primary surfaces
 renaming canonical entities
 changing world origin

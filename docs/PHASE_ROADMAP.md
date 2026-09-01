@@ -111,8 +111,8 @@ idle stability
 
 - Scene loads headless.
 - Both rail-mounted robots are present.
-- Panda 1 + Rail 1 are active-ready.
-- Panda 2 + Rail 2 are present and inactive.
+- Panda 1 + carriage 1 are active-ready.
+- Panda 2 + carriage 2 are present and inactive.
 - No initial penetrations.
 - No unexplained object drift.
 - Bowl interior is physically accessible.
@@ -156,7 +156,7 @@ reset integration test
 
 ### Exit Criteria
 
-- Rail 1 moves through ROS.
+- panda1_rail_joint moves through ROS.
 - Panda 1 moves through ROS.
 - Franka Hand operates through ROS.
 - Joint states match MuJoCo.
@@ -383,13 +383,13 @@ is converted into valid task calls and executed successfully.
 
 ### Goal
 
-Activate Panda 2 + Rail 2.
+Activate Panda 2 + carriage 2.
 
 ### Deliverables
 
 ```text
 Panda 2 control
-Rail 2 control
+panda2_rail_joint control
 MoveIt groups
 cross-robot collision
 robot selection

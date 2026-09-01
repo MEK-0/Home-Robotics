@@ -78,9 +78,9 @@ Do not create shortcuts across layers.
 
 ## 5. Rail Rule
 
-Each Panda is mounted on an independent linear rail.
+Exactly one fixed physical shared rail supports two independently controlled carriages, one per Panda.
 
-The rail is:
+Each carriage joint is:
 
 ```text
 a prismatic robot joint
@@ -94,7 +94,9 @@ a teleport mechanism
 a hard-coded table selector
 ```
 
-Never directly rewrite Panda world pose during runtime.
+Never directly rewrite Panda world pose during runtime. Panda bases may move only through their own carriage prismatic joints.
+
+The configured minimum carriage separation must always be preserved, panda1 must remain before panda2 along +X, and carriage crossing is prohibited.
 
 ---
 
@@ -241,7 +243,7 @@ instant weld
 Do not move:
 
 ```text
-rail assemblies
+shared rail assembly
 major work surfaces
 world origin
 ```
@@ -254,7 +256,7 @@ Scene-layout changes require explicit documentation.
 
 ## 15. Panda 2 Rule
 
-Do not activate Panda 2 / Rail 2 before the designated dual-arm phase unless explicitly requested.
+Do not activate Panda 2 or its carriage DOF before the designated dual-arm phase unless explicitly requested.
 
 Keep the architecture compatible with future activation.
 

@@ -58,16 +58,16 @@ Higher layers must not bypass lower layers for convenience.
 
 ## 3. Initial Runtime Scope
 
-Initial active system:
+Initial active system (shared support remains fixed):
 
 ```text
-Panda 1 + Rail 1
+Panda 1 + carriage 1
 ```
 
-Physically present but inactive:
+Physically present but inactive (its independent carriage joint remains modeled):
 
 ```text
-Panda 2 + Rail 2
+Panda 2 + carriage 2
 ```
 
 The ROS 2 architecture must still reserve clean namespace and package structure for both robots from the beginning.
@@ -2035,7 +2035,7 @@ Task Executor ready
 
 ## 96. Rail State Integration Test
 
-Command Rail 1 through the control stack.
+Command panda1_rail_joint through the control stack.
 
 Verify:
 
@@ -2245,7 +2245,7 @@ Activate:
 
 ```text
 Panda 2
-Rail 2
+panda2_rail_joint
 dual-arm coordinator
 ```
 

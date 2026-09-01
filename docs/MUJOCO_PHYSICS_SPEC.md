@@ -1532,7 +1532,7 @@ Domain randomization belongs to later research phases.
 
 Phase 1 physics is accepted when:
 
-- both rails remain stable,
+- the shared rail and both carriages remain stable,
 - both Panda models initialize correctly,
 - no object drifts at reset,
 - collision geometry behaves predictably,

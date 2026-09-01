@@ -84,14 +84,13 @@ Examples:
 
 ```text
 world
-panda1_rail
+shared_rail
 panda1_carriage
 panda1_base
 panda1_link0
 panda1_hand
 panda1_tcp
 
-panda2_rail
 panda2_carriage
 panda2_base
 panda2_link0
@@ -122,9 +121,9 @@ For example:
 ```text
 T_world_panda1_base
 =
-T_world_panda1_rail
+T_world_shared_rail
 ×
-T_panda1_rail_panda1_carriage
+T_shared_rail_panda1_carriage
 ×
 T_panda1_carriage_panda1_base
 ```
@@ -133,87 +132,28 @@ This principle is essential because Panda base position changes dynamically as t
 
 ---
 
-## 6. Panda 1 Frame Tree
+## 6. Shared Rail Frame Tree
 
-Canonical Panda 1 frame hierarchy:
-
-```text
-world
-└── panda1_rail
-    └── panda1_carriage
-        └── panda1_base
-            └── panda1_link0
-                └── panda1_link1
-                    └── panda1_link2
-                        └── panda1_link3
-                            └── panda1_link4
-                                └── panda1_link5
-                                    └── panda1_link6
-                                        └── panda1_link7
-                                            └── panda1_hand
-                                                └── panda1_tcp
-```
-
-The exact internal Franka link names should match the validated robot model.
-
-The semantic frames above must remain consistent.
-
----
-
-## 7. Panda 2 Frame Tree
-
-Canonical Panda 2 frame hierarchy:
+Canonical shared-rail hierarchy:
 
 ```text
 world
-└── panda2_rail
+└── shared_rail
+    ├── panda1_carriage
+    │   └── panda1_base
+    │       └── panda1_link0 ... panda1_hand → panda1_tcp
     └── panda2_carriage
         └── panda2_base
-            └── panda2_link0
-                └── panda2_link1
-                    └── panda2_link2
-                        └── panda2_link3
-                            └── panda2_link4
-                                └── panda2_link5
-                                    └── panda2_link6
-                                        └── panda2_link7
-                                            └── panda2_hand
-                                                └── panda2_tcp
+            └── panda2_link0 ... panda2_hand → panda2_tcp
 ```
 
-Panda 2 remains inactive during early phases but its frame tree should still be well-defined.
+The shared rail frame is static relative to `world`. Each carriage frame is dynamic relative to `shared_rail` through its own prismatic joint. Panda 2 remains inactive during early phases but its full frame branch remains modeled.
 
 ---
 
 ## 8. Linear Rail Frame Model
 
-Each robot is mounted on an independent linear rail.
-
-Canonical frames:
-
-```text
-panda1_rail
-panda1_carriage
-
-panda2_rail
-panda2_carriage
-```
-
-The rail frame is static relative to `world`.
-
-The carriage frame is dynamic relative to the rail frame.
-
-Conceptually:
-
-```text
-world
-  ↓ static
-panda1_rail
-  ↓ prismatic joint
-panda1_carriage
-```
-
-The same applies to Panda 2.
+There is exactly one physical rail frame, `shared_rail`, and two independent carriage frames. `panda1_rail_joint` moves only `panda1_carriage`; `panda2_rail_joint` moves only `panda2_carriage`. Both axes are +X. Carriage order is panda1 before panda2, configured minimum separation must be preserved, and crossing is prohibited.
 
 ---
 
@@ -241,7 +181,7 @@ The project should avoid rotated rail frames unless there is a strong geometric 
 
 ## 10. Rail Position Variable
 
-Each rail exposes one prismatic joint coordinate:
+The shared rail exposes two independent carriage coordinates:
 
 ```text
 q_rail
@@ -268,7 +208,7 @@ No rotational component should be introduced by normal rail motion.
 
 ## 11. Rail Home Frame State
 
-Each rail has a configured home position:
+Each carriage joint has a distinct configured home position:
 
 ```text
 q_rail_home
@@ -459,7 +399,7 @@ world
 
 This ensures:
 
-- both rails,
+- the shared rail and both carriage joints,
 - both robots,
 - all work surfaces,
 - all objects,
@@ -476,7 +416,7 @@ A robot-local frame must not become the global planning frame.
 For Panda 1, the effective kinematic chain begins at:
 
 ```text
-panda1_rail
+shared_rail
 ```
 
 and includes:
@@ -490,7 +430,7 @@ Panda arm joints
 For Panda 2:
 
 ```text
-panda2_rail
+shared_rail
 ```
 
 and:
@@ -1035,7 +975,7 @@ The semantic `bowl` frame remains unchanged.
 
 ## 45. Rail Collision Frame
 
-Each rail must define collision geometry relative to:
+Each carriage and the shared rail must define collision geometry relative to:
 
 ```text
 pandaN_rail
@@ -1087,7 +1027,7 @@ This distinction must remain clear.
 
 ## 48. Rail Zero Reference
 
-Each rail must define:
+Each carriage must define:
 
 ```text
 q_rail = 0
@@ -1165,8 +1105,7 @@ This applies to:
 Static transforms include:
 
 ```text
-world → panda1_rail
-world → panda2_rail
+world → shared_rail
 
 panda1_carriage → panda1_base
 panda2_carriage → panda2_base
@@ -1184,8 +1123,8 @@ These should not be continuously recomputed unless required by the runtime repre
 Dynamic transforms include:
 
 ```text
-panda1_rail → panda1_carriage
-panda2_rail → panda2_carriage
+shared_rail → panda1_carriage
+shared_rail → panda2_carriage
 
 robot joint transforms
 dynamic object transforms

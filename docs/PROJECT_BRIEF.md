@@ -142,10 +142,11 @@ The final system contains:
 
 ```text
 2 × Franka Panda
-2 × independent linear side rail
+1 × shared physical linear rail
+2 × independent carriages
 ```
 
-Each Panda is mounted on its own independently actuated linear rail.
+Both Pandas are mounted on independent carriages that move along one shared fixed physical rail.
 
 The rails exist because a fixed-base Panda cannot reliably cover the complete near / middle / far work-surface row. Rail travel allows the robot base to translate longitudinally before and during manipulation.
 
@@ -186,11 +187,11 @@ It is not a manual teleport mechanism.
 Early phases use:
 
 ```text
-Panda 1 + Rail 1 → active
-Panda 2 + Rail 2 → present but inactive
+Panda 1 + carriage 1 → active
+Panda 2 + carriage 2 → present but inactive
 ```
 
-Both rails and both robots are included in the final scene from Phase 1 so the scene layout does not require redesign later.
+The shared rail, both carriages, and both robots are included in the final scene from Phase 1 so the scene layout does not require redesign later.
 
 Each robot uses the standard Franka Hand two-finger parallel gripper.
 
@@ -279,15 +280,13 @@ Example:
 ```text
 world
 │
-├── panda1_rail
-│   └── panda1_carriage
+└── shared_rail
+    ├── panda1_carriage
 │       └── panda1_base
 │           └── panda1_link0
 │               └── ...
 │                   └── panda1_hand
 │                       └── panda1_tcp
-│
-└── panda2_rail
     └── panda2_carriage
         └── panda2_base
             └── panda2_link0
@@ -777,7 +776,7 @@ Requirements include:
 ```text
 final scene layout
 two Franka Panda models
-two independent linear rails
+one shared linear rail with two independent carriages
 two robot carriages
 Franka Hand models
 tables
@@ -886,7 +885,7 @@ Research and implementation topics include:
 
 ```text
 workspace partitioning
-independent rail coordination
+shared-rail carriage coordination
 shared collision environment
 task allocation
 mutual exclusion

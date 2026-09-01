@@ -738,8 +738,8 @@ without rewriting the manipulation and task layers.
 Early phases:
 
 ```text
-Panda 1 + Rail 1 → active
-Panda 2 + Rail 2 → present but inactive
+Panda 1 + carriage 1 → active
+Panda 2 + carriage 2 → present but inactive
 ```
 
 The complete scene still includes both robots.
@@ -802,14 +802,14 @@ execution state
 
 ## 16. Linear Rail Architecture
 
-Each Panda is mounted on an independent side rail.
+Both Pandas are mounted on independent carriages on one fixed shared rail.
 
 Canonical kinematic chain:
 
 ```text
 world
   ↓
-pandaN_rail
+shared_rail
   ↓
 pandaN_carriage  ← prismatic joint
   ↓
@@ -828,7 +828,7 @@ For normal manipulation, MoveIt should be able to coordinate the rail joint and 
 
 The rail must never be implemented as direct base teleportation.
 
-Each rail has independent:
+Each carriage joint has independent:
 
 ```text
 travel limits
@@ -839,7 +839,7 @@ controller state
 collision geometry
 ```
 
-Later dual-arm coordination must include carriage positions and simultaneous rail motion.
+The shared support is fixed. Later dual-arm coordination must include both carriage positions, minimum separation, prohibited crossing, and simultaneous carriage motion.
 
 ---
 

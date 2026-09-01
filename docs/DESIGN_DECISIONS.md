@@ -28,8 +28,8 @@ The current project decisions are:
 | Primary simulator | MuJoCo |
 | Middleware | ROS 2 Jazzy |
 | Motion planning | MoveIt 2 |
-| Robot | 2 × Franka Panda on independent linear rails |
-| Early active robot count | Panda 1 + Rail 1 |
+| Robot | 2 × Franka Panda on independent carriages on one shared rail |
+| Early active robot count | Panda 1 + carriage 1 |
 | Gripper | Standard Franka Hand |
 | Grasp strategy | Hybrid physical grasp + temporary stabilization constraint |
 | Units | SI units, meters for distance |
@@ -165,7 +165,7 @@ The project should avoid introducing unnecessary custom IPC mechanisms where ROS
 
 ### Decision
 
-The final scene contains two Franka Panda robot arms, each mounted on an independent linear side rail.
+The final scene contains two Franka Panda robot arms, each mounted on an independent carriage on one shared linear rail.
 
 ### Rationale
 
@@ -181,9 +181,9 @@ The physical layout should therefore include both robots from the beginning so t
 
 ### Early-Phase Behavior
 
-Panda 1 and Rail 1 are active initially.
+Panda 1 and carriage 1 are active initially.
 
-Panda 2 and Rail 2 are present but inactive.
+Panda 2 and carriage 2 are present but inactive.
 
 ### Why Not Start With Two Active Robots?
 
@@ -206,11 +206,11 @@ These are not required for proving the basic manipulation stack.
 
 ---
 
-## DD-RAIL — Mount Each Panda on an Independent Linear Rail
+## DD-RAIL — Mount Two Independent Carriages on One Shared Linear Rail
 
 ### Decision
 
-Each Franka Panda is mounted on its own independently actuated linear rail.
+Each Franka Panda is mounted on its own independently actuated carriage on the shared fixed rail.
 
 The nominal rail axis is aligned with world X so the carriage can move along the near / middle / far table sequence.
 
@@ -245,7 +245,7 @@ It must not be used as an out-of-band teleport mechanism.
 
 ### Dual-Arm Consequence
 
-Both rails are independent.
+both carriage prismatic joints are independent.
 
 Future dual-arm execution must consider:
 
