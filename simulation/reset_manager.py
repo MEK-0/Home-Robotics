@@ -11,7 +11,9 @@ class ResetManager:
             raise ValueError("settle_steps must be non-negative")
         self.simulator = simulator
         self.settle_steps = settle_steps
-        self.reset_joint_positions = config.reset_joint_positions if config is not None else {}
+        self.rail_home_positions = config.rail_home_positions if config is not None else {}
+        self.robot_home_positions = config.robot_home_positions if config is not None else {}
+        self.reset_joint_positions = {**self.rail_home_positions, **self.robot_home_positions}
         self._pre_reset_hooks: list[ResetHook] = []
         self._state_reset_hooks: list[ResetHook] = []
 
@@ -25,7 +27,8 @@ class ResetManager:
         for hook in self._pre_reset_hooks:
             hook(self.simulator)
         self.simulator.reset()
-        self.simulator.set_joint_positions(self.reset_joint_positions)
+        self.simulator.set_joint_positions(self.rail_home_positions)
+        self.simulator.set_joint_positions(self.robot_home_positions)
         for joint_name in self.reset_joint_positions:
             self.simulator.set_joint_velocity(joint_name, 0.0)
         for hook in self._state_reset_hooks:

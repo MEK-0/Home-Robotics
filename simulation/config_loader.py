@@ -105,7 +105,7 @@ class ConfigLoader:
             raise ConfigError(f"{context} must contain {length} positive finite numbers")
 
     def _validate(self, config: ConfigBundle) -> None:
-        self._require_fields(config.scene, ("version", "frame", "units", "expected_entities", "floor", "surfaces", "workspaces"), "scene")
+        self._require_fields(config.scene, ("version", "frame", "units", "expected_entities", "floor", "shared_rail", "surfaces", "workspaces"), "scene")
         self._require_fields(config.physics, ("version", "timestep", "gravity", "solver", "friction_profiles", "reset"), "physics")
         if config.scene["frame"] != "world":
             raise ConfigError("scene.frame must be 'world'")
@@ -116,6 +116,20 @@ class ConfigLoader:
             raise ConfigError("scene.expected_entities must be a non-empty list")
         if len(entities) != len(set(entities)):
             raise ConfigError("scene.expected_entities contains duplicate canonical IDs")
+        floor = config.scene["floor"]
+        self._require_fields(floor, ("id", "pose", "geom_size", "material", "friction_profile", "rgba", "arena_border"), "scene.floor")
+        border = floor["arena_border"]
+        self._require_fields(border, ("dimensions", "width", "height", "floor_clearance", "material"), "scene.floor.arena_border")
+        self._positive_vector(border["dimensions"], 2, "scene.floor.arena_border.dimensions")
+        if list(map(float, floor["geom_size"])) != [0.0, 0.0, 0.05]:
+            raise ConfigError("scene.floor.geom_size must define one infinite MuJoCo plane")
+        for field in ("width", "height", "floor_clearance"):
+            if not isinstance(border[field], (int, float)) or not math.isfinite(border[field]) or border[field] <= 0:
+                raise ConfigError(f"scene.floor.arena_border.{field} must be positive and finite")
+        if not 0.05 <= float(border["width"]) <= 0.08:
+            raise ConfigError("arena border width must remain between 0.05 and 0.08 m")
+        if float(border["floor_clearance"]) + float(border["height"]) > 0.01:
+            raise ConfigError("arena border top must remain at most 0.01 m above the floor")
         if tuple(config.scene["surfaces"].keys()) != SURFACE_IDS:
             raise ConfigError(f"scene.surfaces must contain canonical IDs in order: {', '.join(SURFACE_IDS)}")
         for surface_id, surface in config.scene["surfaces"].items():
@@ -133,6 +147,30 @@ class ConfigLoader:
                 raise ConfigError(f"Surface '{surface_id}' frame Z must equal top_height")
             if not isinstance(surface["edge_clearance"], (int, float)) or surface["edge_clearance"] <= 0:
                 raise ConfigError(f"Surface '{surface_id}' edge_clearance must be positive")
+
+        shared_rail = config.scene["shared_rail"]
+        self._require_fields(shared_rail, ("id", "pose", "axis", "dimensions", "lower_travel_limit", "upper_travel_limit", "collision_geometry", "minimum_carriage_separation", "carriage_order", "crossing_prohibited", "rgba", "supports"), "scene.shared_rail")
+        if shared_rail["id"] != "shared_rail" or shared_rail["axis"] != [1.0, 0.0, 0.0]:
+            raise ConfigError("shared_rail must use canonical ID and world +X axis")
+        if shared_rail["pose"].get("frame") != "world":
+            raise ConfigError("scene.shared_rail.pose must be expressed in world")
+        self._positive_vector(shared_rail["dimensions"], 3, "scene.shared_rail.dimensions")
+        supports = shared_rail["supports"]
+        self._require_fields(supports, ("dimensions", "positions", "names"), "scene.shared_rail.supports")
+        self._positive_vector(supports["dimensions"], 3, "scene.shared_rail.supports.dimensions")
+        if not isinstance(supports["positions"], list) or not isinstance(supports["names"], list) or len(supports["positions"]) != len(supports["names"]) or not supports["positions"]:
+            raise ConfigError("scene.shared_rail.supports requires equally sized, non-empty positions and names lists")
+        if len(set(supports["names"])) != len(supports["names"]):
+            raise ConfigError("scene.shared_rail.supports names must be unique")
+        for index, position in enumerate(supports["positions"]):
+            if not isinstance(position, list) or len(position) != 3 or not all(isinstance(value, (int, float)) and math.isfinite(value) for value in position):
+                raise ConfigError(f"scene.shared_rail.supports.positions[{index}] must contain three finite numbers")
+        rail_lower, rail_upper = map(float, (shared_rail["lower_travel_limit"], shared_rail["upper_travel_limit"]))
+        separation = float(shared_rail["minimum_carriage_separation"])
+        if not rail_lower < rail_upper or not math.isfinite(separation) or separation <= 0:
+            raise ConfigError("shared rail limits and minimum carriage separation must be valid")
+        if shared_rail["carriage_order"] != ["panda1_carriage", "panda2_carriage"] or shared_rail["crossing_prohibited"] is not True:
+            raise ConfigError("shared rail must prohibit crossing and order panda1 before panda2")
 
         timestep = config.physics["timestep"]
         if not isinstance(timestep, (int, float)) or isinstance(timestep, bool) or timestep <= 0:
@@ -153,18 +191,24 @@ class ConfigLoader:
             if unknown_surfaces:
                 raise ConfigError(f"Robot '{robot_id}' references unknown surfaces: {', '.join(sorted(unknown_surfaces))}")
             rail = robot["rail"]
-            self._require_fields(rail, ("frame", "carriage_frame", "joint", "world_pose", "axis", "lower_limit", "upper_limit", "home_position", "support_dimensions", "carriage_dimensions", "carriage_offset", "mount_dimensions", "mount_offset", "mount_site_size"), f"robot '{robot_id}' rail")
-            if rail["frame"] != f"{robot_id}_rail" or rail["carriage_frame"] != f"{robot_id}_carriage" or rail["joint"] != f"{robot_id}_rail_joint":
+            self._require_fields(rail, ("shared_rail", "carriage_frame", "joint", "axis", "lower_limit", "upper_limit", "home_position", "carriage_dimensions", "carriage_offset", "mount_dimensions", "mount_offset", "mount_site_size"), f"robot '{robot_id}' rail")
+            if rail["shared_rail"] != "shared_rail" or rail["carriage_frame"] != f"{robot_id}_carriage" or rail["joint"] != f"{robot_id}_rail_joint":
                 raise ConfigError(f"Robot '{robot_id}' rail uses non-canonical IDs")
-            if rail["axis"] != [1.0, 0.0, 0.0]:
+            if rail["axis"] != shared_rail["axis"]:
                 raise ConfigError(f"Robot '{robot_id}' rail axis must follow world +X")
             lower, upper, home = map(float, (rail["lower_limit"], rail["upper_limit"], rail["home_position"]))
             if not lower < upper:
                 raise ConfigError(f"Robot '{robot_id}' rail lower_limit must be less than upper_limit")
             if not lower <= home <= upper:
                 raise ConfigError(f"Robot '{robot_id}' rail home_position must lie inside limits")
-            for field in ("support_dimensions", "carriage_dimensions", "mount_dimensions"):
+            if lower < rail_lower or upper > rail_upper:
+                raise ConfigError(f"Robot '{robot_id}' carriage limits must lie inside shared rail limits")
+            for field in ("carriage_dimensions", "mount_dimensions"):
                 self._positive_vector(rail[field], 3, f"robot '{robot_id}' rail.{field}")
+            support_half_length = float(shared_rail["dimensions"][0]) / 2.0
+            carriage_half_length = float(rail["carriage_dimensions"][0]) / 2.0
+            if lower - carriage_half_length < -support_half_length or upper + carriage_half_length > support_half_length:
+                raise ConfigError(f"Robot '{robot_id}' carriage geometry can leave the shared rail support")
 
             if robot["prefix"] != f"{robot_id}_":
                 raise ConfigError(f"Robot '{robot_id}' must use prefix '{robot_id}_'")
@@ -193,6 +237,10 @@ class ConfigLoader:
             minimum_tcp_height = robot["home_validation"].get("minimum_tcp_height")
             if not isinstance(minimum_tcp_height, (int, float)) or not math.isfinite(minimum_tcp_height) or minimum_tcp_height <= 0:
                 raise ConfigError(f"Robot '{robot_id}' minimum TCP height must be a positive finite number")
+        q1 = float(config.robots["panda1"]["rail"]["home_position"])
+        q2 = float(config.robots["panda2"]["rail"]["home_position"])
+        if q2 - q1 < separation:
+            raise ConfigError("Configured carriage homes violate minimum separation or ordering")
         if config.robots["panda2"]["active"]:
             raise ConfigError("panda2 must remain inactive before the dual-arm phase")
 

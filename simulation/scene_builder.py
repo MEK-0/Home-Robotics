@@ -34,16 +34,34 @@ class SceneBuilder:
         geom = worldbody.find("geom[@name='floor']")
         if geom is None:
             raise ConfigError("MuJoCo world infrastructure is missing the 'floor' geom")
-        pose, size = floor["pose"], floor["visual_half_size"]
+        pose, size = floor["pose"], floor["geom_size"]
         geom.attrib.update(
             pos=self._values(pose["position"]), quat=self._values(pose["quaternion_wxyz"]),
-            size=f"{size[0]} {size[1]} 0.1", rgba=self._values(floor["rgba"]),
+            size=self._values(size), material=str(floor["material"]),
         )
         profile = floor["friction_profile"]
         try:
             geom.set("friction", self._values(self.config.physics["friction_profiles"][profile]))
         except KeyError as exc:
             raise ConfigError(f"Floor references unknown friction profile '{profile}'") from exc
+
+    def _add_arena_border(self, worldbody: ET.Element) -> None:
+        floor = self.config.scene["floor"]
+        border = floor["arena_border"]
+        length, width = map(float, border["dimensions"])
+        strip_width = float(border["width"])
+        height = float(border["height"])
+        floor_clearance = float(border["floor_clearance"])
+        floor_position = tuple(map(float, floor["pose"]["position"]))
+        z = floor_position[2] + floor_clearance + height / 2.0
+        definitions = {
+            "arena_front": ((floor_position[0] + length / 2.0 - strip_width / 2.0, floor_position[1], z), (strip_width, width, height)),
+            "arena_back": ((floor_position[0] - length / 2.0 + strip_width / 2.0, floor_position[1], z), (strip_width, width, height)),
+            "arena_left": ((floor_position[0], floor_position[1] + width / 2.0 - strip_width / 2.0, z), (length - 2.0 * strip_width, strip_width, height)),
+            "arena_right": ((floor_position[0], floor_position[1] - width / 2.0 + strip_width / 2.0, z), (length - 2.0 * strip_width, strip_width, height)),
+        }
+        for name, (position, dimensions) in definitions.items():
+            ET.SubElement(worldbody, "geom", name=name, type="box", pos=self._values(position), size=self._half_size(dimensions), material=str(border["material"]), contype="0", conaffinity="0")
 
     def _add_surfaces(self, worldbody: ET.Element) -> None:
         for surface_id, surface in self.config.scene["surfaces"].items():
@@ -53,12 +71,16 @@ class SceneBuilder:
             ET.SubElement(body, "geom", name=f"{surface_id}_top", type="box", pos=f"0 0 {-float(dimensions[2]) / 2.0}", size=self._half_size(dimensions), rgba=self._values(surface["rgba"]), contype="1", conaffinity="1")
             ET.SubElement(body, "geom", name=f"{surface_id}_base", type="box", pos=self._values(surface["base_offset"]), size=self._half_size(surface["base_dimensions"]), rgba=self._values(surface["base_rgba"]), contype="1", conaffinity="1")
 
-    def _add_rails(self, root: ET.Element, worldbody: ET.Element) -> None:
+    def _add_shared_rail(self, root: ET.Element, worldbody: ET.Element) -> None:
+        shared_rail = self.config.scene["shared_rail"]
+        pose = shared_rail["pose"]
+        rail_body = ET.SubElement(worldbody, "body", name=shared_rail["id"], pos=self._values(pose["position"]), quat=self._values(pose["quaternion_wxyz"]))
+        ET.SubElement(rail_body, "geom", name="shared_rail_support", type="box", size=self._half_size(shared_rail["dimensions"]), rgba=self._values(shared_rail["rgba"]), contype="1", conaffinity="1")
+        supports = shared_rail["supports"]
+        for name, position in zip(supports["names"], supports["positions"], strict=True):
+            ET.SubElement(rail_body, "geom", name=str(name), type="box", pos=self._values(position), size=self._half_size(supports["dimensions"]), rgba=self._values(shared_rail["rgba"]), contype="1", conaffinity="1")
         for robot_id, robot in self.config.robots.items():
             rail = robot["rail"]
-            pose = rail["world_pose"]
-            rail_body = ET.SubElement(worldbody, "body", name=rail["frame"], pos=self._values(pose["position"]), quat=self._values(pose["quaternion_wxyz"]))
-            ET.SubElement(rail_body, "geom", name=f"{rail['frame']}_support", type="box", size=self._half_size(rail["support_dimensions"]), rgba=self._values(rail["rgba"]), contype="1", conaffinity="1")
             carriage = ET.SubElement(rail_body, "body", name=rail["carriage_frame"], pos=self._values(rail["carriage_offset"]))
             ET.SubElement(carriage, "joint", name=rail["joint"], type="slide", axis=self._values(rail["axis"]), range=f"{rail['lower_limit']} {rail['upper_limit']}", limited="true", damping=str(self.config.physics["rail"]["damping"]))
             ET.SubElement(carriage, "geom", name=f"{rail['carriage_frame']}_geom", type="box", size=self._half_size(rail["carriage_dimensions"]), rgba=self._values(rail["carriage_rgba"]), contype="1", conaffinity="1")
@@ -91,8 +113,9 @@ class SceneBuilder:
         )
         self.panda_source.add_shared_definitions(root)
         self._configure_floor(worldbody)
+        self._add_arena_border(worldbody)
         self._add_surfaces(worldbody)
-        self._add_rails(root, worldbody)
+        self._add_shared_rail(root, worldbody)
         return ET.tostring(root, encoding="unicode")
 
     def build(self, *, headless: bool = True) -> Simulator:

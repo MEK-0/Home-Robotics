@@ -55,6 +55,10 @@ class Simulator:
         kinds = (self._mujoco.mjtObj.mjOBJ_BODY, self._mujoco.mjtObj.mjOBJ_GEOM, self._mujoco.mjtObj.mjOBJ_JOINT, self._mujoco.mjtObj.mjOBJ_SITE)
         return any(self._mujoco.mj_name2id(self.model, kind, name) >= 0 for kind in kinds)
 
+    def body_joint_count(self, name: str) -> int:
+        body_id = self._id(self._mujoco.mjtObj.mjOBJ_BODY, name)
+        return int(self.model.body_jntnum[body_id])
+
     def body_exists(self, name: str) -> bool:
         return self._mujoco.mj_name2id(self.model, self._mujoco.mjtObj.mjOBJ_BODY, name) >= 0
 
