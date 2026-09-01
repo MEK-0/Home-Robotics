@@ -11,6 +11,7 @@ SURFACE_IDS = (
     "surface_right_1", "surface_right_2", "surface_right_3",
 )
 ROBOT_IDS = ("panda1", "panda2")
+OBJECT_IDS = ("cube", "apple", "purple_ball", "bowl", "pan")
 
 class ConfigError(ValueError):
     """Project configuration is missing or inconsistent."""
@@ -105,8 +106,8 @@ class ConfigLoader:
             raise ConfigError(f"{context} must contain {length} positive finite numbers")
 
     def _validate(self, config: ConfigBundle) -> None:
-        self._require_fields(config.scene, ("version", "frame", "units", "expected_entities", "floor", "shared_rail", "surfaces", "workspaces"), "scene")
-        self._require_fields(config.physics, ("version", "timestep", "gravity", "solver", "friction_profiles", "reset"), "physics")
+        self._require_fields(config.scene, ("version", "frame", "units", "expected_entities", "floor", "shared_rail", "table_geometry", "surfaces", "workspaces"), "scene")
+        self._require_fields(config.physics, ("version", "timestep", "gravity", "solver", "friction_profiles", "robot", "reset"), "physics")
         if config.scene["frame"] != "world":
             raise ConfigError("scene.frame must be 'world'")
         if config.scene["units"] != "SI":
@@ -130,16 +131,19 @@ class ConfigLoader:
             raise ConfigError("arena border width must remain between 0.05 and 0.08 m")
         if float(border["floor_clearance"]) + float(border["height"]) > 0.01:
             raise ConfigError("arena border top must remain at most 0.01 m above the floor")
+        table = config.scene["table_geometry"]
+        self._require_fields(table, ("leg_dimensions", "leg_center_inset", "leg_rgba"), "scene.table_geometry")
+        self._positive_vector(table["leg_dimensions"], 3, "scene.table_geometry.leg_dimensions")
+        self._positive_vector(table["leg_center_inset"], 2, "scene.table_geometry.leg_center_inset")
         if tuple(config.scene["surfaces"].keys()) != SURFACE_IDS:
             raise ConfigError(f"scene.surfaces must contain canonical IDs in order: {', '.join(SURFACE_IDS)}")
         for surface_id, surface in config.scene["surfaces"].items():
-            self._require_fields(surface, ("id", "pose", "dimensions", "top_height", "collision_geometry", "usable_top_region", "safe_spawn_region", "safe_place_region", "edge_clearance", "workspace", "base_dimensions", "base_offset", "base_rgba"), f"surface '{surface_id}'")
+            self._require_fields(surface, ("id", "pose", "dimensions", "top_height", "collision_geometry", "usable_top_region", "safe_spawn_region", "safe_place_region", "edge_clearance", "workspace", "rgba"), f"surface '{surface_id}'")
             if surface["id"] != surface_id:
                 raise ConfigError(f"Surface key '{surface_id}' does not match id '{surface['id']}'")
             if surface["collision_geometry"] != "box":
                 raise ConfigError(f"Surface '{surface_id}' collision_geometry must be 'box'")
             self._positive_vector(surface["dimensions"], 3, f"surface '{surface_id}'.dimensions")
-            self._positive_vector(surface["base_dimensions"], 3, f"surface '{surface_id}'.base_dimensions")
             pose = surface["pose"]
             if pose.get("frame") != "world" or len(pose.get("position", [])) != 3:
                 raise ConfigError(f"Surface '{surface_id}' pose must be expressed in world")
@@ -178,6 +182,9 @@ class ConfigLoader:
         gravity = config.physics["gravity"]
         if not isinstance(gravity, list) or len(gravity) != 3 or not all(isinstance(v, (int, float)) and math.isfinite(v) for v in gravity):
             raise ConfigError("physics.gravity must contain exactly three finite numbers")
+        gravity_compensation = config.physics["robot"].get("phase1_gravity_compensation")
+        if not isinstance(gravity_compensation, (int, float)) or not 0.0 <= gravity_compensation <= 1.0:
+            raise ConfigError("physics.robot.phase1_gravity_compensation must lie in [0, 1]")
 
         surfaces, workspaces, profiles = set(config.scene["surfaces"]), set(config.scene["workspaces"]), set(config.grasp_profiles)
         if tuple(config.robots.keys()) != ROBOT_IDS:
@@ -244,13 +251,48 @@ class ConfigLoader:
         if config.robots["panda2"]["active"]:
             raise ConfigError("panda2 must remain inactive before the dual-arm phase")
 
+        if len(config.objects) != len(OBJECT_IDS) or set(config.objects) != set(OBJECT_IDS):
+            raise ConfigError(f"objects must contain canonical IDs: {', '.join(OBJECT_IDS)}")
         for object_id, obj in config.objects.items():
-            self._require_fields(obj, ("category", "dynamic", "pickable", "place_target", "collision", "initial", "grasp_profile"), f"object '{object_id}'")
+            self._require_fields(obj, ("id", "category", "dynamic", "pickable", "place_target", "visual", "collision", "mass", "inertia_strategy", "friction_profile", "initial", "semantic_frames", "grasp_profile"), f"object '{object_id}'")
+            if obj["id"] != object_id:
+                raise ConfigError(f"Object key '{object_id}' does not match id '{obj['id']}'")
+            if not isinstance(obj["mass"], (int, float)) or not math.isfinite(obj["mass"]) or obj["mass"] <= 0:
+                raise ConfigError(f"Object '{object_id}' mass must be positive and finite")
+            if obj["friction_profile"] not in config.physics["friction_profiles"]:
+                raise ConfigError(f"Object '{object_id}' references unknown friction profile '{obj['friction_profile']}'")
+            initial = obj["initial"]
+            self._require_fields(initial, ("reference_frame", "position", "quaternion_wxyz", "support_surface"), f"object '{object_id}'.initial")
+            if len(initial["position"]) != 3 or not all(isinstance(value, (int, float)) and math.isfinite(value) for value in initial["position"]):
+                raise ConfigError(f"Object '{object_id}' initial position must contain three finite numbers")
+            quaternion = initial["quaternion_wxyz"]
+            if len(quaternion) != 4 or not math.isclose(sum(float(value) ** 2 for value in quaternion), 1.0, abs_tol=1e-9):
+                raise ConfigError(f"Object '{object_id}' initial quaternion must be normalized")
             support = obj["initial"].get("support_surface")
             if support not in surfaces:
                 raise ConfigError(f"Object '{object_id}' references unknown support surface '{support}'")
+            if initial["reference_frame"] not in {"world", *surfaces}:
+                raise ConfigError(f"Object '{object_id}' references unknown initial frame '{initial['reference_frame']}'")
+            collision = obj["collision"]
+            if collision.get("type") == "box":
+                self._positive_vector(collision.get("dimensions"), 3, f"object '{object_id}'.collision.dimensions")
+            elif collision.get("type") == "sphere":
+                if not isinstance(collision.get("radius"), (int, float)) or collision["radius"] <= 0:
+                    raise ConfigError(f"Object '{object_id}' collision radius must be positive")
+            elif collision.get("type") == "primitive_compound":
+                primitives = collision.get("primitives")
+                if not isinstance(primitives, list) or not primitives:
+                    raise ConfigError(f"Object '{object_id}' compound collision requires primitives")
+            else:
+                raise ConfigError(f"Object '{object_id}' uses unsupported collision type")
+            for frame_name, frame in obj["semantic_frames"].items():
+                if not isinstance(frame_name, str) or len(frame.get("position", [])) != 3:
+                    raise ConfigError(f"Object '{object_id}' has invalid semantic frame")
             profile = obj.get("grasp_profile")
             if obj["pickable"] and profile not in profiles:
                 raise ConfigError(f"Object '{object_id}' references unknown grasp profile '{profile}'")
             if obj["place_target"] and object_id not in config.locations:
                 raise ConfigError(f"Place target '{object_id}' has no matching location")
+        bowl_location = config.locations.get("bowl")
+        if not bowl_location or bowl_location.get("object_ref") != "bowl" or bowl_location.get("reference_frame") != "bowl_inner":
+            raise ConfigError("locations.bowl must reference bowl_inner")

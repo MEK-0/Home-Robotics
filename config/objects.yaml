@@ -1,83 +1,132 @@
 objects:
   cube:
+    id: cube
     category: manipulable
     dynamic: true
     pickable: true
     place_target: false
-    status: pending_scene_construction
-    visual_asset: null
-    collision: {type: box, size: null}
-    mass: null
+    status: phase1_ready
+    visual: {rgba: [0.12, 0.42, 0.82, 1.0]}
+    collision: {type: box, dimensions: [0.05, 0.05, 0.05]}
+    mass: 0.12
     inertia_strategy: derived_from_primitive
     friction_profile: default_tabletop
-    initial: {frame: world, pose: null, support_surface: surface_left_1}
+    initial:
+      reference_frame: surface_left_1
+      position: [-0.20, -0.08, 0.025]
+      quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+      support_surface: surface_left_1
+    semantic_frames: {cube_center: {position: [0.0, 0.0, 0.0]}}
     grasp_profile: cube_standard
     aliases: [cube, block]
     planning_scene_enabled: true
     benchmark_enabled: true
   apple:
+    id: apple
     category: manipulable
     dynamic: true
     pickable: true
     place_target: false
-    status: pending_scene_construction
-    visual_asset: null
-    collision: {type: sphere, radius: null}
-    mass: null
+    status: phase1_ready
+    visual:
+      rgba: [0.78, 0.08, 0.06, 1.0]
+      stem: {radius: 0.004, height: 0.018, rgba: [0.25, 0.12, 0.04, 1.0]}
+    collision: {type: sphere, radius: 0.04}
+    mass: 0.15
     inertia_strategy: derived_from_primitive
     friction_profile: default_tabletop
-    initial: {frame: world, pose: null, support_surface: surface_left_1}
+    initial:
+      reference_frame: surface_left_1
+      position: [0.18, 0.08, 0.04]
+      quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+      support_surface: surface_left_1
+    semantic_frames: {apple_grasp_center: {position: [0.0, 0.0, 0.0]}}
     grasp_profile: apple_standard
     aliases: [apple, red apple]
     planning_scene_enabled: true
     benchmark_enabled: true
   purple_ball:
+    id: purple_ball
     category: manipulable
     dynamic: true
     pickable: true
     place_target: false
-    status: pending_scene_construction
-    visual_asset: null
-    collision: {type: sphere, radius: null}
-    mass: null
+    status: phase1_ready
+    visual: {rgba: [0.48, 0.12, 0.72, 1.0]}
+    collision: {type: sphere, radius: 0.035}
+    mass: 0.06
     inertia_strategy: derived_from_primitive
     friction_profile: round_object
-    initial: {frame: world, pose: null, support_surface: surface_left_1}
+    initial:
+      reference_frame: surface_left_2
+      position: [-0.22, -0.08, 0.035]
+      quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+      support_surface: surface_left_2
+    semantic_frames: {ball_center: {position: [0.0, 0.0, 0.0]}}
     grasp_profile: sphere_standard
     aliases: [purple_ball, purple ball]
     planning_scene_enabled: true
     benchmark_enabled: true
   bowl:
+    id: bowl
     category: container
     dynamic: false
     pickable: false
     place_target: true
-    status: pending_scene_construction
-    visual_asset: null
-    collision: {type: primitive_compound, primitives: null}
-    mass: null
-    inertia_strategy: fixed
+    status: phase1_ready
+    visual: {rgba: [0.86, 0.86, 0.90, 1.0]}
+    collision:
+      type: primitive_compound
+      primitives:
+      - {name: bottom, type: cylinder, radius: 0.115, height: 0.015, position: [0.0, 0.0, 0.0075], yaw: 0.0}
+      - {name: wall_0, type: box, dimensions: [0.018, 0.080, 0.070], position: [0.095, 0.0, 0.05], yaw: 0.0}
+      - {name: wall_1, type: box, dimensions: [0.018, 0.080, 0.070], position: [0.0672, 0.0672, 0.05], yaw: 0.7853981634}
+      - {name: wall_2, type: box, dimensions: [0.018, 0.080, 0.070], position: [0.0, 0.095, 0.05], yaw: 1.5707963268}
+      - {name: wall_3, type: box, dimensions: [0.018, 0.080, 0.070], position: [-0.0672, 0.0672, 0.05], yaw: 2.3561944902}
+      - {name: wall_4, type: box, dimensions: [0.018, 0.080, 0.070], position: [-0.095, 0.0, 0.05], yaw: 3.1415926536}
+      - {name: wall_5, type: box, dimensions: [0.018, 0.080, 0.070], position: [-0.0672, -0.0672, 0.05], yaw: 3.9269908170}
+      - {name: wall_6, type: box, dimensions: [0.018, 0.080, 0.070], position: [0.0, -0.095, 0.05], yaw: 4.7123889804}
+      - {name: wall_7, type: box, dimensions: [0.018, 0.080, 0.070], position: [0.0672, -0.0672, 0.05], yaw: 5.4977871438}
+    mass: 0.35
+    inertia_strategy: fixed_static
     friction_profile: container
-    initial: {frame: world, pose: null, support_surface: surface_left_2}
+    initial:
+      reference_frame: surface_left_2
+      position: [0.20, 0.08, 0.0]
+      quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+      support_surface: surface_left_2
+    semantic_frames:
+      bowl_inner: {position: [0.0, 0.0, 0.035]}
+      bowl_rim: {position: [0.0, 0.0, 0.085]}
     grasp_profile: null
-    semantic_frames: {bowl_inner: null, bowl_rim: null}
     aliases: [bowl]
     planning_scene_enabled: true
     benchmark_enabled: true
   pan:
+    id: pan
     category: future_manipulable
     dynamic: false
     pickable: false
     place_target: false
-    status: pending_scene_construction
-    visual_asset: null
-    collision: {type: primitive_compound, primitives: null}
-    mass: null
-    inertia_strategy: fixed
+    status: phase1_ready
+    visual: {rgba: [0.16, 0.17, 0.19, 1.0]}
+    collision:
+      type: primitive_compound
+      primitives:
+      - {name: body, type: cylinder, radius: 0.12, height: 0.025, position: [-0.08, 0.0, 0.0125], yaw: 0.0}
+      - {name: handle, type: box, dimensions: [0.22, 0.04, 0.025], position: [0.09, 0.0, 0.025], yaw: 0.0}
+    mass: 0.80
+    inertia_strategy: fixed_static
     friction_profile: container
-    initial: {frame: world, pose: null, support_surface: surface_right_1}
+    initial:
+      reference_frame: surface_right_2
+      position: [0.0, 0.0, 0.0]
+      quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+      support_surface: surface_right_2
+    semantic_frames:
+      pan_handle: {position: [0.09, 0.0, 0.045]}
+      pan_inner: {position: [-0.08, 0.0, 0.025]}
     grasp_profile: null
-    semantic_frames: {pan_handle: null, pan_inner: null}
     aliases: [pan]
     planning_scene_enabled: true
     benchmark_enabled: false

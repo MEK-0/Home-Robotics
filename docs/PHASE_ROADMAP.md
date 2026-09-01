@@ -82,7 +82,7 @@ Build the final-layout simulation environment.
 ```text
 world
 floor
-two linear rails
+one shared physical linear rail
 two carriages
 two Franka Panda models
 two Franka Hands
@@ -117,6 +117,9 @@ idle stability
 - No unexplained object drift.
 - Bowl interior is physically accessible.
 - Scene layout is locked as baseline version 1.0.
+- Six work surfaces each contain four physical legs.
+- All five canonical functional objects exist and reset deterministically.
+- System workspace coverage is 100% by at least one robot; per-robot 8/9 coverage remains diagnostic.
 
 ---
 
@@ -500,7 +503,7 @@ Phase 0 complete.
 
 ### M1 — Deterministic World
 
-Phase 1 complete.
+Phase 1 complete at scene/physics baseline 1.0 after model load, 10-second idle stability, 100/100 full-scene reset, bowl-access, ball-physics, collision, and system-level workspace-coverage acceptance.
 
 ### M2 — Controlled Rail-Mounted Panda
 

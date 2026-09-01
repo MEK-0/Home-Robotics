@@ -70,10 +70,23 @@ def test_elevated_shared_rail_has_static_floor_supports():
     config = _config()
     shared_rail = config.scene["shared_rail"]
     with SceneBuilder(config).build(headless=True) as simulator:
-        assert simulator.body_position("shared_rail") == pytest.approx([1.15, 0.0, 0.60], abs=KINEMATIC_TOLERANCE)
+        assert simulator.body_position("shared_rail") == pytest.approx([1.15, 0.0, 0.61], abs=KINEMATIC_TOLERANCE)
         for support_name in shared_rail["supports"]["names"]:
             assert simulator.geom_exists(support_name)
             assert simulator.geom_dimensions(support_name) == pytest.approx(shared_rail["supports"]["dimensions"])
+
+def test_panda1_home_has_clearance_from_nearest_tables():
+    """Regression guard for the near-table initial home pose."""
+    import mujoco
+    import numpy as np
+    config = _config()
+    with SceneBuilder(config).build(headless=True) as simulator:
+        model, data = simulator.model, simulator.data
+        table_ids = [i for i in range(model.ngeom) if model.geom(i).name.startswith(("surface_left_1_", "surface_right_1_"))]
+        panda1_ids = [i for i in range(model.ngeom) if "panda1" in model.body(int(model.geom_bodyid[i])).name]
+        distances = [mujoco.mj_geomDistance(model, data, p, t, 10.0, np.zeros(6)) for p in panda1_ids for t in table_ids]
+        assert distances and min(distances) >= 0.01
+        assert not simulator.penetrating_contacts()
 
 def test_distinct_rail_homes_have_safe_ordered_separation():
     config = _config()

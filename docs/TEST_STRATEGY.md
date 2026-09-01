@@ -565,7 +565,13 @@ GUI interaction must not be required for pass/fail evaluation.
 ```text
 100 resets pass
 scene stable
+five canonical objects valid
+24 table legs valid
+bowl interior accessible
+system workspace coverage = 100% by at least one robot
 ```
+
+Individual Panda coverage is diagnostic and is not required to be 9/9. Phase 1 fails only when a required target is unreachable by both valid robot configurations.
 
 ### Phase 2 Gate
 

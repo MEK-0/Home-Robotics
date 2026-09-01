@@ -402,6 +402,8 @@ Incorrect inertia can produce:
 - bad contact response,
 - and solver artifacts.
 
+Phase 1 dynamic inertias are derived by MuJoCo from primitive collision geometry and configured mass. Fixed bowl and pan geometry remains static. Panda bodies use configuration-owned gravity compensation `1.0` during the actuator-free Phase 1 model baseline so idle validation measures scene stability rather than uncontrolled arm collapse.
+
 ---
 
 ## 21. Center of Mass
@@ -1080,6 +1082,8 @@ objects remain stable
 
 Any unexplained motion should be investigated.
 
+Phase 1 baseline: `10.0 s` simulated duration, `0.001 m` translation tolerance, `0.001 rad` rotation tolerance, `1e-5` velocity tolerance, and `1e-6` joint-position tolerance. Shallow configured object/table support compression up to `0.0005 m` is allowed; other penetration is illegal.
+
 ---
 
 ## 60. Rail Hold Test
@@ -1273,6 +1277,8 @@ Example:
 ```
 
 Benchmark results must record the version.
+
+The accepted Phase 1 baseline is `physics.version: "1.0"`.
 
 ---
 

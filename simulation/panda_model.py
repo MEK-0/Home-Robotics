@@ -86,13 +86,15 @@ class PandaModelSource:
                     node.set(attribute, f"{prefix}{node.get(attribute)}")
         self._rewrite_shared_references(element)
 
-    def instantiate(self, target_root: ET.Element, base_body: ET.Element, robot: Mapping[str, Any]) -> None:
+    def instantiate(self, target_root: ET.Element, base_body: ET.Element, robot: Mapping[str, Any], *, gravity_compensation: float = 0.0) -> None:
         source_body = self.root.find("worldbody/body")
         if source_body is None:
             raise ConfigError(f"Panda model has no root body: {self.model_path}")
         prefix = str(robot["prefix"])
         body = deepcopy(source_body)
         self._prefix_instance(body, prefix)
+        for panda_body in body.iter("body"):
+            panda_body.set("gravcomp", str(gravity_compensation))
         hand = body.find(f".//body[@name='{prefix}hand']")
         if hand is None:
             raise ConfigError("Panda model does not contain the expected hand body")

@@ -6,6 +6,7 @@ from typing import Any, Mapping
 from xml.etree import ElementTree as ET
 from .config_loader import ConfigBundle, ConfigError
 from .panda_model import PandaModelSource
+from .scene_geometry import resolve_object_pose, yaw_quaternion
 from .simulator import Simulator
 
 class SceneBuilder:
@@ -64,12 +65,71 @@ class SceneBuilder:
             ET.SubElement(worldbody, "geom", name=name, type="box", pos=self._values(position), size=self._half_size(dimensions), material=str(border["material"]), contype="0", conaffinity="0")
 
     def _add_surfaces(self, worldbody: ET.Element) -> None:
+        table = self.config.scene["table_geometry"]
+        leg_dimensions = tuple(map(float, table["leg_dimensions"]))
+        inset_x, inset_y = map(float, table["leg_center_inset"])
         for surface_id, surface in self.config.scene["surfaces"].items():
             pose = surface["pose"]
             body = ET.SubElement(worldbody, "body", name=surface_id, pos=self._values(pose["position"]), quat=self._values(pose["quaternion_wxyz"]))
             dimensions = surface["dimensions"]
             ET.SubElement(body, "geom", name=f"{surface_id}_top", type="box", pos=f"0 0 {-float(dimensions[2]) / 2.0}", size=self._half_size(dimensions), rgba=self._values(surface["rgba"]), contype="1", conaffinity="1")
-            ET.SubElement(body, "geom", name=f"{surface_id}_base", type="box", pos=self._values(surface["base_offset"]), size=self._half_size(surface["base_dimensions"]), rgba=self._values(surface["base_rgba"]), contype="1", conaffinity="1")
+            leg_z = float(self.config.scene["floor"]["pose"]["position"][2]) - float(surface["top_height"]) + leg_dimensions[2] / 2.0
+            offsets = {
+                "front_left": (float(dimensions[0]) / 2.0 - inset_x, float(dimensions[1]) / 2.0 - inset_y, leg_z),
+                "front_right": (float(dimensions[0]) / 2.0 - inset_x, -float(dimensions[1]) / 2.0 + inset_y, leg_z),
+                "back_left": (-float(dimensions[0]) / 2.0 + inset_x, float(dimensions[1]) / 2.0 - inset_y, leg_z),
+                "back_right": (-float(dimensions[0]) / 2.0 + inset_x, -float(dimensions[1]) / 2.0 + inset_y, leg_z),
+            }
+            for corner, offset in offsets.items():
+                ET.SubElement(body, "geom", name=f"{surface_id}_leg_{corner}", type="box", pos=self._values(offset), size=self._half_size(leg_dimensions), rgba=self._values(table["leg_rgba"]), contype="1", conaffinity="1")
+
+    def _primitive_geom(self, body: ET.Element, object_id: str, primitive: Mapping[str, Any], *, rgba: Any, friction: Any, mass: float | None = None) -> None:
+        geom_type = str(primitive["type"])
+        attributes = {
+            "name": f"{object_id}_{primitive.get('name', 'collision')}",
+            "type": geom_type,
+            "pos": self._values(primitive.get("position", [0.0, 0.0, 0.0])),
+            "quat": self._values(yaw_quaternion(float(primitive.get("yaw", 0.0)))),
+            "rgba": self._values(rgba),
+            "friction": self._values(friction),
+            "contype": "1",
+            "conaffinity": "1",
+        }
+        if geom_type == "box":
+            attributes["size"] = self._half_size(primitive["dimensions"])
+        elif geom_type == "sphere":
+            attributes["size"] = str(float(primitive["radius"]))
+        elif geom_type == "cylinder":
+            attributes["size"] = f"{float(primitive['radius'])} {float(primitive['height']) / 2.0}"
+        else:
+            raise ConfigError(f"Object '{object_id}' uses unsupported primitive type '{geom_type}'")
+        if mass is not None:
+            attributes["mass"] = str(mass)
+        ET.SubElement(body, "geom", **attributes)
+
+    def _add_objects(self, worldbody: ET.Element) -> None:
+        for object_id, obj in self.config.objects.items():
+            position, quaternion = resolve_object_pose(self.config, obj)
+            body = ET.SubElement(worldbody, "body", name=object_id, pos=self._values(position), quat=self._values(quaternion))
+            if obj["dynamic"]:
+                ET.SubElement(body, "freejoint", name=f"{object_id}_free_joint")
+            friction = self.config.physics["friction_profiles"][obj["friction_profile"]]
+            collision = obj["collision"]
+            primitives = collision.get("primitives")
+            if primitives is None:
+                primitive = {**collision, "name": "collision"}
+                mass = float(obj["mass"]) if obj["dynamic"] else None
+                self._primitive_geom(body, object_id, primitive, rgba=obj["visual"]["rgba"], friction=friction, mass=mass)
+            else:
+                for primitive in primitives:
+                    self._primitive_geom(body, object_id, primitive, rgba=obj["visual"]["rgba"], friction=friction)
+            stem = obj["visual"].get("stem")
+            if stem is not None:
+                radius = float(collision["radius"])
+                height = float(stem["height"])
+                ET.SubElement(body, "geom", name=f"{object_id}_stem_visual", type="cylinder", pos=f"0 0 {radius + height / 2.0}", size=f"{stem['radius']} {height / 2.0}", rgba=self._values(stem["rgba"]), contype="0", conaffinity="0", mass="0")
+            for frame_name, frame in obj.get("semantic_frames", {}).items():
+                ET.SubElement(body, "site", name=str(frame_name), pos=self._values(frame["position"]), size="0.008", rgba="0.1 0.8 0.2 0.7")
 
     def _add_shared_rail(self, root: ET.Element, worldbody: ET.Element) -> None:
         shared_rail = self.config.scene["shared_rail"]
@@ -88,7 +148,7 @@ class SceneBuilder:
             mount_height = float(rail["mount_dimensions"][2])
             ET.SubElement(base, "geom", name=f"{robot_id}_mount_geom", type="box", pos=f"0 0 {-mount_height / 2.0}", size=self._half_size(rail["mount_dimensions"]), rgba=self._values(rail["mount_rgba"]), contype="1", conaffinity="1")
             ET.SubElement(base, "site", name=f"{robot_id}_base_site", pos="0 0 0", size=str(rail["mount_site_size"]), rgba="0.1 0.8 0.2 1")
-            self.panda_source.instantiate(root, base, robot)
+            self.panda_source.instantiate(root, base, robot, gravity_compensation=float(self.config.physics["robot"]["phase1_gravity_compensation"]))
 
     def build_xml(self) -> str:
         if not self.world_path.is_file():
@@ -116,6 +176,7 @@ class SceneBuilder:
         self._add_arena_border(worldbody)
         self._add_surfaces(worldbody)
         self._add_shared_rail(root, worldbody)
+        self._add_objects(worldbody)
         return ET.tostring(root, encoding="unicode")
 
     def build(self, *, headless: bool = True) -> Simulator:

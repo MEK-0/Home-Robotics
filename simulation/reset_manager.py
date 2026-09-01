@@ -2,6 +2,7 @@
 from __future__ import annotations
 from collections.abc import Callable
 from .config_loader import ConfigBundle
+from .scene_geometry import resolve_object_pose
 from .simulator import Simulator
 ResetHook = Callable[[Simulator], None]
 
@@ -14,6 +15,11 @@ class ResetManager:
         self.rail_home_positions = config.rail_home_positions if config is not None else {}
         self.robot_home_positions = config.robot_home_positions if config is not None else {}
         self.reset_joint_positions = {**self.rail_home_positions, **self.robot_home_positions}
+        self.object_initial_poses = {
+            object_id: resolve_object_pose(config, obj)
+            for object_id, obj in (config.objects.items() if config is not None else ())
+            if obj["dynamic"]
+        }
         self._pre_reset_hooks: list[ResetHook] = []
         self._state_reset_hooks: list[ResetHook] = []
 
@@ -31,6 +37,10 @@ class ResetManager:
         self.simulator.set_joint_positions(self.robot_home_positions)
         for joint_name in self.reset_joint_positions:
             self.simulator.set_joint_velocity(joint_name, 0.0)
+        for object_id, (position, quaternion) in self.object_initial_poses.items():
+            joint_name = f"{object_id}_free_joint"
+            self.simulator.set_free_joint_pose(joint_name, position, quaternion)
+            self.simulator.set_free_joint_velocity(joint_name, (0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
         for hook in self._state_reset_hooks:
             hook(self.simulator)
         self.simulator.forward()

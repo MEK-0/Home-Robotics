@@ -137,6 +137,8 @@ The category must describe the object's role in the robotics system, not merely 
 | `bowl` | container | initially no | no | yes | placement target |
 | `pan` | future_manipulable | initially no | later | later | kitchen context / future grasp target |
 
+Phase 1 physical values are configuration-owned: cube `0.12 kg`, apple `0.15 kg`, purple ball `0.06 kg`, fixed bowl metadata `0.35 kg`, and fixed pan metadata `0.80 kg`. All visuals use project-authored MuJoCo primitives; no external object asset is used.
+
 ---
 
 ## 6. Registry Data Model
@@ -997,6 +999,8 @@ plus a defined valid placement volume.
 
 `place("bowl")` should resolve to this interior region.
 
+The Phase 1 `bowl_inner` region is cylindrical: radial range `0.0–0.05 m`, vertical range `0.0–0.035 m`, safe radius `0.045 m`, and rim clearance `0.02 m`. The collision model uses a bottom cylinder and eight wall boxes, leaving the center physically open.
+
 ---
 
 ## 41. Bowl Placement Verification
@@ -1062,6 +1066,8 @@ The handle should eventually expose:
 ```text
 pan_handle
 ```
+
+The Phase 1 `pan_handle` site is object-local at `[0.09, 0.0, 0.045] m`.
 
 semantic frame.
 

@@ -272,7 +272,7 @@ The scene is divided into the following static geometry groups.
 
 ```text
 floor
-central_mount
+shared_rail
 surface_left_1
 surface_left_2
 surface_left_3
@@ -377,6 +377,8 @@ table top physical area
 ```
 
 The safe region must exclude an edge margin.
+
+Phase 1 geometry is one tabletop plus four colliding box legs per surface (24 legs total), instantiated from one shared table definition. There are no per-surface solid cabinet blocks.
 
 ---
 
@@ -887,6 +889,18 @@ The pan should be positioned so that:
 - its handle does not create unexpected collision traps,
 - and future manipulation remains possible.
 
+## Phase 1 Object Baseline
+
+| Object | Support | Local position (m) | Collision |
+|---|---|---|---|
+| `cube` | `surface_left_1` | `[-0.20, -0.08, 0.025]` | 0.05 m box |
+| `apple` | `surface_left_1` | `[0.18, 0.08, 0.04]` | radius 0.04 m sphere |
+| `purple_ball` | `surface_left_2` | `[-0.22, -0.08, 0.035]` | radius 0.035 m sphere |
+| `bowl` | `surface_left_2` | `[0.20, 0.08, 0.0]` | bottom plus eight walls |
+| `pan` | `surface_right_2` | `[0.0, 0.0, 0.0]` | cylinder body plus box handle |
+
+All poses are authored relative to their support frame and resolved to world by the scene layer.
+
 ---
 
 # 30. Container Mapping
@@ -989,11 +1003,11 @@ world
 │
 ├── floor
 │
-├── central_mount
-│
-│   ├── panda1_base
-│
-│   └── panda2_base
+├── shared_rail
+│   ├── panda1_carriage
+│   │   └── panda1_base
+│   └── panda2_carriage
+│       └── panda2_base
 │
 ├── surfaces
 │   ├── surface_left_1
@@ -1438,6 +1452,8 @@ Only then:
 scene_version = 1.0
 ```
 
+This procedure passed for the Phase 1 baseline. System workspace coverage is 18/18 targets by at least one robot; individual diagnostics remain Panda 1 8/9 and Panda 2 8/9.
+
 ---
 
 # 50. Scene Lock Invariants
@@ -1674,7 +1690,7 @@ However, manipulation remains disabled until scene validation passes.
 The Scene Map is considered correctly implemented when:
 
 - every canonical scene ID exists,
-- both Panda robots and both linear rails are correctly placed,
+- both Panda robots and both carriages on the one shared physical rail are correctly placed,
 - six work surfaces exist,
 - Panda 1 has a valid primary workspace,
 - Panda 2 has a reserved primary workspace,

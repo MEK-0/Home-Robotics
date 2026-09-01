@@ -1,8 +1,8 @@
 scene:
-  version: '0.8'
+  version: '1.0'
   frame: world
   units: SI
-  build_stage: final_scene_structure
+  build_stage: phase1_baseline_locked
   expected_entities:
   - floor
   - arena_front
@@ -23,6 +23,13 @@ scene:
   - shared_rail_leg_left
   - shared_rail_leg_center
   - shared_rail_leg_right
+  - cube
+  - apple
+  - purple_ball
+  - bowl
+  - bowl_inner
+  - pan
+  - pan_handle
   floor:
     id: floor
     pose:
@@ -58,7 +65,7 @@ scene:
     id: shared_rail
     pose:
       frame: world
-      position: [1.15, 0.0, 0.60]
+      position: [1.15, 0.0, 0.61]
       quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
     axis: [1.0, 0.0, 0.0]
     dimensions: [3.4, 0.16, 0.16]
@@ -72,10 +79,14 @@ scene:
     supports:
       dimensions: [0.12, 0.12, 0.52]
       positions:
-      - [-1.4, 0.0, -0.34]
-      - [0.0, 0.0, -0.34]
-      - [1.4, 0.0, -0.34]
+      - [-1.4, 0.0, -0.35]
+      - [0.0, 0.0, -0.35]
+      - [1.4, 0.0, -0.35]
       names: [shared_rail_leg_left, shared_rail_leg_center, shared_rail_leg_right]
+  table_geometry:
+    leg_dimensions: [0.06, 0.06, 0.60]
+    leg_center_inset: [0.07, 0.07]
+    leg_rgba: [0.32, 0.22, 0.14, 1.0]
   surfaces:
     surface_left_1:
       id: surface_left_1
@@ -131,19 +142,6 @@ scene:
       - 0.5
       - 0.32
       - 1.0
-      base_dimensions:
-      - 0.75
-      - 0.65
-      - 0.60
-      base_offset:
-      - 0.0
-      - 0.0
-      - -0.38
-      base_rgba:
-      - 0.5
-      - 0.36
-      - 0.24
-      - 1.0
     surface_left_2:
       id: surface_left_2
       pose:
@@ -197,19 +195,6 @@ scene:
       - 0.68
       - 0.5
       - 0.32
-      - 1.0
-      base_dimensions:
-      - 0.75
-      - 0.65
-      - 0.60
-      base_offset:
-      - 0.0
-      - 0.0
-      - -0.38
-      base_rgba:
-      - 0.5
-      - 0.36
-      - 0.24
       - 1.0
     surface_left_3:
       id: surface_left_3
@@ -265,19 +250,6 @@ scene:
       - 0.5
       - 0.32
       - 1.0
-      base_dimensions:
-      - 0.75
-      - 0.65
-      - 0.60
-      base_offset:
-      - 0.0
-      - 0.0
-      - -0.38
-      base_rgba:
-      - 0.5
-      - 0.36
-      - 0.24
-      - 1.0
     surface_right_1:
       id: surface_right_1
       pose:
@@ -331,19 +303,6 @@ scene:
       - 0.68
       - 0.5
       - 0.32
-      - 1.0
-      base_dimensions:
-      - 0.75
-      - 0.65
-      - 0.60
-      base_offset:
-      - 0.0
-      - 0.0
-      - -0.38
-      base_rgba:
-      - 0.5
-      - 0.36
-      - 0.24
       - 1.0
     surface_right_2:
       id: surface_right_2
@@ -399,19 +358,6 @@ scene:
       - 0.5
       - 0.32
       - 1.0
-      base_dimensions:
-      - 0.75
-      - 0.65
-      - 0.60
-      base_offset:
-      - 0.0
-      - 0.0
-      - -0.38
-      base_rgba:
-      - 0.5
-      - 0.36
-      - 0.24
-      - 1.0
     surface_right_3:
       id: surface_right_3
       pose:
@@ -465,19 +411,6 @@ scene:
       - 0.68
       - 0.5
       - 0.32
-      - 1.0
-      base_dimensions:
-      - 0.75
-      - 0.65
-      - 0.60
-      base_offset:
-      - 0.0
-      - 0.0
-      - -0.38
-      base_rgba:
-      - 0.5
-      - 0.36
-      - 0.24
       - 1.0
   workspaces:
     panda1_primary_workspace:

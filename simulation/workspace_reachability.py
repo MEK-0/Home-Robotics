@@ -46,6 +46,21 @@ class ReachabilityResult:
     reason: str
 
 
+@dataclass(frozen=True)
+class SystemCoverageResult:
+    target: ReachabilityTarget
+    panda1: ReachabilityResult
+    panda2: ReachabilityResult
+
+    @property
+    def reachable_by_any(self) -> bool:
+        return self.panda1.passed or self.panda2.passed
+
+    @property
+    def reachable_by_both(self) -> bool:
+        return self.panda1.passed and self.panda2.passed
+
+
 def build_targets(config: ConfigBundle) -> tuple[ReachabilityTarget, ...]:
     targets: list[ReachabilityTarget] = []
     for robot_id, robot in config.robots.items():
@@ -149,7 +164,16 @@ def validate_workspace(config: ConfigBundle, simulator: Simulator) -> tuple[Reac
     return tuple(solve_target(config, simulator, target) for target in build_targets(config))
 
 
-def format_report(results: Iterable[ReachabilityResult]) -> str:
+def validate_system_coverage(config: ConfigBundle, simulator: Simulator) -> tuple[SystemCoverageResult, ...]:
+    coverage: list[SystemCoverageResult] = []
+    for target in build_targets(config):
+        panda1_target = ReachabilityTarget("panda1", target.station, target.depth, target.xyz)
+        panda2_target = ReachabilityTarget("panda2", target.station, target.depth, target.xyz)
+        coverage.append(SystemCoverageResult(target, solve_target(config, simulator, panda1_target), solve_target(config, simulator, panda2_target)))
+    return tuple(coverage)
+
+
+def format_report(results: Iterable[ReachabilityResult], system_coverage: Iterable[SystemCoverageResult] | None = None) -> str:
     rows = list(results)
     header = f"{'robot':7} {'region':20} {'rail q':>8} {'target XYZ':30} {'IK':4} {'limits':7} {'error m':>9} {'collision':10} {'result':6}"
     lines = [header, "-" * len(header)]
@@ -164,6 +188,13 @@ def format_report(results: Iterable[ReachabilityResult]) -> str:
         lines.append(f"{robot_id}: {passed}/{len(robot_rows)} passed ({100.0 * passed / len(robot_rows):.1f}%)")
     passed = sum(result.passed for result in rows)
     lines.append(f"overall: {passed}/{len(rows)} passed ({100.0 * passed / len(rows):.1f}%)")
+    if system_coverage is not None:
+        system_rows = list(system_coverage)
+        any_count = sum(result.reachable_by_any for result in system_rows)
+        both_count = sum(result.reachable_by_both for result in system_rows)
+        lines.append(f"system reachable by any robot: {any_count}/{len(system_rows)} ({100.0 * any_count / len(system_rows):.1f}%)")
+        lines.append(f"system reachable by both robots: {both_count}/{len(system_rows)}")
+        lines.append(f"system unreachable by both: {len(system_rows) - any_count}/{len(system_rows)}")
     return "\n".join(lines)
 
 
@@ -172,8 +203,9 @@ def main() -> int:
     config = ConfigLoader(root / "config").load()
     with SceneBuilder(config).build(headless=True) as simulator:
         results = validate_workspace(config, simulator)
-    print(format_report(results))
-    return 0 if all(result.passed for result in results) else 1
+        system_coverage = validate_system_coverage(config, simulator)
+    print(format_report(results, system_coverage))
+    return 0 if all(result.reachable_by_any for result in system_coverage) else 1
 
 
 if __name__ == "__main__":

@@ -227,6 +227,8 @@ workspace ownership
 
 These values must be configuration-driven.
 
+Phase 1 baseline implementation: each canonical surface is a fixed four-legged table. The tabletop retains the accepted pose, dimensions, and safe regions. Four `0.06 × 0.06 × 0.60 m` colliding box legs are generated from the shared `scene.table_geometry` definition; the obsolete solid cabinet/base block is not instantiated.
+
 ---
 
 ## 7. Work Surface Requirements
@@ -1316,6 +1318,8 @@ semantic change
 ```
 
 Layout changes should be rare and explicitly documented.
+
+The accepted Phase 1 baseline is `scene.version: "1.0"`. It contains the single shared rail, two carriages/Pandas/Hands, six four-legged tables, and the five canonical functional objects.
 
 ---
 

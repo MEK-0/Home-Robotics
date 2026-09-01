@@ -3,56 +3,37 @@ locations:
     type: container_region
     object_ref: bowl
     reference_frame: bowl_inner
-    valid_region: null
-    allowed_orientation: null
-    clearance: null
-    supported_object_classes:
-    - manipulable
-    status: pending_object_construction
+    valid_region:
+      shape: cylinder
+      radial_range: [0.0, 0.05]
+      vertical_range: [0.0, 0.035]
+    rim_clearance: 0.02
+    safe_placement_region: {shape: cylinder, radius: 0.045, height: 0.025}
+    allowed_orientation: upright
+    supported_object_classes: [manipulable]
+    status: phase1_ready
   surface_left_1_center:
     type: surface_region
     surface: surface_left_1
     reference_frame: surface_left_1
-    center:
-    - 0.0
-    - 0.0
-    - 0.0
-    size:
-    - 0.9
-    - 0.55
+    center: [0.0, 0.0, 0.0]
+    size: [0.675, 0.55]
   surface_right_1_center:
     type: surface_region
     surface: surface_right_1
     reference_frame: surface_right_1
-    center:
-    - 0.0
-    - 0.0
-    - 0.0
-    size:
-    - 0.9
-    - 0.55
+    center: [0.0, 0.0, 0.0]
+    size: [0.675, 0.55]
   shared_workspace_center:
     type: box_region
     workspace_ref: shared_workspace
     reference_frame: world
-    center:
-    - 1.15
-    - 0.0
-    - 1.0
-    size:
-    - 1.1
-    - 0.5
-    - 1.4
+    center: [1.15, 0.0, 1.0]
+    size: [1.1, 0.5, 1.4]
   handover_zone:
     type: box_region
     workspace_ref: shared_workspace
     reference_frame: world
-    center:
-    - 1.15
-    - 0.0
-    - 1.15
-    size:
-    - 0.6
-    - 0.4
-    - 0.5
+    center: [1.15, 0.0, 1.15]
+    size: [0.6, 0.4, 0.5]
     active: false

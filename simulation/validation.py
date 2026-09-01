@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from collections.abc import Iterable
 from .config_loader import ConfigBundle, SURFACE_IDS
+from .scene_geometry import resolve_object_pose
 from .simulator import Simulator
 
 MODEL_TOLERANCE = 1e-9
@@ -26,7 +27,8 @@ def validate_simulation(config: ConfigBundle, simulator: Simulator) -> None:
         raise ValidationError(f"Expected scene entities are missing: {', '.join(missing)}")
     validate_scene_geometry(config, simulator)
     validate_robot_structure(config, simulator)
-    validate_no_initial_penetration(simulator)
+    validate_objects(config, simulator)
+    validate_no_illegal_penetration(config, simulator)
     validate_state(simulator)
 
 def validate_scene_geometry(config: ConfigBundle, simulator: Simulator) -> None:
@@ -44,6 +46,7 @@ def validate_scene_geometry(config: ConfigBundle, simulator: Simulator) -> None:
             raise ValidationError(f"Shared rail support '{support_name}' is missing")
         if not _close_vector(simulator.geom_dimensions(support_name), shared_rail["supports"]["dimensions"]):
             raise ValidationError(f"Shared rail support '{support_name}' dimensions do not match configuration")
+    table = config.scene["table_geometry"]
     for surface_id, surface in config.scene["surfaces"].items():
         if not simulator.body_exists(surface_id):
             raise ValidationError(f"Configured surface body is missing: {surface_id}")
@@ -51,6 +54,10 @@ def validate_scene_geometry(config: ConfigBundle, simulator: Simulator) -> None:
             raise ValidationError(f"Surface '{surface_id}' transform does not match configuration")
         if not _close_vector(simulator.geom_dimensions(f"{surface_id}_top"), surface["dimensions"]):
             raise ValidationError(f"Surface '{surface_id}' dimensions do not match configuration")
+        for corner in ("front_left", "front_right", "back_left", "back_right"):
+            leg_name = f"{surface_id}_leg_{corner}"
+            if not simulator.geom_exists(leg_name) or not _close_vector(simulator.geom_dimensions(leg_name), table["leg_dimensions"]):
+                raise ValidationError(f"Table leg '{leg_name}' is missing or has invalid dimensions")
     for robot_id, robot in config.robots.items():
         rail = robot["rail"]
         for body_name in (rail["carriage_frame"], robot["arm"]["base_frame"]):
@@ -69,6 +76,72 @@ def validate_scene_geometry(config: ConfigBundle, simulator: Simulator) -> None:
             raise ValidationError(f"Carriage '{rail['carriage_frame']}' dimensions do not match configuration")
         if not _close_vector(simulator.geom_dimensions(f"{robot_id}_mount_geom"), rail["mount_dimensions"]):
             raise ValidationError(f"Mount '{robot_id}_base' dimensions do not match configuration")
+
+def _object_local_bounds(obj: object) -> tuple[float, float, float]:
+    collision = obj["collision"]
+    if collision["type"] == "box":
+        return tuple(float(value) / 2.0 for value in collision["dimensions"])
+    if collision["type"] == "sphere":
+        radius = float(collision["radius"])
+        return radius, radius, radius
+    maxima = [0.0, 0.0, 0.0]
+    for primitive in collision["primitives"]:
+        position = tuple(map(float, primitive["position"]))
+        if primitive["type"] == "cylinder":
+            half = (float(primitive["radius"]), float(primitive["radius"]), float(primitive["height"]) / 2.0)
+        else:
+            dimensions = tuple(map(float, primitive["dimensions"]))
+            yaw = float(primitive.get("yaw", 0.0))
+            half = (
+                abs(math.cos(yaw)) * dimensions[0] / 2.0 + abs(math.sin(yaw)) * dimensions[1] / 2.0,
+                abs(math.sin(yaw)) * dimensions[0] / 2.0 + abs(math.cos(yaw)) * dimensions[1] / 2.0,
+                dimensions[2] / 2.0,
+            )
+        maxima = [max(maxima[index], abs(position[index]) + half[index]) for index in range(3)]
+    return tuple(maxima)
+
+def _object_local_min_z(obj: object) -> float:
+    collision = obj["collision"]
+    if collision["type"] == "box":
+        return -float(collision["dimensions"][2]) / 2.0
+    if collision["type"] == "sphere":
+        return -float(collision["radius"])
+    minimum = math.inf
+    for primitive in collision["primitives"]:
+        half_height = float(primitive["height"]) / 2.0 if primitive["type"] == "cylinder" else float(primitive["dimensions"][2]) / 2.0
+        minimum = min(minimum, float(primitive["position"][2]) - half_height)
+    return minimum
+
+def validate_objects(config: ConfigBundle, simulator: Simulator, *, require_initial_pose: bool = False) -> None:
+    for object_id, obj in config.objects.items():
+        if not simulator.body_exists(object_id):
+            raise ValidationError(f"Configured object body is missing: {object_id}")
+        expected_position, expected_orientation = resolve_object_pose(config, obj)
+        if require_initial_pose and not _close_vector(simulator.body_position(object_id), expected_position, 1e-7):
+            raise ValidationError(f"Object '{object_id}' initial position does not match configuration")
+        if require_initial_pose and not _close_vector(simulator.body_orientation(object_id), expected_orientation, 1e-7):
+            raise ValidationError(f"Object '{object_id}' initial orientation does not match configuration")
+        for frame_name in obj["semantic_frames"]:
+            if not simulator.site_exists(frame_name):
+                raise ValidationError(f"Object semantic frame '{frame_name}' is missing")
+        if obj["dynamic"]:
+            joint_name = f"{object_id}_free_joint"
+            if not simulator.joint_exists(joint_name):
+                raise ValidationError(f"Dynamic object '{object_id}' is missing its free joint")
+            body_id = simulator._id(simulator._mujoco.mjtObj.mjOBJ_BODY, object_id)
+            if float(simulator.model.body_mass[body_id]) <= 0 or not all(float(value) > 0 for value in simulator.model.body_inertia[body_id]):
+                raise ValidationError(f"Dynamic object '{object_id}' has invalid mass or inertia")
+        support = config.scene["surfaces"][obj["initial"]["support_surface"]]
+        bounds = _object_local_bounds(obj)
+        local = tuple(map(float, obj["initial"]["position"]))
+        safe_size = tuple(map(float, support["safe_spawn_region"]["size"]))
+        if abs(local[0]) + bounds[0] > safe_size[0] / 2.0 or abs(local[1]) + bounds[1] > safe_size[1] / 2.0:
+            raise ValidationError(f"Object '{object_id}' starts outside support safe-spawn bounds")
+        object_bottom = expected_position[2] + _object_local_min_z(obj)
+        if object_bottom < float(support["top_height"]) - 1e-7:
+            raise ValidationError(f"Object '{object_id}' starts below its supporting tabletop")
+    if not simulator.site_exists("bowl_inner") or not simulator.site_exists("pan_handle"):
+        raise ValidationError("Required bowl_inner and pan_handle semantic frames must exist")
 
 def validate_carriage_separation(config: ConfigBundle, simulator: Simulator) -> None:
     rail1 = config.robots["panda1"]["rail"]
@@ -127,6 +200,7 @@ def validate_home_state(config: ConfigBundle, simulator: Simulator) -> None:
         if tcp_position[2] < float(robot["home_validation"]["minimum_tcp_height"]):
             raise ValidationError(f"TCP '{tcp_frame}' is below its configured safe home height")
     validate_carriage_separation(config, simulator)
+    validate_objects(config, simulator, require_initial_pose=True)
     validate_no_initial_penetration(simulator)
 
 def validate_no_initial_penetration(simulator: Simulator) -> None:
@@ -134,6 +208,20 @@ def validate_no_initial_penetration(simulator: Simulator) -> None:
     if penetrations:
         details = "; ".join(f"{first}<->{second}: {distance:.6g} m" for first, second, distance in penetrations)
         raise ValidationError(f"Illegal initial penetration detected: {details}")
+
+def validate_no_illegal_penetration(config: ConfigBundle, simulator: Simulator, support_tolerance: float = 5e-4) -> None:
+    allowed_support_pairs = {
+        frozenset((f"{object_id}_collision", f"{obj['initial']['support_surface']}_top"))
+        for object_id, obj in config.objects.items() if obj["dynamic"]
+    }
+    illegal = [
+        (first, second, distance)
+        for first, second, distance in simulator.penetrating_contacts(PENETRATION_TOLERANCE)
+        if frozenset((first, second)) not in allowed_support_pairs or distance < -support_tolerance
+    ]
+    if illegal:
+        details = "; ".join(f"{first}<->{second}: {distance:.6g} m" for first, second, distance in illegal)
+        raise ValidationError(f"Illegal penetration detected: {details}")
 
 def validate_state(simulator: Simulator) -> None:
     for name, values in {"qpos": simulator.data.qpos, "qvel": simulator.data.qvel, "act": simulator.data.act}.items():

@@ -75,6 +75,15 @@ class Simulator:
         body_id = self._id(self._mujoco.mjtObj.mjOBJ_BODY, name)
         return tuple(float(value) for value in self.data.xpos[body_id])
 
+    def body_orientation(self, name: str) -> tuple[float, float, float, float]:
+        body_id = self._id(self._mujoco.mjtObj.mjOBJ_BODY, name)
+        return tuple(float(value) for value in self.data.xquat[body_id])
+
+    def body_velocity(self, name: str) -> tuple[float, float, float, float, float, float]:
+        body_id = self._id(self._mujoco.mjtObj.mjOBJ_BODY, name)
+        velocity = self.data.cvel[body_id]
+        return tuple(float(value) for value in (*velocity[3:], *velocity[:3]))
+
     def site_position(self, name: str) -> tuple[float, float, float]:
         site_id = self._id(self._mujoco.mjtObj.mjOBJ_SITE, name)
         return tuple(float(value) for value in self.data.site_xpos[site_id])
@@ -114,6 +123,20 @@ class Simulator:
     def set_joint_positions(self, positions: Mapping[str, float]) -> None:
         for name, value in positions.items():
             self.set_joint_position(name, value)
+
+    def set_free_joint_pose(self, name: str, position: tuple[float, float, float], quaternion_wxyz: tuple[float, float, float, float]) -> None:
+        joint_id = self._id(self._mujoco.mjtObj.mjOBJ_JOINT, name)
+        if int(self.model.jnt_type[joint_id]) != int(self._mujoco.mjtJoint.mjJNT_FREE):
+            raise ValueError(f"Joint '{name}' is not a free joint")
+        address = int(self.model.jnt_qposadr[joint_id])
+        self.data.qpos[address:address + 7] = (*position, *quaternion_wxyz)
+
+    def set_free_joint_velocity(self, name: str, velocity: tuple[float, float, float, float, float, float]) -> None:
+        joint_id = self._id(self._mujoco.mjtObj.mjOBJ_JOINT, name)
+        if int(self.model.jnt_type[joint_id]) != int(self._mujoco.mjtJoint.mjJNT_FREE):
+            raise ValueError(f"Joint '{name}' is not a free joint")
+        address = int(self.model.jnt_dofadr[joint_id])
+        self.data.qvel[address:address + 6] = velocity
 
     def penetrating_contacts(self, tolerance: float = 1e-7) -> list[tuple[str, str, float]]:
         penetrations: list[tuple[str, str, float]] = []
