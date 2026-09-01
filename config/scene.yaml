@@ -1,22 +1,28 @@
 scene:
-  version: '0.2'
+  version: '0.8'
   frame: world
   units: SI
   build_stage: final_scene_structure
   expected_entities:
   - floor
+  - arena_front
+  - arena_back
+  - arena_left
+  - arena_right
   - surface_left_1
   - surface_left_2
   - surface_left_3
   - surface_right_1
   - surface_right_2
   - surface_right_3
-  - panda1_rail
-  - panda2_rail
+  - shared_rail
   - panda1_carriage
   - panda2_carriage
   - panda1_base
   - panda2_base
+  - shared_rail_leg_left
+  - shared_rail_leg_center
+  - shared_rail_leg_right
   floor:
     id: floor
     pose:
@@ -30,38 +36,65 @@ scene:
       - 0.0
       - 0.0
       - 0.0
-    visual_half_size:
-    - 3.0
-    - 2.5
+    geom_size: [0.0, 0.0, 0.05]
+    material: arena_floor
     friction_profile: default_tabletop
     rgba:
     - 0.72
     - 0.74
     - 0.76
     - 1.0
+    arena_border:
+      dimensions: [6.0, 5.0]
+      width: 0.06
+      height: 0.005
+      floor_clearance: 0.005
+      material: arena_border
   layout:
     description: three longitudinal X sections on each side of a central robot corridor
-    corridor_clear_width: 1.55
+    corridor_clear_width: 0.23
     section_gap: 0.05
+  shared_rail:
+    id: shared_rail
+    pose:
+      frame: world
+      position: [1.15, 0.0, 0.60]
+      quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+    axis: [1.0, 0.0, 0.0]
+    dimensions: [3.4, 0.16, 0.16]
+    lower_travel_limit: -1.45
+    upper_travel_limit: 1.45
+    collision_geometry: box
+    minimum_carriage_separation: 0.7
+    carriage_order: [panda1_carriage, panda2_carriage]
+    crossing_prohibited: true
+    rgba: [0.2, 0.22, 0.25, 1.0]
+    supports:
+      dimensions: [0.12, 0.12, 0.52]
+      positions:
+      - [-1.4, 0.0, -0.34]
+      - [0.0, 0.0, -0.34]
+      - [1.4, 0.0, -0.34]
+      names: [shared_rail_leg_left, shared_rail_leg_center, shared_rail_leg_right]
   surfaces:
     surface_left_1:
       id: surface_left_1
       pose:
         frame: world
         position:
-        - 0.0
-        - 1.15
-        - 0.9
+        - 0.275
+        - 0.49
+        - 0.68
         quaternion_wxyz:
         - 1.0
         - 0.0
         - 0.0
         - 0.0
       dimensions:
-      - 1.1
+      - 0.825
       - 0.75
       - 0.08
-      top_height: 0.9
+      top_height: 0.68
       collision_geometry: box
       usable_top_region:
         frame: surface_left_1
@@ -70,7 +103,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 1.0
+        - 0.75
         - 0.65
       safe_spawn_region:
         frame: surface_left_1
@@ -79,7 +112,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       safe_place_region:
         frame: surface_left_1
@@ -88,7 +121,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       edge_clearance: 0.1
       workspace: panda1_primary_workspace
@@ -99,13 +132,13 @@ scene:
       - 0.32
       - 1.0
       base_dimensions:
-      - 1.0
+      - 0.75
       - 0.65
-      - 0.82
+      - 0.60
       base_offset:
       - 0.0
       - 0.0
-      - -0.49
+      - -0.38
       base_rgba:
       - 0.5
       - 0.36
@@ -117,18 +150,18 @@ scene:
         frame: world
         position:
         - 1.15
-        - 1.15
-        - 0.9
+        - 0.49
+        - 0.68
         quaternion_wxyz:
         - 1.0
         - 0.0
         - 0.0
         - 0.0
       dimensions:
-      - 1.1
+      - 0.825
       - 0.75
       - 0.08
-      top_height: 0.9
+      top_height: 0.68
       collision_geometry: box
       usable_top_region:
         frame: surface_left_2
@@ -137,7 +170,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 1.0
+        - 0.75
         - 0.65
       safe_spawn_region:
         frame: surface_left_2
@@ -146,7 +179,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       safe_place_region:
         frame: surface_left_2
@@ -155,7 +188,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       edge_clearance: 0.1
       workspace: panda1_primary_workspace
@@ -166,13 +199,13 @@ scene:
       - 0.32
       - 1.0
       base_dimensions:
-      - 1.0
+      - 0.75
       - 0.65
-      - 0.82
+      - 0.60
       base_offset:
       - 0.0
       - 0.0
-      - -0.49
+      - -0.38
       base_rgba:
       - 0.5
       - 0.36
@@ -183,19 +216,19 @@ scene:
       pose:
         frame: world
         position:
-        - 2.3
-        - 1.15
-        - 0.9
+        - 2.025
+        - 0.49
+        - 0.68
         quaternion_wxyz:
         - 1.0
         - 0.0
         - 0.0
         - 0.0
       dimensions:
-      - 1.1
+      - 0.825
       - 0.75
       - 0.08
-      top_height: 0.9
+      top_height: 0.68
       collision_geometry: box
       usable_top_region:
         frame: surface_left_3
@@ -204,7 +237,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 1.0
+        - 0.75
         - 0.65
       safe_spawn_region:
         frame: surface_left_3
@@ -213,7 +246,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       safe_place_region:
         frame: surface_left_3
@@ -222,7 +255,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       edge_clearance: 0.1
       workspace: panda1_primary_workspace
@@ -233,13 +266,13 @@ scene:
       - 0.32
       - 1.0
       base_dimensions:
-      - 1.0
+      - 0.75
       - 0.65
-      - 0.82
+      - 0.60
       base_offset:
       - 0.0
       - 0.0
-      - -0.49
+      - -0.38
       base_rgba:
       - 0.5
       - 0.36
@@ -250,19 +283,19 @@ scene:
       pose:
         frame: world
         position:
-        - 0.0
-        - -1.15
-        - 0.9
+        - 0.275
+        - -0.49
+        - 0.68
         quaternion_wxyz:
         - 1.0
         - 0.0
         - 0.0
         - 0.0
       dimensions:
-      - 1.1
+      - 0.825
       - 0.75
       - 0.08
-      top_height: 0.9
+      top_height: 0.68
       collision_geometry: box
       usable_top_region:
         frame: surface_right_1
@@ -271,7 +304,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 1.0
+        - 0.75
         - 0.65
       safe_spawn_region:
         frame: surface_right_1
@@ -280,7 +313,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       safe_place_region:
         frame: surface_right_1
@@ -289,7 +322,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       edge_clearance: 0.1
       workspace: panda2_primary_workspace
@@ -300,13 +333,13 @@ scene:
       - 0.32
       - 1.0
       base_dimensions:
-      - 1.0
+      - 0.75
       - 0.65
-      - 0.82
+      - 0.60
       base_offset:
       - 0.0
       - 0.0
-      - -0.49
+      - -0.38
       base_rgba:
       - 0.5
       - 0.36
@@ -318,18 +351,18 @@ scene:
         frame: world
         position:
         - 1.15
-        - -1.15
-        - 0.9
+        - -0.49
+        - 0.68
         quaternion_wxyz:
         - 1.0
         - 0.0
         - 0.0
         - 0.0
       dimensions:
-      - 1.1
+      - 0.825
       - 0.75
       - 0.08
-      top_height: 0.9
+      top_height: 0.68
       collision_geometry: box
       usable_top_region:
         frame: surface_right_2
@@ -338,7 +371,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 1.0
+        - 0.75
         - 0.65
       safe_spawn_region:
         frame: surface_right_2
@@ -347,7 +380,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       safe_place_region:
         frame: surface_right_2
@@ -356,7 +389,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       edge_clearance: 0.1
       workspace: panda2_primary_workspace
@@ -367,13 +400,13 @@ scene:
       - 0.32
       - 1.0
       base_dimensions:
-      - 1.0
+      - 0.75
       - 0.65
-      - 0.82
+      - 0.60
       base_offset:
       - 0.0
       - 0.0
-      - -0.49
+      - -0.38
       base_rgba:
       - 0.5
       - 0.36
@@ -384,19 +417,19 @@ scene:
       pose:
         frame: world
         position:
-        - 2.3
-        - -1.15
-        - 0.9
+        - 2.025
+        - -0.49
+        - 0.68
         quaternion_wxyz:
         - 1.0
         - 0.0
         - 0.0
         - 0.0
       dimensions:
-      - 1.1
+      - 0.825
       - 0.75
       - 0.08
-      top_height: 0.9
+      top_height: 0.68
       collision_geometry: box
       usable_top_region:
         frame: surface_right_3
@@ -405,7 +438,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 1.0
+        - 0.75
         - 0.65
       safe_spawn_region:
         frame: surface_right_3
@@ -414,7 +447,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       safe_place_region:
         frame: surface_right_3
@@ -423,7 +456,7 @@ scene:
         - 0.0
         - 0.0
         size:
-        - 0.9
+        - 0.675
         - 0.55
       edge_clearance: 0.1
       workspace: panda2_primary_workspace
@@ -434,13 +467,13 @@ scene:
       - 0.32
       - 1.0
       base_dimensions:
-      - 1.0
+      - 0.75
       - 0.65
-      - 0.82
+      - 0.60
       base_offset:
       - 0.0
       - 0.0
-      - -0.49
+      - -0.38
       base_rgba:
       - 0.5
       - 0.36

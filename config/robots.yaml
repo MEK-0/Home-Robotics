@@ -11,34 +11,19 @@ robots:
     - surface_left_3
     shared_workspace_access: true
     rail:
-      frame: panda1_rail
+      shared_rail: shared_rail
       carriage_frame: panda1_carriage
       joint: panda1_rail_joint
-      world_pose:
-        frame: world
-        position:
-        - 1.15
-        - 0.42
-        - 0.08
-        quaternion_wxyz:
-        - 1.0
-        - 0.0
-        - 0.0
-        - 0.0
       axis:
       - 1.0
       - 0.0
       - 0.0
       mechanical_zero: rail_center
       lower_limit: -1.45
-      upper_limit: 1.45
-      home_position: -1.15
+      upper_limit: 0.35
+      home_position: -0.9
       max_velocity: 0.5
       max_acceleration: 1.0
-      support_dimensions:
-      - 3.4
-      - 0.16
-      - 0.16
       carriage_dimensions:
       - 0.38
       - 0.32
@@ -55,11 +40,6 @@ robots:
       - 0.0
       - 0.0
       - 0.2
-      rgba:
-      - 0.2
-      - 0.22
-      - 0.25
-      - 1.0
       carriage_rgba:
       - 0.34
       - 0.37
@@ -136,34 +116,19 @@ robots:
     - surface_right_3
     shared_workspace_access: true
     rail:
-      frame: panda2_rail
+      shared_rail: shared_rail
       carriage_frame: panda2_carriage
       joint: panda2_rail_joint
-      world_pose:
-        frame: world
-        position:
-        - 1.15
-        - -0.42
-        - 0.08
-        quaternion_wxyz:
-        - 1.0
-        - 0.0
-        - 0.0
-        - 0.0
       axis:
       - 1.0
       - 0.0
       - 0.0
       mechanical_zero: rail_center
-      lower_limit: -1.45
+      lower_limit: -0.35
       upper_limit: 1.45
-      home_position: -1.15
+      home_position: 0.9
       max_velocity: 0.5
       max_acceleration: 1.0
-      support_dimensions:
-      - 3.4
-      - 0.16
-      - 0.16
       carriage_dimensions:
       - 0.38
       - 0.32
@@ -180,11 +145,6 @@ robots:
       - 0.0
       - 0.0
       - 0.2
-      rgba:
-      - 0.2
-      - 0.22
-      - 0.25
-      - 1.0
       carriage_rgba:
       - 0.34
       - 0.37

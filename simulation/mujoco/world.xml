@@ -7,7 +7,13 @@
   </default>
   <visual>
     <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.1 0.1 0.1"/>
+    <rgba haze="0.18 0.20 0.23 1"/>
   </visual>
+  <asset>
+    <texture name="neutral_skybox" type="skybox" builtin="gradient" rgb1="0.25 0.27 0.30" rgb2="0.08 0.09 0.11" width="512" height="3072"/>
+    <material name="arena_floor" rgba="0.72 0.74 0.76 1" specular="0.02" shininess="0.02"/>
+    <material name="arena_border" rgba="0.12 0.13 0.14 1" specular="0.05" shininess="0.05"/>
+  </asset>
   <worldbody>
     <!-- SceneBuilder injects authoritative scene.yaml pose, size, and friction. -->
     <geom name="floor" type="plane"/>
