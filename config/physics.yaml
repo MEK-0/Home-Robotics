@@ -1,14 +1,50 @@
 physics:
-  version: "0.1"
+  version: '0.1'
   timestep: 0.002
-  gravity: [0.0, 0.0, -9.81]
-  solver: {type: Newton, iterations: 100, tolerance: 1.0e-8}
-  contact: {solref: [0.02, 1.0], solimp: [0.9, 0.95, 0.001], margin: 0.0, gap: 0.0}
+  gravity:
+  - 0.0
+  - 0.0
+  - -9.81
+  solver:
+    type: Newton
+    iterations: 100
+    tolerance: 1.0e-08
+  contact:
+    solref:
+    - 0.02
+    - 1.0
+    solimp:
+    - 0.9
+    - 0.95
+    - 0.001
+    margin: 0.0
+    gap: 0.0
   friction_profiles:
-    default_tabletop: [0.8, 0.005, 0.0001]
-    robot_gripper: [1.0, 0.005, 0.0001]
-    round_object: [0.5, 0.005, 0.0001]
-    container: [0.8, 0.005, 0.0001]
-    rail_mechanism: [0.8, 0.005, 0.0001]
-  rail: {damping: null, max_velocity: null, max_acceleration: null, actuation_limit: null, status: pending_phase_2_validation}
-  reset: {settle_steps: 0}
+    default_tabletop:
+    - 0.8
+    - 0.005
+    - 0.0001
+    robot_gripper:
+    - 1.0
+    - 0.005
+    - 0.0001
+    round_object:
+    - 0.5
+    - 0.005
+    - 0.0001
+    container:
+    - 0.8
+    - 0.005
+    - 0.0001
+    rail_mechanism:
+    - 0.8
+    - 0.005
+    - 0.0001
+  rail:
+    damping: 2.0
+    max_velocity: null
+    max_acceleration: null
+    actuation_limit: null
+    status: pending_phase_2_validation
+  reset:
+    settle_steps: 0
