@@ -42,13 +42,34 @@ physics:
     - 0.0001
   robot:
     phase1_gravity_compensation: 1.0
+    panda1_arm_position_control:
+      kp: [600.0, 600.0, 500.0, 500.0, 250.0, 200.0, 150.0]
+      damping: [50.0, 50.0, 40.0, 40.0, 20.0, 15.0, 10.0]
+      force_limits: [87.0, 87.0, 87.0, 87.0, 12.0, 12.0, 12.0]
+      maximum_target_rates: [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+      joint_limit_tolerance: 1.0e-9
+    panda2_arm_position_control:
+      kp: [600.0, 600.0, 500.0, 500.0, 250.0, 200.0, 150.0]
+      damping: [50.0, 50.0, 40.0, 40.0, 20.0, 15.0, 10.0]
+      force_limits: [87.0, 87.0, 87.0, 87.0, 12.0, 12.0, 12.0]
+      maximum_target_rates: [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+      joint_limit_tolerance: 1.0e-9
+    gripper_width_control:
+      kp: 100.0
+      damping: 10.0
+      force_limit: 100.0
+      maximum_width_rate: 0.04
+      width_limit_tolerance: 1.0e-9
   rail:
-    damping: 2.0
+    damping: 700.0
+    position_servo:
+      kp: 500.0
+      maximum_control: 1000.0
     support_static: true
     carriage_collision_enabled: true
     max_velocity: null
     max_acceleration: null
-    actuation_limit: null
-    status: pending_phase_2_validation
+    actuation_limit: 1000.0
+    status: phase_2_position_control
   reset:
     settle_steps: 0

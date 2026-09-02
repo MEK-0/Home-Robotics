@@ -152,8 +152,29 @@ def validate_carriage_separation(config: ConfigBundle, simulator: Simulator) -> 
         raise ValidationError(f"Carriage separation {separation} violates ordered minimum {minimum}")
 
 def validate_robot_structure(config: ConfigBundle, simulator: Simulator) -> None:
-    if simulator.model.nu != 0:
-        raise ValidationError("Robot actuators must not be introduced during model-only Phase 1B.2")
+    if simulator.model.nu != 18:
+        raise ValidationError(
+            "Exactly two rail, fourteen arm, and two gripper actuators are required"
+        )
+    for robot_id, robot in config.robots.items():
+        actuator_name = f"{robot_id}_rail_actuator"
+        if not simulator.actuator_exists(actuator_name):
+            raise ValidationError(f"Configured rail actuator is missing: {actuator_name}")
+        if simulator.actuator_joint(actuator_name) != robot["rail"]["joint"]:
+            raise ValidationError(
+                f"Rail actuator '{actuator_name}' has an invalid joint mapping"
+            )
+    for robot_id, robot in config.robots.items():
+        for index, joint_name in enumerate(robot["arm"]["joint_names"], start=1):
+            actuator_name = f"{robot_id}_joint{index}_actuator"
+            if not simulator.actuator_exists(actuator_name):
+                raise ValidationError(f"Arm actuator is missing: {actuator_name}")
+            if simulator.actuator_joint(actuator_name) != joint_name:
+                raise ValidationError(
+                    f"Arm actuator '{actuator_name}' has an invalid joint mapping"
+                )
+        if not simulator.actuator_exists(f"{robot_id}_gripper_actuator"):
+            raise ValidationError(f"Gripper actuator is missing for {robot_id}")
     for robot_id, robot in config.robots.items():
         arm, gripper = robot["arm"], robot["gripper"]
         for body_name in (arm["link0_frame"], gripper["hand_frame"]):
@@ -171,6 +192,14 @@ def validate_robot_structure(config: ConfigBundle, simulator: Simulator) -> None
                 raise ValidationError(f"Robot joint '{joint_name}' has invalid limits: [{lower}, {upper}]")
             if not lower <= float(home) <= upper:
                 raise ValidationError(f"Robot joint '{joint_name}' home {home} is outside [{lower}, {upper}]")
+            if joint_name in arm["joint_names"]:
+                index = arm["joint_names"].index(joint_name)
+                if not _close_vector(
+                    simulator.joint_range(joint_name), arm["joint_limits"][index]
+                ):
+                    raise ValidationError(
+                        f"Panda 1 joint '{joint_name}' limits do not match configuration"
+                    )
         configured_finger_range = tuple(map(float, gripper["opening_range_per_finger"]))
         for joint_name in gripper["finger_joint_names"]:
             if not _close_vector(simulator.joint_range(joint_name), configured_finger_range):

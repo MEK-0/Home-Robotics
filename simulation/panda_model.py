@@ -107,6 +107,16 @@ class PandaModelSource:
         )
         base_body.append(body)
 
+        target_tendon = target_root.find("tendon")
+        if target_tendon is None:
+            target_tendon = ET.SubElement(target_root, "tendon")
+        source_tendon = self.root.find("tendon")
+        if source_tendon is not None:
+            for source in source_tendon:
+                clone = deepcopy(source)
+                self._prefix_instance(clone, prefix)
+                target_tendon.append(clone)
+
         target_equality = target_root.find("equality")
         if target_equality is None:
             target_equality = ET.SubElement(target_root, "equality")

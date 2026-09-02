@@ -150,6 +150,66 @@ class SceneBuilder:
             ET.SubElement(base, "site", name=f"{robot_id}_base_site", pos="0 0 0", size=str(rail["mount_site_size"]), rgba="0.1 0.8 0.2 1")
             self.panda_source.instantiate(root, base, robot, gravity_compensation=float(self.config.physics["robot"]["phase1_gravity_compensation"]))
 
+        actuator = root.find("actuator")
+        if actuator is None:
+            actuator = ET.SubElement(root, "actuator")
+        servo = self.config.physics["rail"]["position_servo"]
+        maximum_control = float(servo["maximum_control"])
+        for robot_id, robot in self.config.robots.items():
+            rail = robot["rail"]
+            ET.SubElement(
+                actuator, "position", name=f"{robot_id}_rail_actuator", joint=str(rail["joint"]),
+                kp=str(float(servo["kp"])), ctrllimited="true",
+                ctrlrange=f"{rail['lower_limit']} {rail['upper_limit']}", forcelimited="true",
+                forcerange=f"{-maximum_control} {maximum_control}",
+            )
+
+        for robot_id, robot in self.config.robots.items():
+            arm_control = self.config.physics["robot"][
+                f"{robot_id}_arm_position_control"
+            ]
+            for index, (joint_name, joint_limits) in enumerate(
+                zip(
+                    robot["arm"]["joint_names"],
+                    robot["arm"]["joint_limits"],
+                    strict=True,
+                )
+            ):
+                force_limit = float(arm_control["force_limits"][index])
+                ET.SubElement(
+                    actuator,
+                    "position",
+                    name=f"{robot_id}_joint{index + 1}_actuator",
+                    joint=str(joint_name),
+                    kp=str(float(arm_control["kp"][index])),
+                    kv=str(float(arm_control["damping"][index])),
+                    ctrllimited="true",
+                    ctrlrange=f"{joint_limits[0]} {joint_limits[1]}",
+                    forcelimited="true",
+                    forcerange=f"{-force_limit} {force_limit}",
+                )
+
+        gripper_control = self.config.physics["robot"]["gripper_width_control"]
+        force_limit = float(gripper_control["force_limit"])
+        for robot_id in self.config.robots:
+            ET.SubElement(
+                actuator,
+                "general",
+                name=f"{robot_id}_gripper_actuator",
+                gaintype="fixed",
+                biastype="affine",
+                tendon=f"{robot_id}_split",
+                gainprm=str(float(gripper_control["kp"])),
+                biasprm=(
+                    f"0 {-float(gripper_control['kp'])} "
+                    f"{-float(gripper_control['damping'])}"
+                ),
+                ctrllimited="true",
+                ctrlrange="0 0.04",
+                forcelimited="true",
+                forcerange=f"{-force_limit} {force_limit}",
+            )
+
     def build_xml(self) -> str:
         if not self.world_path.is_file():
             raise ConfigError(f"MuJoCo world file is missing: {self.world_path}")
@@ -184,5 +244,18 @@ class SceneBuilder:
             self.build_xml(), assets=self.panda_source.virtual_assets(), headless=headless
         )
         simulator.set_joint_positions(self.config.reset_joint_positions)
+        for robot_id, robot in self.config.robots.items():
+            simulator.set_actuator_control(
+                f"{robot_id}_rail_actuator", float(robot["rail"]["home_position"])
+            )
+        for robot_id, robot in self.config.robots.items():
+            for index, home in enumerate(robot["arm"]["home_joints"], start=1):
+                simulator.set_actuator_control(
+                    f"{robot_id}_joint{index}_actuator", float(home)
+                )
+            simulator.set_actuator_control(
+                f"{robot_id}_gripper_actuator",
+                float(robot["gripper"]["home_joints"][0]),
+            )
         simulator.forward()
         return simulator

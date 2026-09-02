@@ -108,6 +108,27 @@ class Simulator:
         joint_id = self._id(self._mujoco.mjtObj.mjOBJ_JOINT, name)
         return int(self.model.jnt_type[joint_id])
 
+    def actuator_exists(self, name: str) -> bool:
+        return self._mujoco.mj_name2id(self.model, self._mujoco.mjtObj.mjOBJ_ACTUATOR, name) >= 0
+
+    def actuator_joint(self, name: str) -> str:
+        actuator_id = self._id(self._mujoco.mjtObj.mjOBJ_ACTUATOR, name)
+        joint_id = int(self.model.actuator_trnid[actuator_id, 0])
+        joint_name = self._mujoco.mj_id2name(
+            self.model, self._mujoco.mjtObj.mjOBJ_JOINT, joint_id
+        )
+        if joint_name is None:
+            raise KeyError(f"Actuator '{name}' is not mapped to a named joint")
+        return str(joint_name)
+
+    def set_actuator_control(self, name: str, value: float) -> None:
+        actuator_id = self._id(self._mujoco.mjtObj.mjOBJ_ACTUATOR, name)
+        self.data.ctrl[actuator_id] = value
+
+    def actuator_control(self, name: str) -> float:
+        actuator_id = self._id(self._mujoco.mjtObj.mjOBJ_ACTUATOR, name)
+        return float(self.data.ctrl[actuator_id])
+
     def geom_dimensions(self, name: str) -> tuple[float, float, float]:
         geom_id = self._id(self._mujoco.mjtObj.mjOBJ_GEOM, name)
         return tuple(float(value) * 2.0 for value in self.model.geom_size[geom_id])

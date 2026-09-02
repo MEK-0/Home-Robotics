@@ -186,6 +186,56 @@ class ConfigLoader:
         if not isinstance(gravity_compensation, (int, float)) or not 0.0 <= gravity_compensation <= 1.0:
             raise ConfigError("physics.robot.phase1_gravity_compensation must lie in [0, 1]")
 
+        rail_physics = config.physics.get("rail", {})
+        self._require_fields(rail_physics, ("damping", "position_servo"), "physics.rail")
+        position_servo = rail_physics["position_servo"]
+        self._require_fields(position_servo, ("kp", "maximum_control"), "physics.rail.position_servo")
+        for field, value in (
+            ("damping", rail_physics["damping"]),
+            ("position_servo.kp", position_servo["kp"]),
+            ("position_servo.maximum_control", position_servo["maximum_control"]),
+        ):
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value <= 0:
+                raise ConfigError(f"physics.rail.{field} must be a positive finite number")
+
+        arm_control = config.physics["robot"].get("panda1_arm_position_control", {})
+        self._require_fields(
+            arm_control,
+            ("kp", "damping", "force_limits", "maximum_target_rates", "joint_limit_tolerance"),
+            "physics.robot.panda1_arm_position_control",
+        )
+        for field in ("kp", "damping", "force_limits", "maximum_target_rates"):
+            self._positive_vector(
+                arm_control[field], 7,
+                f"physics.robot.panda1_arm_position_control.{field}",
+            )
+        tolerance = arm_control["joint_limit_tolerance"]
+        if not isinstance(tolerance, (int, float)) or isinstance(tolerance, bool) or not math.isfinite(tolerance) or tolerance < 0:
+            raise ConfigError(
+                "physics.robot.panda1_arm_position_control.joint_limit_tolerance "
+                "must be a non-negative finite number"
+            )
+
+        for control_name in ("panda2_arm_position_control",):
+            control = config.physics["robot"].get(control_name, {})
+            self._require_fields(
+                control,
+                ("kp", "damping", "force_limits", "maximum_target_rates", "joint_limit_tolerance"),
+                f"physics.robot.{control_name}",
+            )
+            for field in ("kp", "damping", "force_limits", "maximum_target_rates"):
+                self._positive_vector(control[field], 7, f"physics.robot.{control_name}.{field}")
+        gripper_control = config.physics["robot"].get("gripper_width_control", {})
+        self._require_fields(
+            gripper_control,
+            ("kp", "damping", "force_limit", "maximum_width_rate", "width_limit_tolerance"),
+            "physics.robot.gripper_width_control",
+        )
+        for field in ("kp", "damping", "force_limit", "maximum_width_rate"):
+            value = gripper_control[field]
+            if not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+                raise ConfigError(f"physics.robot.gripper_width_control.{field} must be positive and finite")
+
         surfaces, workspaces, profiles = set(config.scene["surfaces"]), set(config.scene["workspaces"]), set(config.grasp_profiles)
         if tuple(config.robots.keys()) != ROBOT_IDS:
             raise ConfigError("robots must contain canonical IDs panda1 and panda2")
@@ -210,6 +260,10 @@ class ConfigLoader:
                 raise ConfigError(f"Robot '{robot_id}' rail home_position must lie inside limits")
             if lower < rail_lower or upper > rail_upper:
                 raise ConfigError(f"Robot '{robot_id}' carriage limits must lie inside shared rail limits")
+            for field in ("max_velocity", "max_acceleration"):
+                value = rail.get(field)
+                if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value <= 0:
+                    raise ConfigError(f"Robot '{robot_id}' rail.{field} must be a positive finite number")
             for field in ("carriage_dimensions", "mount_dimensions"):
                 self._positive_vector(rail[field], 3, f"robot '{robot_id}' rail.{field}")
             support_half_length = float(shared_rail["dimensions"][0]) / 2.0
@@ -224,6 +278,17 @@ class ConfigLoader:
             self._require_fields(gripper, ("model", "hand_frame", "finger_joint_names", "home_joints", "opening_range_per_finger", "tcp_frame", "tcp_offset"), f"robot '{robot_id}' gripper")
             if len(arm["joint_names"]) != 7 or len(arm["home_joints"]) != 7:
                 raise ConfigError(f"Robot '{robot_id}' must define seven arm joints and seven home values")
+            if robot_id in ("panda1", "panda2"):
+                self._require_fields(arm, ("joint_limits",), f"robot '{robot_id}' arm")
+                limits = arm["joint_limits"]
+                if not isinstance(limits, list) or len(limits) != 7:
+                    raise ConfigError("robot '{robot_id}' arm.joint_limits must contain seven ranges")
+                for index, (home, limit) in enumerate(zip(arm["home_joints"], limits, strict=True)):
+                    if not isinstance(limit, list) or len(limit) != 2 or not all(isinstance(value, (int, float)) and math.isfinite(value) for value in limit):
+                        raise ConfigError(f"robot '{robot_id}' arm.joint_limits[{index}] must contain two finite numbers")
+                    lower, upper = map(float, limit)
+                    if not lower < upper or not lower <= float(home) <= upper:
+                        raise ConfigError(f"robot '{robot_id}' arm joint {index + 1} limits or home are invalid")
             if len(gripper["finger_joint_names"]) != 2 or len(gripper["home_joints"]) != 2:
                 raise ConfigError(f"Robot '{robot_id}' must define two finger joints and two home values")
             expected_arm_names = [f"{robot_id}_joint{index}" for index in range(1, 8)]
