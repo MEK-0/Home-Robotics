@@ -138,7 +138,9 @@ def test_panda2_is_physical_but_inactive():
         assert simulator.body_exists("panda2_hand")
         assert simulator.site_exists("panda2_tcp")
 
-def test_model_integration_adds_no_control_actuators():
+def test_model_integration_adds_rail_and_panda1_arm_actuators():
     config = _config()
     with SceneBuilder(config).build(headless=True) as simulator:
-        assert simulator.model.nu == 0
+        assert simulator.model.nu == 18
+        assert simulator.actuator_joint("panda1_rail_actuator") == "panda1_rail_joint"
+        assert simulator.actuator_joint("panda2_rail_actuator") == "panda2_rail_joint"
