@@ -313,8 +313,6 @@ class ConfigLoader:
         q2 = float(config.robots["panda2"]["rail"]["home_position"])
         if q2 - q1 < separation:
             raise ConfigError("Configured carriage homes violate minimum separation or ordering")
-        if config.robots["panda2"]["active"]:
-            raise ConfigError("panda2 must remain inactive before the dual-arm phase")
 
         if len(config.objects) != len(OBJECT_IDS) or set(config.objects) != set(OBJECT_IDS):
             raise ConfigError(f"objects must contain canonical IDs: {', '.join(OBJECT_IDS)}")

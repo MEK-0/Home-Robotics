@@ -130,9 +130,9 @@ def test_one_hundred_full_robot_resets_are_repeatable():
             validate_no_initial_penetration(simulator)
             validate_state(simulator)
 
-def test_panda2_is_physical_but_inactive():
+def test_panda2_is_physical_and_low_level_control_active():
     config = _config()
-    assert config.robots["panda2"]["active"] is False
+    assert config.robots["panda2"]["active"] is True
     with SceneBuilder(config).build(headless=True) as simulator:
         assert simulator.body_exists("panda2_link0")
         assert simulator.body_exists("panda2_hand")

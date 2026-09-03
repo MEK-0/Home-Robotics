@@ -113,10 +113,10 @@ robots:
     home_validation:
       minimum_tcp_height: 0.5
   panda2:
-    active: false
+    active: true
     namespace: panda2
     model: franka_panda
-    status: model_integrated_inactive
+    status: model_integrated_active_ready
     nominal_facing_yaw: -1.5707963267948966
     reachable_surfaces:
     - surface_right_1
