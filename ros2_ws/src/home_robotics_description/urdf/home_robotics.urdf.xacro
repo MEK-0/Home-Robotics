@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot name="home_robotics" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find home_robotics_description)/urdf/panda_macro.xacro"/>
+  <xacro:include filename="$(find home_robotics_description)/urdf/home_robotics.ros2_control.xacro"/>
+
+  <link name="world"/>
+  <link name="shared_rail"><visual><geometry><box size="3.4 0.16 0.16"/></geometry></visual></link>
+  <joint name="world_to_shared_rail" type="fixed">
+    <parent link="world"/><child link="shared_rail"/><origin xyz="1.15 0 0.61"/>
+  </joint>
+  <xacro:panda_robot prefix="panda1_" rail_home="-0.9" rail_lower="-1.45" rail_upper="0.35" mount_yaw="1.5707963267948966"/>
+  <xacro:panda_robot prefix="panda2_" rail_home="0.9" rail_lower="-0.35" rail_upper="1.45" mount_yaw="-1.5707963267948966"/>
+</robot>

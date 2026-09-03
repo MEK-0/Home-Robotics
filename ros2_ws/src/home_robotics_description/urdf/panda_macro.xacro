@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <material name="panda_white"><color rgba="1 1 1 1"/></material>
+  <material name="panda_off_white"><color rgba="0.901961 0.921569 0.929412 1"/></material>
+  <material name="panda_black"><color rgba="0.25 0.25 0.25 1"/></material>
+  <material name="panda_green"><color rgba="0 1 0 1"/></material>
+  <material name="panda_light_blue"><color rgba="0.039216 0.541176 0.780392 1"/></material>
+
+  <xacro:macro name="visual_mesh" params="file material">
+    <visual><geometry><mesh filename="package://home_robotics_description/meshes/franka_emika_panda/${file}.obj"/></geometry><material name="${material}"/></visual>
+  </xacro:macro>
+  <xacro:macro name="mesh_link" params="name *visuals">
+    <link name="${name}"><xacro:insert_block name="visuals"/></link>
+  </xacro:macro>
+  <xacro:macro name="arm_joint" params="name parent child xyz rpy lower upper effort velocity">
+    <joint name="${name}" type="revolute"><parent link="${parent}"/><child link="${child}"/><origin xyz="${xyz}" rpy="${rpy}"/><axis xyz="0 0 1"/><limit lower="${lower}" upper="${upper}" effort="${effort}" velocity="${velocity}"/></joint>
+  </xacro:macro>
+  <xacro:macro name="panda_robot" params="prefix rail_home rail_lower rail_upper mount_yaw">
+    <link name="${prefix}carriage"><visual><geometry><box size="0.38 0.32 0.08"/></geometry></visual></link>
+    <joint name="${prefix}rail_joint" type="prismatic"><parent link="shared_rail"/><child link="${prefix}carriage"/><origin xyz="0 0 0.125"/><axis xyz="1 0 0"/><limit lower="${rail_lower}" upper="${rail_upper}" effort="1000" velocity="0.5"/></joint>
+    <link name="${prefix}base"/>
+    <joint name="${prefix}carriage_to_base" type="fixed"><parent link="${prefix}carriage"/><child link="${prefix}base"/><origin xyz="0 0 0.2" rpy="0 0 ${mount_yaw}"/></joint>
+    <xacro:mesh_link name="${prefix}link0"><visuals>
+      <xacro:visual_mesh file="link0_0" material="panda_off_white"/><xacro:visual_mesh file="link0_1" material="panda_black"/><xacro:visual_mesh file="link0_2" material="panda_off_white"/><xacro:visual_mesh file="link0_3" material="panda_black"/><xacro:visual_mesh file="link0_4" material="panda_off_white"/><xacro:visual_mesh file="link0_5" material="panda_black"/><xacro:visual_mesh file="link0_7" material="panda_white"/><xacro:visual_mesh file="link0_8" material="panda_white"/><xacro:visual_mesh file="link0_9" material="panda_black"/><xacro:visual_mesh file="link0_10" material="panda_off_white"/><xacro:visual_mesh file="link0_11" material="panda_white"/>
+    </visuals></xacro:mesh_link>
+    <joint name="${prefix}base_to_link0" type="fixed"><parent link="${prefix}base"/><child link="${prefix}link0"/></joint>
+    <xacro:mesh_link name="${prefix}link1"><visuals><xacro:visual_mesh file="link1" material="panda_white"/></visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint1" parent="${prefix}link0" child="${prefix}link1" xyz="0 0 0.333" rpy="0 0 0" lower="-2.8973" upper="2.8973" effort="87" velocity="2.175"/>
+    <xacro:mesh_link name="${prefix}link2"><visuals><xacro:visual_mesh file="link2" material="panda_white"/></visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint2" parent="${prefix}link1" child="${prefix}link2" xyz="0 0 0" rpy="-1.57079632679 0 0" lower="-1.7628" upper="1.7628" effort="87" velocity="2.175"/>
+    <xacro:mesh_link name="${prefix}link3"><visuals><xacro:visual_mesh file="link3_0" material="panda_white"/><xacro:visual_mesh file="link3_1" material="panda_white"/><xacro:visual_mesh file="link3_2" material="panda_white"/><xacro:visual_mesh file="link3_3" material="panda_black"/></visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint3" parent="${prefix}link2" child="${prefix}link3" xyz="0 -0.316 0" rpy="1.57079632679 0 0" lower="-2.8973" upper="2.8973" effort="87" velocity="2.175"/>
+    <xacro:mesh_link name="${prefix}link4"><visuals><xacro:visual_mesh file="link4_0" material="panda_white"/><xacro:visual_mesh file="link4_1" material="panda_white"/><xacro:visual_mesh file="link4_2" material="panda_black"/><xacro:visual_mesh file="link4_3" material="panda_white"/></visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint4" parent="${prefix}link3" child="${prefix}link4" xyz="0.0825 0 0" rpy="1.57079632679 0 0" lower="-3.0718" upper="-0.0698" effort="87" velocity="2.175"/>
+    <xacro:mesh_link name="${prefix}link5"><visuals><xacro:visual_mesh file="link5_0" material="panda_black"/><xacro:visual_mesh file="link5_1" material="panda_white"/><xacro:visual_mesh file="link5_2" material="panda_white"/></visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint5" parent="${prefix}link4" child="${prefix}link5" xyz="-0.0825 0.384 0" rpy="-1.57079632679 0 0" lower="-2.8973" upper="2.8973" effort="12" velocity="2.61"/>
+    <xacro:mesh_link name="${prefix}link6"><visuals>
+      <xacro:visual_mesh file="link6_0" material="panda_off_white"/><xacro:visual_mesh file="link6_1" material="panda_white"/><xacro:visual_mesh file="link6_2" material="panda_black"/><xacro:visual_mesh file="link6_3" material="panda_white"/><xacro:visual_mesh file="link6_4" material="panda_white"/><xacro:visual_mesh file="link6_5" material="panda_white"/><xacro:visual_mesh file="link6_6" material="panda_white"/><xacro:visual_mesh file="link6_7" material="panda_light_blue"/><xacro:visual_mesh file="link6_8" material="panda_light_blue"/><xacro:visual_mesh file="link6_9" material="panda_black"/><xacro:visual_mesh file="link6_10" material="panda_black"/><xacro:visual_mesh file="link6_11" material="panda_white"/><xacro:visual_mesh file="link6_12" material="panda_green"/><xacro:visual_mesh file="link6_13" material="panda_white"/><xacro:visual_mesh file="link6_14" material="panda_black"/><xacro:visual_mesh file="link6_15" material="panda_black"/><xacro:visual_mesh file="link6_16" material="panda_white"/>
+    </visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint6" parent="${prefix}link5" child="${prefix}link6" xyz="0 0 0" rpy="1.57079632679 0 0" lower="-0.0175" upper="3.7525" effort="12" velocity="2.61"/>
+    <xacro:mesh_link name="${prefix}link7"><visuals><xacro:visual_mesh file="link7_0" material="panda_white"/><xacro:visual_mesh file="link7_1" material="panda_black"/><xacro:visual_mesh file="link7_2" material="panda_black"/><xacro:visual_mesh file="link7_3" material="panda_black"/><xacro:visual_mesh file="link7_4" material="panda_black"/><xacro:visual_mesh file="link7_5" material="panda_black"/><xacro:visual_mesh file="link7_6" material="panda_black"/><xacro:visual_mesh file="link7_7" material="panda_white"/></visuals></xacro:mesh_link>
+    <xacro:arm_joint name="${prefix}joint7" parent="${prefix}link6" child="${prefix}link7" xyz="0.088 0 0" rpy="1.57079632679 0 0" lower="-2.8973" upper="2.8973" effort="12" velocity="2.61"/>
+    <xacro:mesh_link name="${prefix}hand"><visuals><xacro:visual_mesh file="hand_0" material="panda_off_white"/><xacro:visual_mesh file="hand_1" material="panda_black"/><xacro:visual_mesh file="hand_2" material="panda_black"/><xacro:visual_mesh file="hand_3" material="panda_white"/><xacro:visual_mesh file="hand_4" material="panda_off_white"/></visuals></xacro:mesh_link>
+    <joint name="${prefix}hand_joint" type="fixed"><parent link="${prefix}link7"/><child link="${prefix}hand"/><origin xyz="0 0 0.107" rpy="0 0 -0.78539816339"/></joint>
+    <xacro:mesh_link name="${prefix}left_finger"><visuals><xacro:visual_mesh file="finger_0" material="panda_off_white"/><xacro:visual_mesh file="finger_1" material="panda_black"/></visuals></xacro:mesh_link>
+    <joint name="${prefix}finger_joint1" type="prismatic"><parent link="${prefix}hand"/><child link="${prefix}left_finger"/><origin xyz="0 0 0.0584"/><axis xyz="0 1 0"/><limit lower="0" upper="0.04" effort="100" velocity="0.04"/></joint>
+    <xacro:mesh_link name="${prefix}right_finger"><visuals><xacro:visual_mesh file="finger_0" material="panda_off_white"/><xacro:visual_mesh file="finger_1" material="panda_black"/></visuals></xacro:mesh_link>
+    <joint name="${prefix}finger_joint2" type="prismatic"><parent link="${prefix}hand"/><child link="${prefix}right_finger"/><origin xyz="0 0 0.0584" rpy="0 0 3.14159265359"/><axis xyz="0 1 0"/><limit lower="0" upper="0.04" effort="100" velocity="0.04"/><mimic joint="${prefix}finger_joint1"/></joint>
+    <link name="${prefix}tcp"/><joint name="${prefix}tcp_joint" type="fixed"><parent link="${prefix}hand"/><child link="${prefix}tcp"/><origin xyz="0 0 0.1"/></joint>
+  </xacro:macro>
+</robot>

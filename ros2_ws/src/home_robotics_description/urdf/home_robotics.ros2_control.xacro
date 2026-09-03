@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="state_interfaces" params="">
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </xacro:macro>
+  <xacro:macro name="commanded_joint" params="name initial">
+    <joint name="${name}">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">${initial}</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+  <xacro:macro name="passive_joint" params="name initial">
+    <joint name="${name}">
+      <state_interface name="position"><param name="initial_value">${initial}</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+  <ros2_control name="HomeRoboticsMuJoCo" type="system">
+    <hardware>
+      <plugin>home_robotics_mujoco_hardware/MujocoTopicSystem</plugin>
+      <param name="minimum_rail_separation">0.7</param>
+    </hardware>
+    <xacro:commanded_joint name="panda1_rail_joint" initial="-0.9"/>
+    <xacro:commanded_joint name="panda1_joint1" initial="0.0"/>
+    <xacro:commanded_joint name="panda1_joint2" initial="0.0"/>
+    <xacro:commanded_joint name="panda1_joint3" initial="0.0"/>
+    <xacro:commanded_joint name="panda1_joint4" initial="-1.57079"/>
+    <xacro:commanded_joint name="panda1_joint5" initial="0.0"/>
+    <xacro:commanded_joint name="panda1_joint6" initial="1.57079"/>
+    <xacro:commanded_joint name="panda1_joint7" initial="-0.7853"/>
+    <xacro:commanded_joint name="panda1_finger_joint1" initial="0.04"/>
+    <xacro:passive_joint name="panda1_finger_joint2" initial="0.04"/>
+    <xacro:commanded_joint name="panda2_rail_joint" initial="0.9"/>
+    <xacro:commanded_joint name="panda2_joint1" initial="0.0"/>
+    <xacro:commanded_joint name="panda2_joint2" initial="0.0"/>
+    <xacro:commanded_joint name="panda2_joint3" initial="0.0"/>
+    <xacro:commanded_joint name="panda2_joint4" initial="-1.57079"/>
+    <xacro:commanded_joint name="panda2_joint5" initial="0.0"/>
+    <xacro:commanded_joint name="panda2_joint6" initial="1.57079"/>
+    <xacro:commanded_joint name="panda2_joint7" initial="-0.7853"/>
+    <xacro:commanded_joint name="panda2_finger_joint1" initial="0.04"/>
+    <xacro:passive_joint name="panda2_finger_joint2" initial="0.04"/>
+  </ros2_control>
+</robot>
