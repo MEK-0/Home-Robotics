@@ -739,7 +739,7 @@ Early phases:
 
 ```text
 Panda 1 + carriage 1 → active
-Panda 2 + carriage 2 → present but inactive
+Panda 2 + carriage 2 → active at the low-level control layer
 ```
 
 The complete scene still includes both robots.
@@ -1133,7 +1133,7 @@ Codex implementation must obey the following rules:
 7. Do not add a second implementation of object-state tracking.
 8. Do not bypass MoveIt for normal planned arm motion.
 9. Do not use an attachment constraint before grasp verification.
-10. Do not activate Panda 2 before its designated project phase.
+10. Keep Panda 2 low-level control active from Phase 2; reserve high-level coordination for Phase 7.
 11. Preserve robot namespaces.
 12. Preserve the world-frame convention.
 13. Keep APIs narrow and explicit.

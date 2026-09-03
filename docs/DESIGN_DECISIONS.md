@@ -183,7 +183,7 @@ The physical layout should therefore include both robots from the beginning so t
 
 Panda 1 and carriage 1 are active initially.
 
-Panda 2 and carriage 2 are present but inactive.
+Panda 2 and carriage 2 are low-level-control active from Phase 2.
 
 ### Why Not Start With Two Active Robots?
 
@@ -917,11 +917,11 @@ A scene should survive repeated reset testing before manipulation development pr
 
 ---
 
-## 20. DD-018 — Do Not Activate Panda 2 Prematurely
+## 20. DD-018 — Separate Panda 2 Low-Level Control from Dual-Arm Coordination
 
 ### Decision
 
-Panda 2 remains inactive until the dual-arm phase.
+Panda 2 low-level control is active in Phase 2; coordinated dual-arm behavior starts in Phase 7.
 
 ### Rationale
 
@@ -941,7 +941,7 @@ but actual controller activation is deferred.
 
 ### Stability
 
-**Stable until Phase 7.**
+**Superseded by the Phase 2 dual-robot low-level control decision.**
 
 ---
 

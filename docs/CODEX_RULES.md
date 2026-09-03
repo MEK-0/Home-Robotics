@@ -256,7 +256,7 @@ Scene-layout changes require explicit documentation.
 
 ## 15. Panda 2 Rule
 
-Do not activate Panda 2 or its carriage DOF before the designated dual-arm phase unless explicitly requested.
+Keep Panda 2 and its carriage active at the low-level control layer from Phase 2; high-level coordination remains reserved for Phase 7.
 
 Keep the architecture compatible with future activation.
 

@@ -112,7 +112,7 @@ idle stability
 - Scene loads headless.
 - Both rail-mounted robots are present.
 - Panda 1 + carriage 1 are active-ready.
-- Panda 2 + carriage 2 are present and inactive.
+- Panda 2 + carriage 2 are present and low-level-control active.
 - No initial penetrations.
 - No unexplained object drift.
 - Bowl interior is physically accessible.
@@ -386,7 +386,7 @@ is converted into valid task calls and executed successfully.
 
 ### Goal
 
-Activate Panda 2 + carriage 2.
+Add high-level dual-arm coordination and shared task allocation.
 
 ### Deliverables
 

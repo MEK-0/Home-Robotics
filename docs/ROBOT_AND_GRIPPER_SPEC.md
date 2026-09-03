@@ -78,7 +78,7 @@ During early project phases:
 ```text
 Panda 1 + carriage 1 → active
 
-Panda 2 + carriage 2 → present but inactive
+Panda 2 + carriage 2 → active at the low-level control layer
 ```
 
 The second robot remains fully modeled in the scene.
@@ -90,7 +90,7 @@ It should still contribute to:
 - workspace design,
 - and future dual-arm planning preparation.
 
-Panda 2 must not be removed simply because it is inactive.
+Panda 2 remains fully modeled and low-level-control active from Phase 2.
 
 ---
 
@@ -1367,9 +1367,9 @@ Recovery behavior will be defined in `FAILURE_AND_RECOVERY.md`.
 
 ## 70. Panda 2 Activation Requirements
 
-Panda 2 must not become active simply by enabling its controller.
+Panda 2 low-level control becomes active in Phase 2; high-level coordinated behavior requires Phase 7.
 
-Before Phase 7 activation, the project must validate:
+Before Phase 7 high-level coordination, the project must validate:
 
 ```text
 namespace isolation
@@ -1758,7 +1758,7 @@ The robot-control stack is accepted when:
 - TCP pose is consistent.
 - Rail + arm coordinated motion is possible.
 - Robot returns to deterministic home.
-- Panda 2 remains physically present and inactive.
+- Panda 2 remains physically present and low-level-control active.
 - No direct base teleportation is used.
 
 ---

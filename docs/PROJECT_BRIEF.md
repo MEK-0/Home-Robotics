@@ -188,7 +188,7 @@ Early phases use:
 
 ```text
 Panda 1 + carriage 1 → active
-Panda 2 + carriage 2 → present but inactive
+Panda 2 + carriage 2 → active at the low-level control layer
 ```
 
 The shared rail, both carriages, and both robots are included in the final scene from Phase 1 so the scene layout does not require redesign later.

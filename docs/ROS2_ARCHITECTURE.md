@@ -64,7 +64,7 @@ Initial active system (shared support remains fixed):
 Panda 1 + carriage 1
 ```
 
-Physically present but inactive (its independent carriage joint remains modeled):
+Low-level-control active from Phase 2:
 
 ```text
 Panda 2 + carriage 2
@@ -699,7 +699,7 @@ Manipulation code should not publish arbitrary finger commands directly when a c
 
 ## 25. Panda 2 Controllers
 
-During early phases, Panda 2 controllers remain inactive.
+During early phases, Panda 2 low-level controllers remain active.
 
 Its ROS description may still exist.
 
@@ -2166,7 +2166,7 @@ Codex must:
 16. Never add raw simulator numeric IDs to public interfaces.
 17. Preserve canonical object IDs.
 18. Fail closed when scene synchronization is invalid.
-19. Keep Panda 2 inactive until its phase.
+19. Keep Panda 2 low-level control active; reserve coordination for Phase 7.
 20. Document deliberate deviations from this architecture.
 
 ---
@@ -2244,7 +2244,7 @@ LLM tool calling
 Activate:
 
 ```text
-Panda 2
+high-level dual-arm coordination
 panda2_rail_joint
 dual-arm coordinator
 ```
