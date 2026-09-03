@@ -1,0 +1,50 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+    use_sim_time: true
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    panda1_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    panda2_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    panda1_gripper_controller:
+      type: position_controllers/GripperActionController
+    panda2_gripper_controller:
+      type: position_controllers/GripperActionController
+
+panda1_trajectory_controller:
+  ros__parameters:
+    joints: [panda1_rail_joint, panda1_joint1, panda1_joint2, panda1_joint3, panda1_joint4, panda1_joint5, panda1_joint6, panda1_joint7]
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+    allow_partial_joints_goal: false
+    open_loop_control: false
+
+panda2_trajectory_controller:
+  ros__parameters:
+    joints: [panda2_rail_joint, panda2_joint1, panda2_joint2, panda2_joint3, panda2_joint4, panda2_joint5, panda2_joint6, panda2_joint7]
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+    allow_partial_joints_goal: false
+    open_loop_control: false
+
+panda1_gripper_controller:
+  ros__parameters:
+    joint: panda1_finger_joint1
+    action_monitor_rate: 20.0
+    goal_tolerance: 0.002
+    max_effort: 100.0
+    allow_stalling: true
+    stall_velocity_threshold: 0.001
+    stall_timeout: 1.0
+
+panda2_gripper_controller:
+  ros__parameters:
+    joint: panda2_finger_joint1
+    action_monitor_rate: 20.0
+    goal_tolerance: 0.002
+    max_effort: 100.0
+    allow_stalling: true
+    stall_velocity_threshold: 0.001
+    stall_timeout: 1.0
