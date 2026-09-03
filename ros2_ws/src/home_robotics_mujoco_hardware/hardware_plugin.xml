@@ -1,0 +1,7 @@
+<library path="home_robotics_mujoco_hardware">
+  <class name="home_robotics_mujoco_hardware/MujocoTopicSystem"
+         type="home_robotics_mujoco_hardware::MujocoTopicSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>Position-command ros2_control interface backed by one MuJoCo bridge instance.</description>
+  </class>
+</library>
