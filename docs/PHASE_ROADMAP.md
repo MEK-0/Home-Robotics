@@ -171,6 +171,27 @@ reset integration test
 
 ## 5. Phase 3 — MoveIt 2
 
+MoveIt collision geometry was added to the robot description.
+
+Initial Phase 3 integration status:
+
+- MoveIt config package created.
+- SRDF and planning groups created.
+- Kinematics configuration created.
+- Existing Phase 2 controller mapping created.
+- Panda1 joint-space planning and execution validated.
+- Panda2 joint-space planning and execution validated.
+- Current and target-state validity checks validated.
+- Deliberate self-collision target rejected without execution.
+- Panda1 Cartesian pose planning and execution validated.
+- Panda2 Cartesian pose planning and execution validated.
+- Cartesian invalid target rejection validated.
+- Static PlanningScene environment integrated from the authoritative scene definition.
+- Tables/work surfaces and arena boundaries represented.
+- Known-safe planning and execution remain validated with the static scene loaded.
+- Table-collision rejection validated for both Pandas.
+- Manual RViz static-scene validation instructions added.
+
 ### Goal
 
 Create reliable rail-aware motion planning.
