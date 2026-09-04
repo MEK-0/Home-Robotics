@@ -11,7 +11,7 @@ def test_all_rendered_package_mesh_uris_resolve():
     xacro = share / "urdf/home_robotics.urdf.xacro"
     rendered = subprocess.check_output(["xacro", str(xacro)], text=True)
     uris = set(re.findall(r'package://home_robotics_description/([^\"]+)', rendered))
-    assert len(uris) == 56
+    assert len(uris) == 67
     assert all((share / uri).is_file() for uri in uris)
 
 
@@ -23,4 +23,4 @@ def test_both_pandas_reference_the_same_validated_mesh_set():
     assert rendered.count("link0_0.obj") == 2
     assert rendered.count("link7_7.obj") == 2
     assert rendered.count("hand_4.obj") == 2
-    assert rendered.count("finger_0.obj") == 4
+    assert rendered.count("finger_0.obj") == 8

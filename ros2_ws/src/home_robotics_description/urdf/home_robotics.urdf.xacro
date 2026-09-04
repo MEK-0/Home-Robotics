@@ -4,7 +4,7 @@
   <xacro:include filename="$(find home_robotics_description)/urdf/home_robotics.ros2_control.xacro"/>
 
   <link name="world"/>
-  <link name="shared_rail"><visual><geometry><box size="3.4 0.16 0.16"/></geometry></visual></link>
+  <link name="shared_rail"><visual><geometry><box size="3.4 0.16 0.16"/></geometry></visual><collision><geometry><box size="3.4 0.16 0.16"/></geometry></collision></link>
   <joint name="world_to_shared_rail" type="fixed">
     <parent link="world"/><child link="shared_rail"/><origin xyz="1.15 0 0.61"/>
   </joint>
