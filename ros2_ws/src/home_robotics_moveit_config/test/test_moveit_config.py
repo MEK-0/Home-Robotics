@@ -110,3 +110,23 @@ def test_static_environment_contract_uses_authoritative_scene():
     executable = (Path(get_package_prefix("home_robotics_moveit_config"))
                   / "lib/home_robotics_moveit_config/planning_scene_environment")
     assert executable.is_file()
+
+
+def test_dual_collision_validation_installed():
+    moveit_share, _ = _shares()
+    assert (moveit_share / "launch/dual_robot_collision_validation.launch.py").is_file()
+    executable = (Path(get_package_prefix("home_robotics_moveit_config"))
+                  / "lib/home_robotics_moveit_config/dual_robot_collision_validation")
+    assert executable.is_file()
+
+
+def test_collision_modes_refuse_execution_before_move_group():
+    executable = (Path(get_package_prefix("home_robotics_moveit_config"))
+                  / "lib/home_robotics_moveit_config/dual_robot_collision_validation")
+    for mode in ("cross_collision", "path_collision", "reverse_path_collision"):
+        result = subprocess.run(
+            [str(executable), "--ros-args", "-p", f"mode:={mode}", "-p", "execute:=true"],
+            text=True, capture_output=True, timeout=15,
+        )
+        assert result.returncode != 0
+        assert "execute=true is permitted only for safe modes" in result.stderr
