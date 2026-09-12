@@ -191,6 +191,14 @@ Initial Phase 3 integration status:
 - Known-safe planning and execution remain validated with the static scene loaded.
 - Table-collision rejection validated for both Pandas.
 - Manual RViz static-scene validation instructions added.
+- Phase 3.9: safe Panda1 motion with Panda2 stationary validated.
+- Phase 3.9: safe Panda2 motion with Panda1 stationary validated.
+- Phase 3.9: Panda1–Panda2 collision-state rejection validated in both group scopes.
+- Phase 3.9: cross-robot path collision checking validated in both directions (valid endpoints, colliding direct route, OMPL timeout without a trajectory).
+- Phase 3.9: shared-rail 0.7 m safety remains intact; runtime cross-robot ACM checks pass.
+
+Evidence and reproduction: [Phase 3.9 validation](PHASE3_9_VALIDATION.md).
+Phase 3 is **not complete**. Phase 3.10 final acceptance remains separate.
 
 ### Goal
 
