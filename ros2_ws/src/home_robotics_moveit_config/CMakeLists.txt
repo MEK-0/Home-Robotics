@@ -9,6 +9,11 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 
+add_executable(dual_robot_collision_validation src/dual_robot_collision_validation.cpp)
+ament_target_dependencies(dual_robot_collision_validation
+  moveit_msgs moveit_ros_planning_interface rclcpp sensor_msgs
+)
+
 add_executable(joint_space_validation src/joint_space_validation.cpp)
 add_executable(cartesian_pose_validation src/cartesian_pose_validation.cpp)
 add_executable(planning_scene_environment src/planning_scene_environment.cpp)
@@ -34,7 +39,7 @@ ament_target_dependencies(joint_space_validation
   sensor_msgs
 )
 
-install(TARGETS joint_space_validation cartesian_pose_validation planning_scene_environment
+install(TARGETS dual_robot_collision_validation joint_space_validation cartesian_pose_validation planning_scene_environment
   DESTINATION lib/${PROJECT_NAME}
 )
 
