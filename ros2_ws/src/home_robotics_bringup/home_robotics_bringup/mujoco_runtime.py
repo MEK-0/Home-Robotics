@@ -1,5 +1,9 @@
 """Authoritative MuJoCo runtime adapter for the Phase 2 ros2_control stack."""
 from sensor_msgs.msg import JointState
+from geometry_msgs.msg import PoseStamped
+from std_srvs.srv import Trigger, SetBool
+from std_msgs.msg import String
+import json
 from action_msgs.srv import CancelGoal
 import time
 from rosgraph_msgs.msg import Clock
@@ -17,6 +21,28 @@ class Phase2MujocoRuntime(MujocoJointStateBridge):
         self.control_subscription = self.create_subscription(
             JointState, "/mujoco/command", self._control_command, 10
         )
+        self.object_publishers = {
+            object_id: self.create_publisher(
+                PoseStamped, f"/mujoco/objects/{object_id}/pose", 1
+            )
+            for object_id, metadata in self.config.objects.items()
+            if metadata["planning_scene_enabled"]
+        }
+        self.object_timer = self.create_timer(0.05, self._publish_object_poses)
+        # Opt-in fixed validation fixture, not an arbitrary pose/teleport API.
+        self.debug_shifted = False
+        if self.declare_parameter("enable_scene_validation", False).value:
+            self.debug_service = self.create_service(
+                Trigger, "/validation/shift_cube", self._shift_cube_for_validation
+            )
+        from simulation.grasp_contact import CubeContact
+        self.cube_contact = CubeContact(self.model, self.data, self.config)
+        self.contact_publisher = self.create_publisher(String, "/mujoco/objects/cube/contact", 10)
+        self.contact_services = [
+            self.create_service(Trigger, "/mujoco/cube/begin_grasp", self._begin_grasp),
+            self.create_service(Trigger, "/mujoco/cube/verify_grasp", self._verify_grasp),
+            self.create_service(SetBool, "/mujoco/cube/stabilize", self._stabilize),
+        ]
         self.ignore_commands_until = 0.0
         self.cancel_clients = [
             self.create_client(CancelGoal, f"/{name}/_action/cancel_goal")
@@ -28,13 +54,74 @@ class Phase2MujocoRuntime(MujocoJointStateBridge):
             )
         ]
 
+    def _contact_call(self, response, operation):
+        try:
+            operation()
+            response.success = True
+            response.message = json.dumps(self.cube_contact.observe())
+        except ValueError as exc:
+            response.success = False
+            response.message = str(exc)
+        return response
+
+    def _begin_grasp(self, request, response):
+        return self._contact_call(response, self.cube_contact.begin)
+
+    def _verify_grasp(self, request, response):
+        return self._contact_call(response, self.cube_contact.verify)
+
+    def _stabilize(self, request, response):
+        return self._contact_call(response, lambda: self.cube_contact.stabilize(request.data))
+
+    def _publish_object_poses(self):
+        for object_id, publisher in self.object_publishers.items():
+            message = PoseStamped()
+            message.header.frame_id = "world"
+            seconds = int(self.data.time)
+            message.header.stamp.sec = seconds
+            message.header.stamp.nanosec = int((float(self.data.time) - seconds) * 1e9)
+            body = self.data.body(object_id)
+            message.pose.position.x, message.pose.position.y, message.pose.position.z = (
+                float(value) for value in body.xpos
+            )
+            w, x, y, z = (float(value) for value in body.xquat)
+            message.pose.orientation.w = w
+            message.pose.orientation.x = x
+            message.pose.orientation.y = y
+            message.pose.orientation.z = z
+            publisher.publish(message)
+
+    def _shift_cube_for_validation(self, _request, response):
+        if self.debug_shifted:
+            response.success = False
+            response.message = "Fixture already used; reset simulation before repeating"
+            return response
+        body = self.data.body("cube")
+        position = tuple(float(value) for value in body.xpos)
+        quaternion = tuple(float(value) for value in body.xquat)
+        self.sim.set_free_joint_pose(
+            "cube_free_joint", (position[0] + 0.05, position[1], position[2]), quaternion
+        )
+        self.sim.set_free_joint_velocity("cube_free_joint", (0, 0, 0, 0, 0, 0))
+        self.sim.forward()
+        self.debug_shifted = True
+        self._publish_object_poses()
+        response.success = True
+        response.message = "VALIDATION ONLY: cube shifted +0.05 m X in existing MuJoCo data"
+        return response
+
     def _reset_simulation(self, request, response):
         cancel = CancelGoal.Request()
         for client in self.cancel_clients:
             if client.service_is_ready():
                 client.call_async(cancel)
         self.ignore_commands_until = time.monotonic() + 0.5
-        return super()._reset_simulation(request, response)
+        self.cube_contact.reset()
+        result = super()._reset_simulation(request, response)
+        if result.success:
+            self.debug_shifted = False
+            self._publish_object_poses()
+        return result
 
     def _control_command(self, message):
         if time.monotonic() < self.ignore_commands_until:
@@ -82,6 +169,7 @@ class Phase2MujocoRuntime(MujocoJointStateBridge):
         message.clock.sec = seconds
         message.clock.nanosec = int((float(self.data.time) - seconds) * 1_000_000_000)
         self.clock_publisher.publish(message)
+        self.contact_publisher.publish(String(data=json.dumps(self.cube_contact.observe())))
 
 
 def main(args=None):

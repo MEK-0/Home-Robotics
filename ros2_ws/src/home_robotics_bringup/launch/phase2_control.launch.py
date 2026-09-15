@@ -21,7 +21,8 @@ def generate_launch_description():
         package="home_robotics_bringup",
         executable="mujoco_runtime",
         name="mujoco_runtime",
-        parameters=[{"use_viewer": LaunchConfiguration("use_viewer")}],
+        parameters=[{"use_viewer": LaunchConfiguration("use_viewer"),
+                     "enable_scene_validation": LaunchConfiguration("enable_scene_validation")}],
         remappings=[("/joint_states", "/mujoco/joint_states")],
         output="screen",
     )
@@ -45,5 +46,6 @@ def generate_launch_description():
     )
     return LaunchDescription([
         DeclareLaunchArgument("use_viewer", default_value="false"),
+        DeclareLaunchArgument("enable_scene_validation", default_value="false"),
         runtime, control, state_publisher, controller_startup,
     ])
