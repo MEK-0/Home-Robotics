@@ -1,0 +1,33 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-22-45-19-398128-mek-Apple-Virtualization-Generic-Platform-11866
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [dual_robot_collision_validation-1]: process started with pid [11869]
+[dual_robot_collision_validation-1] [INFO] [1789242319.559111463] [dual_robot_collision_validation]: mode=path_collision active=panda1_manipulator stationary=panda2 execute=false
+[dual_robot_collision_validation-1] [INFO] [1789242319.562540633] [moveit_1735443166.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[dual_robot_collision_validation-1] [INFO] [1789242319.562572341] [moveit_1735443166.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[dual_robot_collision_validation-1] [INFO] [1789242319.562579133] [moveit_1735443166.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[dual_robot_collision_validation-1] [INFO] [1789242319.583555653] [moveit_1735443166.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242319.584108237] [moveit_1735443166.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242320.215162957] [moveit_1735443166.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[dual_robot_collision_validation-1] [INFO] [1789242320.215449333] [moveit_1735443166.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[dual_robot_collision_validation-1] [INFO] [1789242321.287328010] [dual_robot_collision_validation]: Runtime ACM: 196 cross-robot pairs enabled
+[dual_robot_collision_validation-1] [INFO] [1789242321.287365427] [dual_robot_collision_validation]: Start rails: panda1=-0.85005430 panda2=0.85003954 separation=1.70009383 minimum=0.70000000
+[dual_robot_collision_validation-1] [INFO] [1789242321.287438385] [dual_robot_collision_validation]: current full state validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242321.289414220] [dual_robot_collision_validation]: offline path start validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242321.289441054] [dual_robot_collision_validation]: Offline path start full state: panda1_rail_joint=-0.850054297235, panda1_joint1=0.099958160745, panda1_joint2=-0.100007244017, panda1_joint3=0.100035293173, panda1_joint4=-1.499994145516, panda1_joint5=0.050082369312, panda1_joint6=1.500093296913, panda1_joint7=-0.699949775322, panda1_finger_joint1=0.039999999986, panda1_finger_joint2=0.039999999972, panda2_rail_joint=-0.300000000000, panda2_joint1=-0.100011063677, panda2_joint2=0.099933717430, panda2_joint3=-0.100071737818, panda2_joint4=-1.499967773358, panda2_joint5=-0.050070980536, panda2_joint6=1.499915848235, panda2_joint7=-0.700073755726, panda2_finger_joint1=0.039999999987, panda2_finger_joint2=0.039999999990 separation=0.550054297
+[dual_robot_collision_validation-1] [INFO] [1789242321.289447887] [dual_robot_collision_validation]: Offline stationary rail=-0.300000; remaining stationary joints retain measured values
+[dual_robot_collision_validation-1] [INFO] [1789242321.290916930] [dual_robot_collision_validation]: direct route cross collision contact: panda1_carriage <-> panda2_carriage
+[dual_robot_collision_validation-1] [INFO] [1789242321.290927972] [dual_robot_collision_validation]: direct route cross collision validity=INVALID bounds=OK(tolerance=1e-6) cross_pairs=1
+[dual_robot_collision_validation-1] [INFO] [1789242321.290930680] [dual_robot_collision_validation]: OFFLINE path scenario: rail ordering safety may be violated; execution prohibited
+[dual_robot_collision_validation-1] [INFO] [1789242321.290936597] [dual_robot_collision_validation]: Target: panda1_rail_joint=0.340000000000, panda1_joint1=0.099958160745, panda1_joint2=-0.100007244017, panda1_joint3=0.100035293173, panda1_joint4=-1.499994145516, panda1_joint5=0.050082369312, panda1_joint6=1.500093296913, panda1_joint7=-0.699949775322
+[dual_robot_collision_validation-1] [INFO] [1789242321.290963722] [dual_robot_collision_validation]: target full state validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242321.292247015] [moveit_1735443166.moveit.ros.move_group_interface]: MoveGroup action client/server ready
+[dual_robot_collision_validation-1] [INFO] [1789242321.293038974] [moveit_1735443166.moveit.ros.move_group_interface]: Planning request accepted
+[dual_robot_collision_validation-1] [INFO] [1789242331.296861028] [moveit_1735443166.moveit.ros.move_group_interface]: Planning request aborted
+[dual_robot_collision_validation-1] [ERROR] [1789242331.297113445] [moveit_1735443166.moveit.ros.move_group_interface]: MoveGroupInterface::plan() failed or timeout reached
+[dual_robot_collision_validation-1] [INFO] [1789242331.297143028] [dual_robot_collision_validation]: Planning wall time=10.004925 s
+[dual_robot_collision_validation-1] [INFO] [1789242331.297153695] [dual_robot_collision_validation]: Planning=FAILURE code=99999 time=0.000000 points=0
+[dual_robot_collision_validation-1] [INFO] [1789242331.297157986] [dual_robot_collision_validation]: No collision-free path returned; execution skipped; waypoint check N/A
+[dual_robot_collision_validation-1] [INFO] [1789242331.297161736] [dual_robot_collision_validation]: VALIDATION PASS mode=path_collision
+[INFO] [dual_robot_collision_validation-1]: process has finished cleanly [pid 11869]

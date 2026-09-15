@@ -1,0 +1,20 @@
+[INFO] [1789248130.855082293] [moveit_1636620636.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[INFO] [1789248130.855455877] [moveit_1636620636.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[INFO] [1789248130.855465294] [moveit_1636620636.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[INFO] [1789248130.885398666] [moveit_1636620636.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[INFO] [1789248130.885856500] [moveit_1636620636.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[INFO] [1789248131.086131079] [moveit_1636620636.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[INFO] [1789248131.087803167] [moveit_1636620636.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[WARN] [1789248132.189766540] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for 1.000000s, timeout is 10.000000s
+[WARN] [1789248133.191302810] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for 2.000000s, timeout is 10.000000s
+[WARN] [1789248134.194377793] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for -215.240000s, timeout is 10.000000s
+[WARN] [1789248135.196790732] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for 4.020000s, timeout is 10.000000s
+[WARN] [1789248136.199396880] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for -213.240000s, timeout is 10.000000s
+[WARN] [1789248137.203278365] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for 6.020000s, timeout is 10.000000s
+[WARN] [1789248138.205624929] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for 7.020000s, timeout is 10.000000s
+[WARN] [1789248139.212938965] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for 8.020000s, timeout is 10.000000s
+[WARN] [1789248140.218950914] [moveit_1636620636.moveit.ros.current_state_monitor]: No state update received within 100ms of system clock. Have been waiting for -209.240000s, timeout is 10.000000s
+[INFO] [1789248141.120268915] [moveit_1636620636.moveit.ros.current_state_monitor]: Didn't receive robot state (joint angles) with recent timestamp within 10.000000 seconds. Requested time 306.280000, but latest received state has time 0.000000.
+Check clock synchronization if your are running ROS across multiple machines!
+[ERROR] [1789248141.120313499] [moveit_1636620636.moveit.ros.move_group_interface]: Failed to fetch current robot state
+[ERROR] [1789248141.130196567] [grasp_pose_validation]: VALIDATION FAIL: No current robot state

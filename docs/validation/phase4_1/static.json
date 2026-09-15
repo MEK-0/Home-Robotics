@@ -1,0 +1,1446 @@
+{
+  "arena_back": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": -2.97,
+        "y": 0.0,
+        "z": 0.0075
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "arena_back",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          5.0,
+          0.005
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "arena_front": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 2.97,
+        "y": 0.0,
+        "z": 0.0075
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "arena_front",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          5.0,
+          0.005
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "arena_left": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 2.47,
+        "z": 0.0075
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "arena_left",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          5.88,
+          0.06,
+          0.005
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "arena_right": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": -2.47,
+        "z": 0.0075
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "arena_right",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          5.88,
+          0.06,
+          0.005
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "floor": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.05
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "floor",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          6.0,
+          5.0,
+          0.1
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "shared_rail_leg_center": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 1.15,
+        "y": 0.0,
+        "z": 0.26
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "shared_rail_leg_center",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.12,
+          0.12,
+          0.52
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "shared_rail_leg_left": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": -0.25,
+        "y": 0.0,
+        "z": 0.26
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "shared_rail_leg_left",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.12,
+          0.12,
+          0.52
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "shared_rail_leg_right": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 2.55,
+        "y": 0.0,
+        "z": 0.26
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "shared_rail_leg_right",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.12,
+          0.12,
+          0.52
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "surface_left_1": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "surface_left_1",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.825,
+          0.75,
+          0.08
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.275,
+          "y": 0.49,
+          "z": 0.64
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.6174999999999999,
+          "y": 0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.6174999999999999,
+          "y": 0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": -0.06749999999999995,
+          "y": 0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": -0.06749999999999995,
+          "y": 0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "surface_left_2": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "surface_left_2",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.825,
+          0.75,
+          0.08
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 1.15,
+          "y": 0.49,
+          "z": 0.64
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.4925,
+          "y": 0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.4925,
+          "y": 0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.8074999999999999,
+          "y": 0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.8074999999999999,
+          "y": 0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "surface_left_3": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "surface_left_3",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.825,
+          0.75,
+          0.08
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 2.025,
+          "y": 0.49,
+          "z": 0.64
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 2.3674999999999997,
+          "y": 0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 2.3674999999999997,
+          "y": 0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.6824999999999999,
+          "y": 0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.6824999999999999,
+          "y": 0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "surface_right_1": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "surface_right_1",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.825,
+          0.75,
+          0.08
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 0.275,
+          "y": -0.49,
+          "z": 0.64
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.6174999999999999,
+          "y": -0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.6174999999999999,
+          "y": -0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": -0.06749999999999995,
+          "y": -0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": -0.06749999999999995,
+          "y": -0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "surface_right_2": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "surface_right_2",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.825,
+          0.75,
+          0.08
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 1.15,
+          "y": -0.49,
+          "z": 0.64
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.4925,
+          "y": -0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.4925,
+          "y": -0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.8074999999999999,
+          "y": -0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 0.8074999999999999,
+          "y": -0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  },
+  "surface_right_3": {
+    "header": {
+      "stamp": {
+        "sec": 0,
+        "nanosec": 0
+      },
+      "frame_id": "world"
+    },
+    "pose": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      }
+    },
+    "id": "surface_right_3",
+    "type": {
+      "key": "",
+      "db": ""
+    },
+    "primitives": [
+      {
+        "type": 1,
+        "dimensions": [
+          0.825,
+          0.75,
+          0.08
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      },
+      {
+        "type": 1,
+        "dimensions": [
+          0.06,
+          0.06,
+          0.6
+        ],
+        "polygon": {
+          "points": []
+        }
+      }
+    ],
+    "primitive_poses": [
+      {
+        "position": {
+          "x": 2.025,
+          "y": -0.49,
+          "z": 0.64
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 2.3674999999999997,
+          "y": -0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 2.3674999999999997,
+          "y": -0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.6824999999999999,
+          "y": -0.185,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 1.6824999999999999,
+          "y": -0.7949999999999999,
+          "z": 0.3
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    ],
+    "meshes": [],
+    "mesh_poses": [],
+    "planes": [],
+    "plane_poses": [],
+    "subframe_names": [],
+    "subframe_poses": [],
+    "operation": "\u0000"
+  }
+}

@@ -1,0 +1,27 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-23-40-46-842682-mek-Apple-Virtualization-Generic-Platform-18554
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [cube_collision_validation-1]: process started with pid [18557]
+[cube_collision_validation-1] [INFO] [1789245646.971365883] [moveit_4250268645.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[cube_collision_validation-1] [INFO] [1789245646.971427009] [moveit_4250268645.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[cube_collision_validation-1] [INFO] [1789245646.971434634] [moveit_4250268645.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[cube_collision_validation-1] [INFO] [1789245646.992776875] [moveit_4250268645.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[cube_collision_validation-1] [INFO] [1789245646.992870917] [moveit_4250268645.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[cube_collision_validation-1] [INFO] [1789245647.824765038] [moveit_4250268645.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[cube_collision_validation-1] [INFO] [1789245647.825522040] [moveit_4250268645.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[cube_collision_validation-1] [INFO] [1789245648.086870038] [cube_collision_validation]: INVALID contact: cube <-> panda1_hand
+[cube_collision_validation-1] [INFO] [1789245648.086904788] [cube_collision_validation]: INVALID contact: cube <-> panda1_link7
+[cube_collision_validation-1] [INFO] [1789245648.086907455] [cube_collision_validation]: INVALID contact: panda1_hand <-> surface_left_1
+[cube_collision_validation-1] [INFO] [1789245648.086909247] [cube_collision_validation]: INVALID contact: panda1_left_finger <-> surface_left_1
+[cube_collision_validation-1] [INFO] [1789245648.086911080] [cube_collision_validation]: INVALID contact: panda1_right_finger <-> surface_left_1
+[cube_collision_validation-1] [INFO] [1789245648.086912872] [cube_collision_validation]: offline state panda1_rail_joint=-0.641237075781
+[cube_collision_validation-1] [INFO] [1789245648.086915705] [cube_collision_validation]: offline state panda1_joint1=1.061253395810
+[cube_collision_validation-1] [INFO] [1789245648.086917747] [cube_collision_validation]: offline state panda1_joint2=1.738144668843
+[cube_collision_validation-1] [INFO] [1789245648.086919455] [cube_collision_validation]: offline state panda1_joint3=-0.260577993429
+[cube_collision_validation-1] [INFO] [1789245648.086921163] [cube_collision_validation]: offline state panda1_joint4=-1.064474340492
+[cube_collision_validation-1] [INFO] [1789245648.086922872] [cube_collision_validation]: offline state panda1_joint5=0.676549045213
+[cube_collision_validation-1] [INFO] [1789245648.086924580] [cube_collision_validation]: offline state panda1_joint6=2.723792610723
+[cube_collision_validation-1] [INFO] [1789245648.086926330] [cube_collision_validation]: offline state panda1_joint7=2.828711574021
+[cube_collision_validation-1] [INFO] [1789245648.088392794] [cube_collision_validation]: PASS cube collision rejected locally and by service; never executed
+[INFO] [cube_collision_validation-1]: process has finished cleanly [pid 18557]

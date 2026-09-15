@@ -1,0 +1,5 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-23-44-01-707428-mek-Apple-Virtualization-Generic-Platform-19392
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [dynamic_object_scene_sync-1]: process started with pid [19395]
+[dynamic_object_scene_sync-1] [INFO] [1789245841.758430843] [dynamic_object_scene_sync]: Registry=5 objects; 20.0 Hz world sync; MuJoCo owns poses
+[dynamic_object_scene_sync-1] [INFO] [1789245843.609568357] [dynamic_object_scene_sync]: Dynamic world diff accepted; stable IDs, static scene untouched

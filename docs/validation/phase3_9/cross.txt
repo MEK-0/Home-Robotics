@@ -1,0 +1,56 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-22-45-17-699970-mek-Apple-Virtualization-Generic-Platform-11842
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [dual_robot_collision_validation-1]: process started with pid [11845]
+[dual_robot_collision_validation-1] [INFO] [1789242317.861000026] [dual_robot_collision_validation]: mode=cross_collision active=panda1_manipulator stationary=panda2 execute=false
+[dual_robot_collision_validation-1] [INFO] [1789242317.865742364] [moveit_2255412792.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[dual_robot_collision_validation-1] [INFO] [1789242317.865848572] [moveit_2255412792.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[dual_robot_collision_validation-1] [INFO] [1789242317.865855072] [moveit_2255412792.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[dual_robot_collision_validation-1] [INFO] [1789242317.885972716] [moveit_2255412792.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242317.886243883] [moveit_2255412792.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242318.970837866] [moveit_2255412792.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[dual_robot_collision_validation-1] [INFO] [1789242318.972979577] [moveit_2255412792.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[dual_robot_collision_validation-1] [INFO] [1789242319.003219230] [dual_robot_collision_validation]: Runtime ACM: 196 cross-robot pairs enabled
+[dual_robot_collision_validation-1] [INFO] [1789242319.003257563] [dual_robot_collision_validation]: Start rails: panda1=-0.85005430 panda2=0.85003954 separation=1.70009383 minimum=0.70000000
+[dual_robot_collision_validation-1] [INFO] [1789242319.003329772] [dual_robot_collision_validation]: current full state validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242319.092195106] [dual_robot_collision_validation]: OFFLINE ONLY: both rails=0, deterministic arm targets and open fingers; separation=0 < 0.7; never executed
+[dual_robot_collision_validation-1] [INFO] [1789242319.092240564] [dual_robot_collision_validation]: Exact state: panda1_rail_joint=0.000000000000, panda1_joint1=0.100000000000, panda1_joint2=-0.100000000000, panda1_joint3=0.100000000000, panda1_joint4=-1.500000000000, panda1_joint5=0.050000000000, panda1_joint6=1.500000000000, panda1_joint7=-0.700000000000, panda1_finger_joint1=0.040000000000, panda1_finger_joint2=0.040000000000, panda2_rail_joint=0.000000000000, panda2_joint1=-0.100000000000, panda2_joint2=0.100000000000, panda2_joint3=-0.100000000000, panda2_joint4=-1.500000000000, panda2_joint5=-0.050000000000, panda2_joint6=1.500000000000, panda2_joint7=-0.700000000000, panda2_finger_joint1=0.040000000000, panda2_finger_joint2=0.040000000000
+[dual_robot_collision_validation-1] [INFO] [1789242319.093844149] [dual_robot_collision_validation]: overlap scope= contact: panda1_carriage <-> panda2_carriage
+[dual_robot_collision_validation-1] [INFO] [1789242319.093861191] [dual_robot_collision_validation]: overlap scope= contact: panda1_link0 <-> panda2_link0
+[dual_robot_collision_validation-1] [INFO] [1789242319.093863774] [dual_robot_collision_validation]: overlap scope= contact: panda1_link1 <-> panda2_link1
+[dual_robot_collision_validation-1] [INFO] [1789242319.093865816] [dual_robot_collision_validation]: overlap scope= contact: panda1_link1 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.093867357] [dual_robot_collision_validation]: overlap scope= contact: panda1_link2 <-> panda2_link1
+[dual_robot_collision_validation-1] [INFO] [1789242319.093868774] [dual_robot_collision_validation]: overlap scope= contact: panda1_link2 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.093870232] [dual_robot_collision_validation]: overlap scope= contact: panda1_link2 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.093871691] [dual_robot_collision_validation]: overlap scope= contact: panda1_link3 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.093873149] [dual_robot_collision_validation]: overlap scope= contact: panda1_link3 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.093874607] [dual_robot_collision_validation]: overlap scope= contact: panda1_link3 <-> panda2_link4
+[dual_robot_collision_validation-1] [INFO] [1789242319.093875982] [dual_robot_collision_validation]: overlap scope= contact: panda1_link4 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.093882274] [dual_robot_collision_validation]: overlap scope= validity=INVALID bounds=OK(tolerance=1e-6) cross_pairs=11
+[dual_robot_collision_validation-1] [INFO] [1789242319.099093279] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_carriage <-> panda2_carriage
+[dual_robot_collision_validation-1] [INFO] [1789242319.099113279] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link0 <-> panda2_link0
+[dual_robot_collision_validation-1] [INFO] [1789242319.099136571] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link1 <-> panda2_link1
+[dual_robot_collision_validation-1] [INFO] [1789242319.099139571] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link1 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.099141529] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link2 <-> panda2_link1
+[dual_robot_collision_validation-1] [INFO] [1789242319.099143237] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link2 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.099144862] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link2 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.099146487] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link3 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.099148112] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link3 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.099149737] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link3 <-> panda2_link4
+[dual_robot_collision_validation-1] [INFO] [1789242319.099151529] [dual_robot_collision_validation]: overlap scope=panda1_manipulator contact: panda1_link4 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.099154279] [dual_robot_collision_validation]: overlap scope=panda1_manipulator validity=INVALID bounds=OK(tolerance=1e-6) cross_pairs=11
+[dual_robot_collision_validation-1] [INFO] [1789242319.106544744] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_carriage <-> panda2_carriage
+[dual_robot_collision_validation-1] [INFO] [1789242319.106575286] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link0 <-> panda2_link0
+[dual_robot_collision_validation-1] [INFO] [1789242319.106577953] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link1 <-> panda2_link1
+[dual_robot_collision_validation-1] [INFO] [1789242319.106579869] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link1 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.106581786] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link2 <-> panda2_link1
+[dual_robot_collision_validation-1] [INFO] [1789242319.106583453] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link2 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.106585036] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link2 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.106586661] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link3 <-> panda2_link2
+[dual_robot_collision_validation-1] [INFO] [1789242319.106588203] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link3 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.106589744] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link3 <-> panda2_link4
+[dual_robot_collision_validation-1] [INFO] [1789242319.106591328] [dual_robot_collision_validation]: overlap scope=panda2_manipulator contact: panda1_link4 <-> panda2_link3
+[dual_robot_collision_validation-1] [INFO] [1789242319.106594786] [dual_robot_collision_validation]: overlap scope=panda2_manipulator validity=INVALID bounds=OK(tolerance=1e-6) cross_pairs=11
+[dual_robot_collision_validation-1] [INFO] [1789242319.110594165] [dual_robot_collision_validation]: VALIDATION PASS mode=cross_collision
+[INFO] [dual_robot_collision_validation-1]: process has finished cleanly [pid 11845]

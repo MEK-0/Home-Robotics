@@ -1,0 +1,68 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-22-43-38-836139-mek-Apple-Virtualization-Generic-Platform-11354
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [dual_robot_collision_validation-1]: process started with pid [11358]
+[dual_robot_collision_validation-1] [INFO] [1789242218.986942091] [dual_robot_collision_validation]: mode=safe_panda1 active=panda1_manipulator stationary=panda2 execute=true
+[dual_robot_collision_validation-1] [INFO] [1789242218.995269183] [moveit_4050371801.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[dual_robot_collision_validation-1] [INFO] [1789242218.995342267] [moveit_4050371801.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[dual_robot_collision_validation-1] [INFO] [1789242218.995350017] [moveit_4050371801.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[dual_robot_collision_validation-1] [INFO] [1789242219.014251203] [moveit_4050371801.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242219.014350453] [moveit_4050371801.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242219.604494738] [moveit_4050371801.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[dual_robot_collision_validation-1] [INFO] [1789242219.604918821] [moveit_4050371801.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[dual_robot_collision_validation-1] [INFO] [1789242219.645426989] [dual_robot_collision_validation]: Runtime ACM: 196 cross-robot pairs enabled
+[dual_robot_collision_validation-1] [INFO] [1789242219.645470697] [dual_robot_collision_validation]: Start rails: panda1=-0.90000000 panda2=0.90000000 separation=1.80000000 minimum=0.70000000
+[dual_robot_collision_validation-1] [INFO] [1789242219.645560322] [dual_robot_collision_validation]: current full state validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242219.648386825] [dual_robot_collision_validation]: Target: panda1_rail_joint=-0.85000, panda1_joint1=0.10000, panda1_joint2=-0.10000, panda1_joint3=0.10000, panda1_joint4=-1.50000, panda1_joint5=0.05000, panda1_joint6=1.50000, panda1_joint7=-0.70000
+[dual_robot_collision_validation-1] [INFO] [1789242219.648459534] [dual_robot_collision_validation]: target full state validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242219.648933742] [moveit_4050371801.moveit.ros.move_group_interface]: MoveGroup action client/server ready
+[dual_robot_collision_validation-1] [INFO] [1789242219.649272034] [moveit_4050371801.moveit.ros.move_group_interface]: Planning request accepted
+[dual_robot_collision_validation-1] [INFO] [1789242219.670338681] [moveit_4050371801.moveit.ros.move_group_interface]: Planning request complete!
+[dual_robot_collision_validation-1] [INFO] [1789242219.670993807] [moveit_4050371801.moveit.ros.move_group_interface]: time taken to generate plan: 0.013807 seconds
+[dual_robot_collision_validation-1] [INFO] [1789242219.671020515] [dual_robot_collision_validation]: Planning wall time=0.022110 s
+[dual_robot_collision_validation-1] [INFO] [1789242219.671025515] [dual_robot_collision_validation]: Planning=SUCCESS code=1 time=0.013807 points=30
+[dual_robot_collision_validation-1] [INFO] [1789242219.672163558] [dual_robot_collision_validation]: Waypoint and interpolated validation: PASS samples=38 cross_contacts=0
+[dual_robot_collision_validation-1] [INFO] [1789242219.673307018] [moveit_4050371801.moveit.ros.move_group_interface]: Execute request accepted
+[dual_robot_collision_validation-1] [INFO] [1789242222.524875705] [moveit_4050371801.moveit.ros.move_group_interface]: Execute request success!
+[dual_robot_collision_validation-1] [INFO] [1789242222.851444296] [dual_robot_collision_validation]: Measured bounds excess=7.6125147852e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242222.871389691] [dual_robot_collision_validation]: Measured bounds excess=3.37439173825e-11 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242222.891652296] [dual_robot_collision_validation]: Measured bounds excess=3.61293980844e-11 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242223.031406525] [dual_robot_collision_validation]: Measured bounds excess=6.54004628231e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242223.131357796] [dual_robot_collision_validation]: Measured bounds excess=8.46080150385e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242223.232475234] [dual_robot_collision_validation]: Measured bounds excess=2.73576300502e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242223.574259590] [dual_robot_collision_validation]: Measured bounds excess=3.26134952378e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242224.173410464] [dual_robot_collision_validation]: Measured bounds excess=8.32896251968e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242224.311817483] [dual_robot_collision_validation]: Measured bounds excess=2.9202959495e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242224.651326045] [dual_robot_collision_validation]: Measured bounds excess=3.28082006007e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242224.951872358] [dual_robot_collision_validation]: Measured bounds excess=6.50798859247e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242224.973491213] [dual_robot_collision_validation]: Measured bounds excess=6.50798859247e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242225.411607919] [dual_robot_collision_validation]: Measured bounds excess=2.95806434902e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242225.531925669] [dual_robot_collision_validation]: Measured bounds excess=7.19813098016e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242225.595006234] [dual_robot_collision_validation]: Measured bounds excess=1.57007046253e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242226.031652563] [dual_robot_collision_validation]: Measured bounds excess=7.0003725039e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242226.331556874] [dual_robot_collision_validation]: Measured bounds excess=8.91640927758e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242226.477456026] [dual_robot_collision_validation]: Measured bounds excess=2.99550662053e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242226.593100646] [dual_robot_collision_validation]: Measured bounds excess=7.34030891625e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242226.611445790] [dual_robot_collision_validation]: Measured bounds excess=7.34030891625e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242227.111934726] [dual_robot_collision_validation]: Measured bounds excess=7.11021519439e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242227.491847787] [dual_robot_collision_validation]: Measured bounds excess=2.83559981051e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242227.592650099] [dual_robot_collision_validation]: Measured bounds excess=6.65939525746e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242227.611205660] [dual_robot_collision_validation]: Measured bounds excess=6.65939525746e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242227.692446536] [dual_robot_collision_validation]: Measured bounds excess=1.53094203981e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242228.131905867] [dual_robot_collision_validation]: Measured bounds excess=7.02021774046e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242228.555403972] [dual_robot_collision_validation]: Measured bounds excess=3.00520719421e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242228.673380511] [dual_robot_collision_validation]: Measured bounds excess=7.37784833227e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242228.751615967] [dual_robot_collision_validation]: Measured bounds excess=1.59991464521e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242228.774482574] [dual_robot_collision_validation]: Measured bounds excess=1.59991464521e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242229.191632422] [dual_robot_collision_validation]: Measured bounds excess=7.14192593954e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242229.211965318] [dual_robot_collision_validation]: Measured bounds excess=7.14192593954e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242229.571591315] [dual_robot_collision_validation]: Measured bounds excess=2.84612611257e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242229.671264835] [dual_robot_collision_validation]: Measured bounds excess=6.69887756377e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242229.752021710] [dual_robot_collision_validation]: Measured bounds excess=1.53794338376e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242229.771521230] [dual_robot_collision_validation]: Measured bounds excess=1.53794338376e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242230.511659245] [dual_robot_collision_validation]: Measured bounds excess=9.04984420735e-13 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242230.651529390] [dual_robot_collision_validation]: Measured bounds excess=3.01764169208e-12 tolerance=1e-6 (no clamping)
+[dual_robot_collision_validation-1] [INFO] [1789242230.731459806] [dual_robot_collision_validation]: Execution=SUCCESS final_rail_error=0.000099249 final_arm_error=0.000093294 stationary_max_drift=0.000000000 final_cross_contacts=0
+[dual_robot_collision_validation-1] [INFO] [1789242230.731495306] [dual_robot_collision_validation]: VALIDATION PASS mode=safe_panda1
+[INFO] [dual_robot_collision_validation-1]: process has finished cleanly [pid 11358]

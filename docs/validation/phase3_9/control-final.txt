@@ -1,0 +1,104 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-22-43-23-364623-mek-Apple-Virtualization-Generic-Platform-11182
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [mujoco_runtime-1]: process started with pid [11186]
+[INFO] [ros2_control_node-2]: process started with pid [11187]
+[INFO] [robot_state_publisher-3]: process started with pid [11188]
+[INFO] [controller_startup-4]: process started with pid [11189]
+[robot_state_publisher-3] [INFO] [1789242203.568228293] [robot_state_publisher]: Robot initialized
+[ros2_control_node-2] [INFO] [1789242203.575603885] [controller_manager]: Using ROS clock for triggering controller manager cycles.
+[ros2_control_node-2] [INFO] [1789242203.577747595] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[ros2_control_node-2] [INFO] [1789242203.578610429] [controller_manager]: update rate is 100 Hz
+[ros2_control_node-2] [INFO] [1789242203.578619971] [controller_manager]: Overruns handling is : enabled
+[ros2_control_node-2] [INFO] [1789242203.578622513] [controller_manager]: Spawning controller_manager RT thread with scheduler priority: 50
+[ros2_control_node-2] [WARN] [1789242203.580387806] [controller_manager]: Could not enable FIFO RT scheduling policy: with error number <1>(Operation not permitted). See [https://control.ros.org/master/doc/ros2_control/controller_manager/doc/userdoc.html] for details on how to enable realtime scheduling.
+[controller_startup-4] [INFO] [1789242204.054456229] [phase2_controller_startup]: waiting for service /controller_manager/list_controllers to become available...
+[ros2_control_node-2] [INFO] [1789242204.194961462] [controller_manager]: Received robot description from topic.
+[ros2_control_node-2] [INFO] [1789242204.195001379] [controller_manager]: Enforcing command limits is disabled. Command limits from URDF will be ignored.
+[ros2_control_node-2] [INFO] [1789242204.198456049] [controller_manager]: Loading hardware 'HomeRoboticsMuJoCo' 
+[ros2_control_node-2] [INFO] [1789242204.201395552] [controller_manager]: Loaded hardware 'HomeRoboticsMuJoCo' from plugin 'home_robotics_mujoco_hardware/MujocoTopicSystem'
+[ros2_control_node-2] [INFO] [1789242204.201467385] [controller_manager]: Initialize hardware 'HomeRoboticsMuJoCo' 
+[ros2_control_node-2] [INFO] [1789242204.225372411] [controller_manager]: Successful initialization of hardware 'HomeRoboticsMuJoCo'
+[ros2_control_node-2] [INFO] [1789242204.225673453] [controller_manager]: Activating component 'HomeRoboticsMuJoCo'.
+[ros2_control_node-2] [INFO] [1789242204.225680703] [resource_manager]: 'configure' hardware 'HomeRoboticsMuJoCo' 
+[ros2_control_node-2] [INFO] [1789242204.225682828] [resource_manager]: Successful 'configure' of hardware 'HomeRoboticsMuJoCo'
+[ros2_control_node-2] [INFO] [1789242204.225688370] [resource_manager]: 'activate' hardware 'HomeRoboticsMuJoCo' 
+[ros2_control_node-2] [INFO] [1789242204.225733703] [resource_manager]: Successful 'activate' of hardware 'HomeRoboticsMuJoCo'
+[ros2_control_node-2] [INFO] [1789242204.225767536] [controller_manager]: Registering statistics for : HomeRoboticsMuJoCo
+[ros2_control_node-2] [INFO] [1789242204.225795911] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[controller_startup-4] [INFO] [1789242204.307739790] [phase2_controller_startup]: Controller manager is ready
+[controller_startup-4] [INFO] [1789242204.308147207] [phase2_controller_startup]: Loading controller: joint_state_broadcaster
+[ros2_control_node-2] [INFO] [1789242204.308943042] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[ros2_control_node-2] [INFO] [1789242204.308965000] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[ros2_control_node-2] [INFO] [1789242204.313042671] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file /tmp/launch_params__8itjd_f --params-file /home/mek/Home-Robotics/ros2_ws/install/home_robotics_bringup/share/home_robotics_bringup/config/controllers.yaml --param use_sim_time:=true 
+[controller_startup-4] [INFO] [1789242204.321879889] [phase2_controller_startup]: Configuring controller: joint_state_broadcaster
+[mujoco_runtime-1] [INFO] [1789242204.356055050] [mujoco_runtime]: MuJoCo joint state bridge started with 20 joints; rail targets panda1=-0.900 m, panda2=0.900 m
+[ros2_control_node-2] [INFO] [1789242204.405937645] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[ros2_control_node-2] [INFO] [1789242204.406270312] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[controller_startup-4] [INFO] [1789242204.413545611] [phase2_controller_startup]: Activating controller: joint_state_broadcaster
+[ros2_control_node-2] [INFO] [1789242204.415255988] [controller_manager]: Activating controllers: [ joint_state_broadcaster ]
+[ros2_control_node-2] [INFO] [1789242204.430851797] [controller_manager]: Successfully switched controllers!
+[controller_startup-4] [INFO] [1789242204.451771611] [phase2_controller_startup]: Controller active: joint_state_broadcaster
+[controller_startup-4] [INFO] [1789242204.452232903] [phase2_controller_startup]: Loading controller: panda1_trajectory_controller
+[ros2_control_node-2] [INFO] [1789242204.452425236] [controller_manager]: Loading controller : 'panda1_trajectory_controller' of type 'joint_trajectory_controller/JointTrajectoryController'
+[ros2_control_node-2] [INFO] [1789242204.452445028] [controller_manager]: Loading controller 'panda1_trajectory_controller'
+[ros2_control_node-2] [INFO] [1789242204.453674279] [controller_manager]: Controller 'panda1_trajectory_controller' node arguments: --ros-args --params-file /tmp/launch_params__8itjd_f --params-file /home/mek/Home-Robotics/ros2_ws/install/home_robotics_bringup/share/home_robotics_bringup/config/controllers.yaml --param use_sim_time:=true 
+[controller_startup-4] [INFO] [1789242204.471885049] [phase2_controller_startup]: Configuring controller: panda1_trajectory_controller
+[ros2_control_node-2] [INFO] [1789242204.472033424] [controller_manager]: Configuring controller: 'panda1_trajectory_controller'
+[ros2_control_node-2] [INFO] [1789242204.472166216] [panda1_trajectory_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[ros2_control_node-2] [INFO] [1789242204.472191507] [panda1_trajectory_controller]: Command interfaces are [position] and state interfaces are [position velocity].
+[ros2_control_node-2] [INFO] [1789242204.472225007] [panda1_trajectory_controller]: Using 'splines' interpolation method.
+[ros2_control_node-2] [INFO] [1789242204.473421175] [panda1_trajectory_controller]: Action status changes will be monitored at 20.00 Hz.
+[ros2_control_node-2] [INFO] [1789242204.475345177] [panda1_trajectory_controller]: Setting initial scaling factor to 1.000000
+[ros2_control_node-2] [INFO] [1789242204.475356302] [panda1_trajectory_controller]: No scaling interface set. This controller will not read speed scaling from the hardware.
+[controller_startup-4] [INFO] [1789242204.491750612] [phase2_controller_startup]: Activating controller: panda1_trajectory_controller
+[ros2_control_node-2] [INFO] [1789242204.491923570] [controller_manager]: Activating controllers: [ panda1_trajectory_controller ]
+[ros2_control_node-2] [INFO] [1789242204.514488927] [controller_manager]: Successfully switched controllers!
+[controller_startup-4] [INFO] [1789242204.532189155] [phase2_controller_startup]: Controller active: panda1_trajectory_controller
+[controller_startup-4] [INFO] [1789242204.536016034] [phase2_controller_startup]: Loading controller: panda2_trajectory_controller
+[ros2_control_node-2] [INFO] [1789242204.537806619] [controller_manager]: Loading controller : 'panda2_trajectory_controller' of type 'joint_trajectory_controller/JointTrajectoryController'
+[ros2_control_node-2] [INFO] [1789242204.537830244] [controller_manager]: Loading controller 'panda2_trajectory_controller'
+[ros2_control_node-2] [INFO] [1789242204.537933577] [controller_manager]: Controller 'panda2_trajectory_controller' node arguments: --ros-args --params-file /tmp/launch_params__8itjd_f --params-file /home/mek/Home-Robotics/ros2_ws/install/home_robotics_bringup/share/home_robotics_bringup/config/controllers.yaml --param use_sim_time:=true 
+[controller_startup-4] [INFO] [1789242204.552570968] [phase2_controller_startup]: Configuring controller: panda2_trajectory_controller
+[ros2_control_node-2] [INFO] [1789242204.553841094] [controller_manager]: Configuring controller: 'panda2_trajectory_controller'
+[ros2_control_node-2] [INFO] [1789242204.553965969] [panda2_trajectory_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[ros2_control_node-2] [INFO] [1789242204.553982928] [panda2_trajectory_controller]: Command interfaces are [position] and state interfaces are [position velocity].
+[ros2_control_node-2] [INFO] [1789242204.553988303] [panda2_trajectory_controller]: Using 'splines' interpolation method.
+[ros2_control_node-2] [INFO] [1789242204.555035012] [panda2_trajectory_controller]: Action status changes will be monitored at 20.00 Hz.
+[ros2_control_node-2] [INFO] [1789242204.556724056] [panda2_trajectory_controller]: Setting initial scaling factor to 1.000000
+[ros2_control_node-2] [INFO] [1789242204.556735764] [panda2_trajectory_controller]: No scaling interface set. This controller will not read speed scaling from the hardware.
+[controller_startup-4] [INFO] [1789242204.571561363] [phase2_controller_startup]: Activating controller: panda2_trajectory_controller
+[ros2_control_node-2] [INFO] [1789242204.572828656] [controller_manager]: Activating controllers: [ panda2_trajectory_controller ]
+[ros2_control_node-2] [INFO] [1789242204.591016592] [controller_manager]: Successfully switched controllers!
+[controller_startup-4] [INFO] [1789242204.612480865] [phase2_controller_startup]: Controller active: panda2_trajectory_controller
+[controller_startup-4] [INFO] [1789242204.613043032] [phase2_controller_startup]: Loading controller: panda1_gripper_controller
+[ros2_control_node-2] [INFO] [1789242204.613250783] [controller_manager]: Loading controller : 'panda1_gripper_controller' of type 'position_controllers/GripperActionController'
+[ros2_control_node-2] [INFO] [1789242204.613271616] [controller_manager]: Loading controller 'panda1_gripper_controller'
+[ros2_control_node-2] [INFO] [1789242204.613830075] [controller_manager]: Controller 'panda1_gripper_controller' node arguments: --ros-args --params-file /tmp/launch_params__8itjd_f --params-file /home/mek/Home-Robotics/ros2_ws/install/home_robotics_bringup/share/home_robotics_bringup/config/controllers.yaml --param use_sim_time:=true 
+[ros2_control_node-2] [WARN] [1789242204.617728037] [panda1_gripper_controller]: [Deprecated]: the `position_controllers/GripperActionController` and `effort_controllers::GripperActionController` controllers are replaced by 'parallel_gripper_controllers/GripperActionController' controller
+[controller_startup-4] [INFO] [1789242204.633354679] [phase2_controller_startup]: Configuring controller: panda1_gripper_controller
+[ros2_control_node-2] [INFO] [1789242204.633631721] [controller_manager]: Configuring controller: 'panda1_gripper_controller'
+[ros2_control_node-2] [INFO] [1789242204.633695013] [panda1_gripper_controller]: Action status changes will be monitored at 20.000000 Hz.
+[controller_startup-4] [INFO] [1789242204.651939657] [phase2_controller_startup]: Activating controller: panda1_gripper_controller
+[ros2_control_node-2] [INFO] [1789242204.652111449] [controller_manager]: Activating controllers: [ panda1_gripper_controller ]
+[ros2_control_node-2] [INFO] [1789242204.672776804] [controller_manager]: Successfully switched controllers!
+[controller_startup-4] [INFO] [1789242204.692244534] [phase2_controller_startup]: Controller active: panda1_gripper_controller
+[controller_startup-4] [INFO] [1789242204.692876159] [phase2_controller_startup]: Loading controller: panda2_gripper_controller
+[ros2_control_node-2] [INFO] [1789242204.693032201] [controller_manager]: Loading controller : 'panda2_gripper_controller' of type 'position_controllers/GripperActionController'
+[ros2_control_node-2] [INFO] [1789242204.693051118] [controller_manager]: Loading controller 'panda2_gripper_controller'
+[ros2_control_node-2] [INFO] [1789242204.693134993] [controller_manager]: Controller 'panda2_gripper_controller' node arguments: --ros-args --params-file /tmp/launch_params__8itjd_f --params-file /home/mek/Home-Robotics/ros2_ws/install/home_robotics_bringup/share/home_robotics_bringup/config/controllers.yaml --param use_sim_time:=true 
+[ros2_control_node-2] [WARN] [1789242204.696785038] [panda2_gripper_controller]: [Deprecated]: the `position_controllers/GripperActionController` and `effort_controllers::GripperActionController` controllers are replaced by 'parallel_gripper_controllers/GripperActionController' controller
+[controller_startup-4] [INFO] [1789242204.713323556] [phase2_controller_startup]: Configuring controller: panda2_gripper_controller
+[ros2_control_node-2] [INFO] [1789242204.713535431] [controller_manager]: Configuring controller: 'panda2_gripper_controller'
+[ros2_control_node-2] [INFO] [1789242204.713574681] [panda2_gripper_controller]: Action status changes will be monitored at 20.000000 Hz.
+[controller_startup-4] [INFO] [1789242204.732052159] [phase2_controller_startup]: Activating controller: panda2_gripper_controller
+[ros2_control_node-2] [INFO] [1789242204.732239326] [controller_manager]: Activating controllers: [ panda2_gripper_controller ]
+[ros2_control_node-2] [INFO] [1789242204.752123889] [controller_manager]: Successfully switched controllers!
+[controller_startup-4] [INFO] [1789242204.771743327] [phase2_controller_startup]: Controller active: panda2_gripper_controller
+[controller_startup-4] [INFO] [1789242204.772231535] [phase2_controller_startup]: All Phase 2 controllers are active
+[INFO] [controller_startup-4]: process has finished cleanly [pid 11189]
+[ros2_control_node-2] [INFO] [1789242219.673759435] [panda1_trajectory_controller]: Received new action goal
+[ros2_control_node-2] [INFO] [1789242219.673799477] [panda1_trajectory_controller]: Accepted new action goal
+[ros2_control_node-2] [INFO] [1789242222.511000357] [panda1_trajectory_controller]: Goal reached, success!
+[ros2_control_node-2] [INFO] [1789242234.430023702] [panda2_trajectory_controller]: Received new action goal
+[ros2_control_node-2] [INFO] [1789242234.430056285] [panda2_trajectory_controller]: Accepted new action goal
+[ros2_control_node-2] [INFO] [1789242237.250792640] [panda2_trajectory_controller]: Goal reached, success!

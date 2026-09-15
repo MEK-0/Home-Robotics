@@ -1,0 +1,90 @@
+[move_group-1] [INFO] [1789242219.649163118] [move_group.moveit.moveit.ros.move_group.move_action]: MoveGroupMoveAction: Received request
+[move_group-1] [INFO] [1789242219.649339326] [move_group.moveit.moveit.ros.move_group.move_action]: executing..
+[move_group-1] [INFO] [1789242219.649408326] [move_group.moveit.moveit.ros.move_group.move_action]: Planning request received for MoveGroup action. Forwarding to planning pipeline.
+[move_group-1] [INFO] [1789242219.649415451] [move_group.moveit.moveit.ros.move_group.capability]: Using planning pipeline 'ompl'
+[move_group-1] [INFO] [1789242219.649504660] [move_group]: Calling PlanningRequestAdapter 'ResolveConstraintFrames'
+[move_group-1] [INFO] [1789242219.649518618] [move_group]: Calling PlanningRequestAdapter 'ValidateWorkspaceBounds'
+[move_group-1] [WARN] [1789242219.649521035] [move_group.moveit.moveit.ros.validate_workspace_bounds]: It looks like the planning volume was not specified. Using default values.
+[move_group-1] [INFO] [1789242219.649526826] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateBounds'
+[move_group-1] [INFO] [1789242219.649541035] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateCollision'
+[move_group-1] [INFO] [1789242219.654486707] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Planner configuration 'panda1_manipulator[RRTConnectkConfigDefault]' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-1] [INFO] [1789242219.654665248] [move_group]: Calling Planner 'OMPL'
+[move_group-1] [INFO] [1789242219.668563763] [move_group]: Calling PlanningResponseAdapter 'AddTimeOptimalParameterization'
+[move_group-1] [WARN] [1789242219.668601138] [move_group.moveit.moveit.core.time_optimal_trajectory_generation]: There is a combination of revolute and prismatic joints in the robot model. TOTG's `path_tolerance` will not function correctly.
+[move_group-1] [INFO] [1789242219.669116805] [move_group]: Calling PlanningResponseAdapter 'ValidateSolution'
+[move_group-1] [INFO] [1789242219.669591347] [move_group]: Calling PlanningResponseAdapter 'DisplayMotionPath'
+[move_group-1] [INFO] [1789242219.670107681] [move_group.moveit.moveit.ros.move_group.move_action]: Motion plan was computed successfully.
+[move_group-1] [INFO] [1789242219.672873726] [move_group.moveit.moveit.ros.move_group.clear_octomap_service]: Execution request received
+[move_group-1] [INFO] [1789242219.672903434] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242219.672914642] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242219.672970851] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Validating trajectory with allowed_start_tolerance 0.01
+[move_group-1] [INFO] [1789242219.673132643] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Starting trajectory execution ...
+[move_group-1] [INFO] [1789242219.673289601] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242219.673305685] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242219.673424893] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: sending trajectory to panda1_trajectory_controller
+[move_group-1] [INFO] [1789242219.674764603] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: panda1_trajectory_controller started execution
+[move_group-1] [INFO] [1789242219.674778103] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: Goal request accepted!
+[move_group-1] [INFO] [1789242222.524526580] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: Controller 'panda1_trajectory_controller' successfully finished
+[move_group-1] [INFO] [1789242222.524609246] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Completed trajectory execution with status SUCCEEDED ...
+[move_group-1] [INFO] [1789242222.524662705] [move_group.moveit.moveit.ros.move_group.clear_octomap_service]: Execution completed: SUCCEEDED
+[move_group-1] [INFO] [1789242234.404694926] [move_group.moveit.moveit.ros.move_group.move_action]: MoveGroupMoveAction: Received request
+[move_group-1] [INFO] [1789242234.404980134] [move_group.moveit.moveit.ros.move_group.move_action]: executing..
+[move_group-1] [INFO] [1789242234.405056301] [move_group.moveit.moveit.ros.move_group.move_action]: Planning request received for MoveGroup action. Forwarding to planning pipeline.
+[move_group-1] [INFO] [1789242234.405064468] [move_group.moveit.moveit.ros.move_group.capability]: Using planning pipeline 'ompl'
+[move_group-1] [INFO] [1789242234.405138093] [move_group]: Calling PlanningRequestAdapter 'ResolveConstraintFrames'
+[move_group-1] [INFO] [1789242234.405146759] [move_group]: Calling PlanningRequestAdapter 'ValidateWorkspaceBounds'
+[move_group-1] [WARN] [1789242234.405148968] [move_group.moveit.moveit.ros.validate_workspace_bounds]: It looks like the planning volume was not specified. Using default values.
+[move_group-1] [INFO] [1789242234.405154468] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateBounds'
+[move_group-1] [INFO] [1789242234.405163468] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateCollision'
+[move_group-1] [INFO] [1789242234.407851887] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Planner configuration 'panda2_manipulator[RRTConnectkConfigDefault]' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-1] [INFO] [1789242234.407951221] [move_group]: Calling Planner 'OMPL'
+[move_group-1] [INFO] [1789242234.425210197] [move_group]: Calling PlanningResponseAdapter 'AddTimeOptimalParameterization'
+[move_group-1] [WARN] [1789242234.425242613] [move_group.moveit.moveit.core.time_optimal_trajectory_generation]: There is a combination of revolute and prismatic joints in the robot model. TOTG's `path_tolerance` will not function correctly.
+[move_group-1] [INFO] [1789242234.425693947] [move_group]: Calling PlanningResponseAdapter 'ValidateSolution'
+[move_group-1] [INFO] [1789242234.426203614] [move_group]: Calling PlanningResponseAdapter 'DisplayMotionPath'
+[move_group-1] [INFO] [1789242234.426253989] [move_group.moveit.moveit.ros.move_group.move_action]: Motion plan was computed successfully.
+[move_group-1] [INFO] [1789242234.428913242] [move_group.moveit.moveit.ros.move_group.clear_octomap_service]: Execution request received
+[move_group-1] [INFO] [1789242234.428943701] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242234.428955784] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242234.428992742] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Validating trajectory with allowed_start_tolerance 0.01
+[move_group-1] [INFO] [1789242234.429064576] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Starting trajectory execution ...
+[move_group-1] [INFO] [1789242234.429094701] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242234.429104534] [move_group.moveit.moveit.plugins.simple_controller_manager]: Returned 4 controllers in list
+[move_group-1] [INFO] [1789242234.429187201] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: sending trajectory to panda2_trajectory_controller
+[move_group-1] [INFO] [1789242234.431299953] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: panda2_trajectory_controller started execution
+[move_group-1] [INFO] [1789242234.431314203] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: Goal request accepted!
+[move_group-1] [INFO] [1789242237.280559296] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: Controller 'panda2_trajectory_controller' successfully finished
+[move_group-1] [INFO] [1789242237.280625837] [move_group.moveit.moveit.ros.trajectory_execution_manager]: Completed trajectory execution with status SUCCEEDED ...
+[move_group-1] [INFO] [1789242237.280675379] [move_group.moveit.moveit.ros.move_group.clear_octomap_service]: Execution completed: SUCCEEDED
+[move_group-1] [INFO] [1789242321.292485973] [move_group.moveit.moveit.ros.move_group.move_action]: MoveGroupMoveAction: Received request
+[move_group-1] [INFO] [1789242321.292627223] [move_group.moveit.moveit.ros.move_group.move_action]: executing..
+[move_group-1] [INFO] [1789242321.292675848] [move_group.moveit.moveit.ros.move_group.move_action]: Planning request received for MoveGroup action. Forwarding to planning pipeline.
+[move_group-1] [INFO] [1789242321.292684682] [move_group.moveit.moveit.ros.move_group.capability]: Using planning pipeline 'ompl'
+[move_group-1] [INFO] [1789242321.292796432] [move_group]: Calling PlanningRequestAdapter 'ResolveConstraintFrames'
+[move_group-1] [INFO] [1789242321.292808307] [move_group]: Calling PlanningRequestAdapter 'ValidateWorkspaceBounds'
+[move_group-1] [WARN] [1789242321.292810723] [move_group.moveit.moveit.ros.validate_workspace_bounds]: It looks like the planning volume was not specified. Using default values.
+[move_group-1] [INFO] [1789242321.292817057] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateBounds'
+[move_group-1] [INFO] [1789242321.292829015] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateCollision'
+[move_group-1] [INFO] [1789242321.296179268] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Planner configuration 'panda1_manipulator[RRTConnectkConfigDefault]' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-1] [INFO] [1789242321.296230435] [move_group]: Calling Planner 'OMPL'
+[move_group-1] [WARN] [1789242331.296287111] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Planning timed out: 10.0s ��� 10.0s
+[move_group-1] [ERROR] [1789242331.296542778] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Unable to solve the planning problem
+[move_group-1] [ERROR] [1789242331.296592194] [move_group]: Planner 'OMPL' failed with error code TIMED_OUT
+[move_group-1] [ERROR] [1789242331.296610569] [move_group.moveit.moveit.ros.move_group.move_action]: Generating a plan with planning pipeline failed.
+[move_group-1] [INFO] [1789242331.296621069] [move_group.moveit.moveit.ros.move_group.move_action]: FAILURE
+[move_group-1] [INFO] [1789242332.088359017] [move_group.moveit.moveit.ros.move_group.move_action]: MoveGroupMoveAction: Received request
+[move_group-1] [INFO] [1789242332.088743851] [move_group.moveit.moveit.ros.move_group.move_action]: executing..
+[move_group-1] [INFO] [1789242332.088825518] [move_group.moveit.moveit.ros.move_group.move_action]: Planning request received for MoveGroup action. Forwarding to planning pipeline.
+[move_group-1] [INFO] [1789242332.088834559] [move_group.moveit.moveit.ros.move_group.capability]: Using planning pipeline 'ompl'
+[move_group-1] [INFO] [1789242332.088930893] [move_group]: Calling PlanningRequestAdapter 'ResolveConstraintFrames'
+[move_group-1] [INFO] [1789242332.088940809] [move_group]: Calling PlanningRequestAdapter 'ValidateWorkspaceBounds'
+[move_group-1] [WARN] [1789242332.088943768] [move_group.moveit.moveit.ros.validate_workspace_bounds]: It looks like the planning volume was not specified. Using default values.
+[move_group-1] [INFO] [1789242332.088950559] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateBounds'
+[move_group-1] [INFO] [1789242332.088963143] [move_group]: Calling PlanningRequestAdapter 'CheckStartStateCollision'
+[move_group-1] [INFO] [1789242332.093653980] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Planner configuration 'panda2_manipulator[RRTConnectkConfigDefault]' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-1] [INFO] [1789242332.093725022] [move_group]: Calling Planner 'OMPL'
+[move_group-1] [WARN] [1789242342.093829737] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Planning timed out: 10.0s ≥ 10.0s
+[move_group-1] [ERROR] [1789242342.093872612] [move_group.moveit.moveit.planners.ompl.model_based_planning_context]: Unable to solve the planning problem
+[move_group-1] [ERROR] [1789242342.093924153] [move_group]: Planner 'OMPL' failed with error code TIMED_OUT
+[move_group-1] [ERROR] [1789242342.093956945] [move_group.moveit.moveit.ros.move_group.move_action]: Generating a plan with planning pipeline failed.
+[move_group-1] [INFO] [1789242342.093967903] [move_group.moveit.moveit.ros.move_group.move_action]: FAILURE

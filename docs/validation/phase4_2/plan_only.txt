@@ -1,0 +1,81 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-16-00-44-01-973894-mek-Apple-Virtualization-Generic-Platform-6848
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [grasp_pose_validation-1]: process started with pid [6851]
+[grasp_pose_validation-1] [INFO] [1789508642.107279173] [moveit_3155881005.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[grasp_pose_validation-1] [INFO] [1789508642.107342594] [moveit_3155881005.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[grasp_pose_validation-1] [INFO] [1789508642.107351511] [moveit_3155881005.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[grasp_pose_validation-1] [INFO] [1789508642.125170597] [moveit_3155881005.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[grasp_pose_validation-1] [INFO] [1789508642.125273437] [moveit_3155881005.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[grasp_pose_validation-1] [INFO] [1789508642.434805479] [moveit_3155881005.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[grasp_pose_validation-1] [INFO] [1789508642.442001518] [grasp_pose_validation]: Fresh authoritative /joint_states: stamp=221.900000000 age=0.000000 s; all robot variables present
+[grasp_pose_validation-1] [INFO] [1789508642.504286584] [grasp_pose_validation]: Cube sync error=2.48606604387e-11 m orientation=1.81788455999e-11 rad age=0.000000 s
+[grasp_pose_validation-1] [INFO] [1789508642.504320461] [grasp_pose_validation]: Cube PlanningScene xyz=[0.074999995841, 0.410000034830, 0.704892244580] quaternion_xyzw=[0.000000000103, 0.000000000012, -0.000000000000, 1.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.504327211] [grasp_pose_validation]: Cube xyz=[0.074999995838, 0.410000034854, 0.704892244580] quaternion_xyzw=[0.000000000094, 0.000000000011, -0.000000000000, 1.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.504419800] [grasp_pose_validation]: Pre-grasp xyz=[0.074999995838, 0.410000034854, 0.815792244580] quaternion_xyzw=[0.707106781187, 0.707106781187, 0.000000000000, 0.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.504426509] [grasp_pose_validation]: Grasp xyz=[0.074999995838, 0.410000034854, 0.715792244580] quaternion_xyzw=[0.707106781187, 0.707106781187, 0.000000000000, 0.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.504430343] [grasp_pose_validation]: Geometry hand_to_tcp=0.100000000 hand_to_pad=0.102900000 pad_half_height=0.008500000 cube_width=0.050000000 open_width=0.080000000 pre_distance=0.100000000 clearance=0.008000000
+[grasp_pose_validation-1] [INFO] [1789508642.504529057] [grasp_pose_validation]: Current full state validity=VALID bounds=OK separation=1.800000000 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.505912728] [grasp_pose_validation]: Pre-grasp IK panda1_rail_joint=-1.058957337769
+[grasp_pose_validation-1] [INFO] [1789508642.505923604] [grasp_pose_validation]: Pre-grasp IK panda1_joint1=0.041313087494
+[grasp_pose_validation-1] [INFO] [1789508642.505925979] [grasp_pose_validation]: Pre-grasp IK panda1_joint2=0.851143114416
+[grasp_pose_validation-1] [INFO] [1789508642.505928188] [grasp_pose_validation]: Pre-grasp IK panda1_joint3=0.024331860003
+[grasp_pose_validation-1] [INFO] [1789508642.505930354] [grasp_pose_validation]: Pre-grasp IK panda1_joint4=-2.423047723099
+[grasp_pose_validation-1] [INFO] [1789508642.505932521] [grasp_pose_validation]: Pre-grasp IK panda1_joint5=0.137689230630
+[grasp_pose_validation-1] [INFO] [1789508642.505934688] [grasp_pose_validation]: Pre-grasp IK panda1_joint6=3.275294655037
+[grasp_pose_validation-1] [INFO] [1789508642.505937188] [grasp_pose_validation]: Pre-grasp IK panda1_joint7=0.706275078491
+[grasp_pose_validation-1] [INFO] [1789508642.505970274] [grasp_pose_validation]: Pre-grasp validity=VALID bounds=OK separation=1.958957338 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.506800451] [moveit_3155881005.moveit.ros.move_group_interface]: MoveGroup action client/server ready
+[grasp_pose_validation-1] [INFO] [1789508642.507263647] [moveit_3155881005.moveit.ros.move_group_interface]: Planning request accepted
+[grasp_pose_validation-1] [INFO] [1789508642.529168450] [moveit_3155881005.moveit.ros.move_group_interface]: Planning request complete!
+[grasp_pose_validation-1] [INFO] [1789508642.530127260] [moveit_3155881005.moveit.ros.move_group_interface]: time taken to generate plan: 0.0147849 seconds
+[grasp_pose_validation-1] [INFO] [1789508642.530150678] [grasp_pose_validation]: Pre-grasp plan=SUCCESS time=0.014784936 points=105
+[grasp_pose_validation-1] [INFO] [1789508642.554429965] [grasp_pose_validation]: Cube sync error=1.53751209882e-11 m orientation=1.73165483355e-11 rad age=0.000000 s
+[grasp_pose_validation-1] [INFO] [1789508642.554456258] [grasp_pose_validation]: Cube PlanningScene xyz=[0.074999995839, 0.410000034846, 0.704892244580] quaternion_xyzw=[0.000000000106, 0.000000000013, -0.000000000000, 1.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.566415140] [grasp_pose_validation]: Pre-grasp trajectory validated samples=470 no touch exemptions
+[grasp_pose_validation-1] [INFO] [1789508642.566466643] [grasp_pose_validation]: Pre-grasp execution skipped (plan only)
+[grasp_pose_validation-1] [INFO] [1789508642.604602681] [grasp_pose_validation]: Cube sync error=1.65446219289e-11 m orientation=4.36139447052e-11 rad age=0.000000 s
+[grasp_pose_validation-1] [INFO] [1789508642.604627391] [grasp_pose_validation]: Cube PlanningScene xyz=[0.074999995838, 0.410000034854, 0.704892244580] quaternion_xyzw=[0.000000000094, 0.000000000011, -0.000000000000, 1.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.604651225] [grasp_pose_validation]: Temporary local touch policy: cube <-> panda1_left_finger, panda1_right_finger ONLY
+[grasp_pose_validation-1] [INFO] [1789508642.604812986] [grasp_pose_validation]: Grasp IK panda1_rail_joint=-1.130090370603
+[grasp_pose_validation-1] [INFO] [1789508642.604816944] [grasp_pose_validation]: Grasp IK panda1_joint1=-0.108779046147
+[grasp_pose_validation-1] [INFO] [1789508642.604819069] [grasp_pose_validation]: Grasp IK panda1_joint2=1.180531967380
+[grasp_pose_validation-1] [INFO] [1789508642.604820944] [grasp_pose_validation]: Grasp IK panda1_joint3=-0.125578495744
+[grasp_pose_validation-1] [INFO] [1789508642.604822528] [grasp_pose_validation]: Grasp IK panda1_joint4=-2.130764684596
+[grasp_pose_validation-1] [INFO] [1789508642.604824070] [grasp_pose_validation]: Grasp IK panda1_joint5=-0.612007358702
+[grasp_pose_validation-1] [INFO] [1789508642.604825570] [grasp_pose_validation]: Grasp IK panda1_joint6=3.344600796951
+[grasp_pose_validation-1] [INFO] [1789508642.604827028] [grasp_pose_validation]: Grasp IK panda1_joint7=1.230913903560
+[grasp_pose_validation-1] [INFO] [1789508642.604868906] [grasp_pose_validation]: Grasp NORMAL validity=VALID bounds=OK separation=2.030090371 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.604900616] [grasp_pose_validation]: Grasp ALLOWED_TOUCH validity=VALID bounds=OK separation=2.030090371 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.605221887] [grasp_pose_validation]: Approach sample 0 validity=VALID bounds=OK separation=2.018568630 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.605540865] [grasp_pose_validation]: Approach sample 1 validity=VALID bounds=OK separation=2.019909781 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.605887679] [grasp_pose_validation]: Approach sample 2 validity=VALID bounds=OK separation=2.021157802 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.606230492] [grasp_pose_validation]: Approach sample 3 validity=VALID bounds=OK separation=2.022315301 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.606568388] [grasp_pose_validation]: Approach sample 4 validity=VALID bounds=OK separation=2.023384753 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.606925619] [grasp_pose_validation]: Approach sample 5 validity=VALID bounds=OK separation=2.024368496 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.607253098] [grasp_pose_validation]: Approach sample 6 validity=VALID bounds=OK separation=2.025268740 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.607623163] [grasp_pose_validation]: Approach sample 7 validity=VALID bounds=OK separation=2.026087571 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.607959435] [grasp_pose_validation]: Approach sample 8 validity=VALID bounds=OK separation=2.026826961 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.608290706] [grasp_pose_validation]: Approach sample 9 validity=VALID bounds=OK separation=2.027488768 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.608700482] [grasp_pose_validation]: Approach sample 10 validity=VALID bounds=OK separation=2.028074747 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.609091340] [grasp_pose_validation]: Approach sample 11 validity=VALID bounds=OK separation=2.028586556 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.609466905] [grasp_pose_validation]: Approach sample 12 validity=VALID bounds=OK separation=2.029025758 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.609858347] [grasp_pose_validation]: Approach sample 13 validity=VALID bounds=OK separation=2.029393832 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.610223828] [grasp_pose_validation]: Approach sample 14 validity=VALID bounds=OK separation=2.029692174 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.610661606] [grasp_pose_validation]: Approach sample 15 validity=VALID bounds=OK separation=2.029922105 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.611046588] [grasp_pose_validation]: Approach sample 16 validity=VALID bounds=OK separation=2.030084875 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.611404694] [grasp_pose_validation]: Approach sample 17 validity=VALID bounds=OK separation=2.030181667 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.611826846] [grasp_pose_validation]: Approach sample 18 validity=VALID bounds=OK separation=2.030213602 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.611860098] [grasp_pose_validation]: Approach final region NORMAL 18 validity=VALID bounds=OK separation=2.030213602 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.612228163] [grasp_pose_validation]: Approach sample 19 validity=VALID bounds=OK separation=2.030181743 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.612263124] [grasp_pose_validation]: Approach final region NORMAL 19 validity=VALID bounds=OK separation=2.030181743 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.612692234] [grasp_pose_validation]: Approach sample 20 validity=VALID bounds=OK separation=2.030087097 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.612728403] [grasp_pose_validation]: Approach final region NORMAL 20 validity=VALID bounds=OK separation=2.030087097 contacts=0
+[grasp_pose_validation-1] [INFO] [1789508642.612733278] [grasp_pose_validation]: Approach validation PASS: 21 Cartesian IK samples + 210 joint samples; NOT EXECUTED
+[grasp_pose_validation-1] [INFO] [1789508642.621830062] [grasp_pose_validation]: Fresh authoritative /joint_states: stamp=222.080000000 age=0.000000 s; all robot variables present
+[grasp_pose_validation-1] [INFO] [1789508642.654530715] [grasp_pose_validation]: Cube sync error=1.65914086135e-11 m orientation=1.18767430546e-11 rad age=0.000000 s
+[grasp_pose_validation-1] [INFO] [1789508642.654581926] [grasp_pose_validation]: Cube PlanningScene xyz=[0.074999995837, 0.410000034861, 0.704892244580] quaternion_xyzw=[0.000000000114, 0.000000000014, -0.000000000000, 1.000000000000]
+[grasp_pose_validation-1] [INFO] [1789508642.654589177] [grasp_pose_validation]: Panda2 max drift=0.000000000021 Panda1 finger max drift=0.000000000012; cube WORLD; no gripper/attach/approach commands
+[grasp_pose_validation-1] [INFO] [1789508642.654592260] [grasp_pose_validation]: VALIDATION PASS execute_pregrasp=false validate_grasp=true
+[INFO] [grasp_pose_validation-1]: process has finished cleanly [pid 6851]

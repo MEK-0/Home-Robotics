@@ -1,0 +1,24 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-23-39-24-125122-mek-Apple-Virtualization-Generic-Platform-18047
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [joint_space_validation-1]: process started with pid [18050]
+[joint_space_validation-1] [INFO] [1789245564.244714475] [joint_space_validation]: Selected planning group: panda2_manipulator
+[joint_space_validation-1] [INFO] [1789245564.247511985] [moveit_3004637405.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[joint_space_validation-1] [INFO] [1789245564.247543027] [moveit_3004637405.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[joint_space_validation-1] [INFO] [1789245564.247549402] [moveit_3004637405.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[joint_space_validation-1] [INFO] [1789245564.263837170] [moveit_3004637405.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[joint_space_validation-1] [INFO] [1789245564.263933295] [moveit_3004637405.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[joint_space_validation-1] [INFO] [1789245566.823442233] [moveit_3004637405.moveit.ros.move_group_interface]: Ready to take commands for planning group panda2_manipulator.
+[joint_space_validation-1] [INFO] [1789245566.824000527] [moveit_3004637405.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[joint_space_validation-1] [INFO] [1789245569.056839392] [joint_space_validation]: Current state received: panda2_rail_joint=0.90000, panda2_joint1=-0.00000, panda2_joint2=-0.00000, panda2_joint3=-0.00000, panda2_joint4=-1.57079, panda2_joint5=-0.00000, panda2_joint6=1.57079, panda2_joint7=-0.78530
+[joint_space_validation-1] [INFO] [1789245569.058792899] [joint_space_validation]: Current state validity: VALID
+[joint_space_validation-1] [INFO] [1789245569.058840024] [joint_space_validation]: Target state: panda2_rail_joint=0.85000, panda2_joint1=-0.10000, panda2_joint2=0.10000, panda2_joint3=-0.10000, panda2_joint4=-1.50000, panda2_joint5=-0.05000, panda2_joint6=1.50000, panda2_joint7=-0.70000
+[joint_space_validation-1] [INFO] [1789245569.059439360] [joint_space_validation]: Target state validity: VALID (contacts=0)
+[joint_space_validation-1] [INFO] [1789245569.059533527] [moveit_3004637405.moveit.ros.move_group_interface]: MoveGroup action client/server ready
+[joint_space_validation-1] [INFO] [1789245569.060186196] [moveit_3004637405.moveit.ros.move_group_interface]: Planning request accepted
+[joint_space_validation-1] [INFO] [1789245569.080670603] [moveit_3004637405.moveit.ros.move_group_interface]: Planning request complete!
+[joint_space_validation-1] [INFO] [1789245569.081218272] [moveit_3004637405.moveit.ros.move_group_interface]: time taken to generate plan: 0.0162589 seconds
+[joint_space_validation-1] [INFO] [1789245569.081251564] [joint_space_validation]: Planning result: SUCCESS, planning_time=0.016259 s, trajectory_points=30
+[joint_space_validation-1] [INFO] [1789245569.081257231] [joint_space_validation]: Plan-only mode selected; execution skipped
+[INFO] [joint_space_validation-1]: process has finished cleanly [pid 18050]

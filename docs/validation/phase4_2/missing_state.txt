@@ -1,0 +1,15 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-16-00-44-40-662802-mek-Apple-Virtualization-Generic-Platform-6980
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [grasp_pose_validation-1]: process started with pid [6983]
+[grasp_pose_validation-1] [INFO] [1789508680.863344632] [moveit_4186070264.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[grasp_pose_validation-1] [INFO] [1789508680.863748188] [moveit_4186070264.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[grasp_pose_validation-1] [INFO] [1789508680.863852900] [moveit_4186070264.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[grasp_pose_validation-1] [INFO] [1789508680.881222793] [moveit_4186070264.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[grasp_pose_validation-1] [INFO] [1789508680.881685310] [moveit_4186070264.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[grasp_pose_validation-1] [INFO] [1789508681.960143320] [moveit_4186070264.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[grasp_pose_validation-1] [ERROR] [1789508712.010952445] [grasp_pose_validation]: VALIDATION FAIL: ROBOT_STATE_TIMEOUT after 30 s: no /joint_states message
+[ERROR] [grasp_pose_validation-1]: process has died [pid 6983, exit code 1, cmd '/home/mek/Home-Robotics/ros2_ws/install/home_robotics_manipulation/lib/home_robotics_manipulation/grasp_pose_validation --ros-args --params-file /tmp/launch_params_jikpnm4c --params-file /tmp/launch_params_6wfqqan7 --params-file /tmp/launch_params_qcxewpsi --params-file /tmp/launch_params_r7bdyh8v --params-file /tmp/launch_params_e386k1at -r /joint_states:=/validation/intentionally_missing_joint_states'].

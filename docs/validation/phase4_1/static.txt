@@ -1,0 +1,19 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-23-38-30-165808-mek-Apple-Virtualization-Generic-Platform-17573
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [planning_scene_environment-1]: process started with pid [17576]
+[planning_scene_environment-1] [INFO] [1789245511.319310995] [planning_scene_environment]: Loaded and verified 14 static collision objects in frame 'world' (PlanningScene total=14)
+[planning_scene_environment-1] [INFO] [1789245511.319361703] [planning_scene_environment]:   floor
+[planning_scene_environment-1] [INFO] [1789245511.319365370] [planning_scene_environment]:   arena_front
+[planning_scene_environment-1] [INFO] [1789245511.319367412] [planning_scene_environment]:   arena_back
+[planning_scene_environment-1] [INFO] [1789245511.319369037] [planning_scene_environment]:   arena_left
+[planning_scene_environment-1] [INFO] [1789245511.319370620] [planning_scene_environment]:   arena_right
+[planning_scene_environment-1] [INFO] [1789245511.319372245] [planning_scene_environment]:   surface_left_1
+[planning_scene_environment-1] [INFO] [1789245511.319373870] [planning_scene_environment]:   surface_left_2
+[planning_scene_environment-1] [INFO] [1789245511.319375412] [planning_scene_environment]:   surface_left_3
+[planning_scene_environment-1] [INFO] [1789245511.319376995] [planning_scene_environment]:   surface_right_1
+[planning_scene_environment-1] [INFO] [1789245511.319378453] [planning_scene_environment]:   surface_right_2
+[planning_scene_environment-1] [INFO] [1789245511.319379912] [planning_scene_environment]:   surface_right_3
+[planning_scene_environment-1] [INFO] [1789245511.319381495] [planning_scene_environment]:   shared_rail_leg_left
+[planning_scene_environment-1] [INFO] [1789245511.319382995] [planning_scene_environment]:   shared_rail_leg_center
+[planning_scene_environment-1] [INFO] [1789245511.319384453] [planning_scene_environment]:   shared_rail_leg_right
+[INFO] [planning_scene_environment-1]: process has finished cleanly [pid 17576]

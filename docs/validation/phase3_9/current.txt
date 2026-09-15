@@ -1,0 +1,18 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-22-43-35-197369-mek-Apple-Virtualization-Generic-Platform-11312
+[INFO] [launch]: Default logging verbosity is set to INFO
+WARNING:root:[33;21mCannot infer URDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.urdf[0m
+WARNING:root:[33;21mCannot infer SRDF from `/home/mek/Home-Robotics/ros2_ws/install/home_robotics_moveit_config/share/home_robotics_moveit_config`. -- using config/home_robotics.srdf[0m
+[INFO] [dual_robot_collision_validation-1]: process started with pid [11315]
+[dual_robot_collision_validation-1] [INFO] [1789242215.380641306] [dual_robot_collision_validation]: mode=current active=panda1_manipulator stationary=panda2 execute=false
+[dual_robot_collision_validation-1] [INFO] [1789242215.383652393] [moveit_3688047603.moveit.ros.rdf_loader]: Loaded robot model in 0 seconds
+[dual_robot_collision_validation-1] [INFO] [1789242215.383692434] [moveit_3688047603.moveit.core.robot_model]: Loading robot model 'home_robotics'...
+[dual_robot_collision_validation-1] [INFO] [1789242215.383698976] [moveit_3688047603.moveit.core.robot_model]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[dual_robot_collision_validation-1] [INFO] [1789242215.404208873] [moveit_3688047603.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda1_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242215.404652665] [moveit_3688047603.moveit.kinematics.kdl_kinematics_plugin]: Joint weights for group 'panda2_manipulator': 1 1 1 1 1 1 1 1
+[dual_robot_collision_validation-1] [INFO] [1789242218.487530610] [moveit_3688047603.moveit.ros.move_group_interface]: Ready to take commands for planning group panda1_manipulator.
+[dual_robot_collision_validation-1] [INFO] [1789242218.487911985] [moveit_3688047603.moveit.ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[dual_robot_collision_validation-1] [INFO] [1789242218.524364190] [dual_robot_collision_validation]: Runtime ACM: 196 cross-robot pairs enabled
+[dual_robot_collision_validation-1] [INFO] [1789242218.524400898] [dual_robot_collision_validation]: Start rails: panda1=-0.90000000 panda2=0.90000000 separation=1.80000000 minimum=0.70000000
+[dual_robot_collision_validation-1] [INFO] [1789242218.524470940] [dual_robot_collision_validation]: current full state validity=VALID bounds=OK(tolerance=1e-6) cross_pairs=0
+[dual_robot_collision_validation-1] [INFO] [1789242218.527211484] [dual_robot_collision_validation]: VALIDATION PASS mode=current
+[INFO] [dual_robot_collision_validation-1]: process has finished cleanly [pid 11315]

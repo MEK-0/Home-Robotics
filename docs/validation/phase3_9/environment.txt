@@ -1,0 +1,19 @@
+[INFO] [launch]: All log files can be found below /home/mek/.ros/log/2026-09-12-22-30-45-767295-mek-Apple-Virtualization-Generic-Platform-7669
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [planning_scene_environment-1]: process started with pid [7688]
+[planning_scene_environment-1] [INFO] [1789241446.008856589] [planning_scene_environment]: Loaded and verified 14 static collision objects in frame 'world' (PlanningScene total=14)
+[planning_scene_environment-1] [INFO] [1789241446.008915631] [planning_scene_environment]:   floor
+[planning_scene_environment-1] [INFO] [1789241446.008919339] [planning_scene_environment]:   arena_front
+[planning_scene_environment-1] [INFO] [1789241446.008921297] [planning_scene_environment]:   arena_back
+[planning_scene_environment-1] [INFO] [1789241446.008922839] [planning_scene_environment]:   arena_left
+[planning_scene_environment-1] [INFO] [1789241446.008924339] [planning_scene_environment]:   arena_right
+[planning_scene_environment-1] [INFO] [1789241446.008925839] [planning_scene_environment]:   surface_left_1
+[planning_scene_environment-1] [INFO] [1789241446.008927381] [planning_scene_environment]:   surface_left_2
+[planning_scene_environment-1] [INFO] [1789241446.008928797] [planning_scene_environment]:   surface_left_3
+[planning_scene_environment-1] [INFO] [1789241446.008930172] [planning_scene_environment]:   surface_right_1
+[planning_scene_environment-1] [INFO] [1789241446.008931672] [planning_scene_environment]:   surface_right_2
+[planning_scene_environment-1] [INFO] [1789241446.008933172] [planning_scene_environment]:   surface_right_3
+[planning_scene_environment-1] [INFO] [1789241446.008934464] [planning_scene_environment]:   shared_rail_leg_left
+[planning_scene_environment-1] [INFO] [1789241446.008935922] [planning_scene_environment]:   shared_rail_leg_center
+[planning_scene_environment-1] [INFO] [1789241446.008937256] [planning_scene_environment]:   shared_rail_leg_right
+[INFO] [planning_scene_environment-1]: process has finished cleanly [pid 7688]

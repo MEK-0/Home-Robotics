@@ -1,0 +1,12 @@
+Starting >>> home_robotics_mujoco_hardware
+Starting >>> home_robotics_control
+Finished <<< home_robotics_mujoco_hardware [0.14s]
+Starting >>> home_robotics_description
+Finished <<< home_robotics_description [0.05s]
+Starting >>> home_robotics_moveit_config
+Finished <<< home_robotics_control [0.63s]
+Starting >>> home_robotics_bringup
+Finished <<< home_robotics_bringup [0.69s]
+Finished <<< home_robotics_moveit_config [7.40s]
+
+Summary: 5 packages finished [7.64s]
