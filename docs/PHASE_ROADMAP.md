@@ -244,6 +244,13 @@ rail + arm trajectory execution
 
 ## 6. Phase 4 — Reliable Pick and Place
 
+- Phase 4.0 manipulation architecture complete: typed lifecycle/failures, component ownership, and config-backed object registry.
+- Phase 4.1 dynamic object PlanningScene integration complete: all five object poses and compound geometries validated, 14 static objects preserved, cube movement/reset and collision rejection validated, both safe Panda plans passed.
+- **Phase 4.2 — COMPLETE:** fresh-state, cube sync, top-down grasp/pre-grasp IK, collision evaluation, pre-grasp planning and sampled approach runtime validation passed (planning-only; optional execution not performed). [Measured results](PHASE4_GRASP_POSE.md).
+- **Phase 4 is not complete.** Gripper/object interaction, attachment, lift, transport, placement, and recovery remain future work.
+
+Architecture, measured evidence, and manual RViz commands: [Phase 4 manipulation architecture](PHASE4_MANIPULATION_ARCHITECTURE.md).
+
 ### Goal
 
 Implement physically validated manipulation.
