@@ -105,6 +105,11 @@ class PandaModelSource:
             quat=" ".join(map(str, tcp["quaternion_wxyz"])),
             size="0.005", rgba="0.0 0.8 0.2 1.0",
         )
+        # Stable contact identifiers, without changing physical geometry.
+        for side in ("left", "right"):
+            finger = hand.find(f"body[@name='{prefix}{side}_finger']")
+            for index, geom in enumerate(finger.findall("geom")):
+                geom.set("name", f"{prefix}{side}_finger_geom_{index}")
         base_body.append(body)
 
         target_tendon = target_root.find("tendon")

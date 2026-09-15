@@ -237,6 +237,9 @@ class SceneBuilder:
         self._add_surfaces(worldbody)
         self._add_shared_rail(root, worldbody)
         self._add_objects(worldbody)
+        equality = root.find("equality")
+        ET.SubElement(equality, "weld", name="panda1_cube_grasp", body1="panda1_hand",
+                      body2="cube", active="false", solref="0.01 1")
         return ET.tostring(root, encoding="unicode")
 
     def build(self, *, headless: bool = True) -> Simulator:
