@@ -1,0 +1,50 @@
+{
+  "mode": "pick_place",
+  "reset": "sequential full stack restart from authoritative configuration",
+  "trials": [
+    {
+      "trial": 1,
+      "success": true,
+      "grasp_verified": true,
+      "lift_success": true,
+      "transport_success": true,
+      "placement_success": true,
+      "target": "surface_left_2",
+      "cube_gripper_max_drift": 0.00010928076370011885,
+      "support_contact_before_release": false,
+      "support_proximity_before_release": true,
+      "final_position_error": 0.0013947560750873608,
+      "final_orientation_error": 8.495275352066092e-05,
+      "panda2_max_drift": 1.131028604106632e-11,
+      "world_count": 1,
+      "attached_count": 0,
+      "target_pose": [
+        1.15,
+        0.49,
+        0.7060000000062993,
+        1.1254317088843097e-10,
+        1.3440204609130694e-11,
+        2.938590928145081e-17,
+        1
+      ],
+      "final_pose": [
+        1.1492726944141132,
+        0.48956497240460267,
+        0.704892244579784,
+        5.021850773190789e-11,
+        -8.042703837065615e-11,
+        -4.247637674737868e-05,
+        0.9999999990978788
+      ],
+      "execute": true,
+      "planning_time": 1.1697576600000001,
+      "total_duration": 100.809210217,
+      "planning_only_pass": false,
+      "wall_duration": 109.82515365800009
+    }
+  ],
+  "success_count": 1,
+  "failure_count": 0,
+  "success_rate": 1.0,
+  "failures_by_stage": {}
+}

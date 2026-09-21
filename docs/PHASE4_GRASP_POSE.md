@@ -1,5 +1,7 @@
 # Phase 4.2 — Grasp-pose runtime validation
 
+> Historical subphase validation snapshot. Current transport/place capabilities and closure status are documented in [PHASE4_RELIABILITY](PHASE4_RELIABILITY.md).
+
 **Phase 4.2 — COMPLETE (planning-only). Phase 4 remains incomplete.**
 
 Validated on 2026-09-16 with Panda1, cube, top-down, `execute_pregrasp:=false`, `validate_grasp:=true`, `keep_alive:=false`. Optional execution was not performed. No Phase 4.3 work was started.

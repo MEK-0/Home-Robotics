@@ -1,4 +1,4 @@
-"""Panda1 cube-only contact-verified pick, lift and return; execution is opt-in."""
+"""Panda1 contact-verified cube transport and named placement; execution is opt-in."""
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
@@ -24,7 +24,7 @@ def generate_launch_description():
     )
     validation = Node(
         package="home_robotics_manipulation",
-        executable="cube_pick_lift_return_demo",
+        executable="cube_pick_place_demo",
         output="screen",
         parameters=[
             moveit_config.robot_description,
@@ -36,6 +36,7 @@ def generate_launch_description():
                 "robot": ParameterValue(LaunchConfiguration("robot"), value_type=str),
                 "object": ParameterValue(LaunchConfiguration("object"), value_type=str),
                 "execute": ParameterValue(LaunchConfiguration("execute"), value_type=bool),
+                "target": ParameterValue(LaunchConfiguration("target"), value_type=str),
                 "result_file": ParameterValue(LaunchConfiguration("result_file"), value_type=str),
                 "lift_height": ParameterValue(LaunchConfiguration("lift_height"), value_type=float),
 
@@ -46,6 +47,7 @@ def generate_launch_description():
         DeclareLaunchArgument("robot", default_value="panda1"),
         DeclareLaunchArgument("object", default_value="cube"),
         DeclareLaunchArgument("execute", default_value="false"),
+        DeclareLaunchArgument("target", default_value="surface_left_2"),
         DeclareLaunchArgument("result_file", default_value=""),
         DeclareLaunchArgument("lift_height", default_value="0.10"),
 

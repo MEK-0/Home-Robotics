@@ -1,5 +1,7 @@
 # Phase 4.0 / 4.1 — Manipulation architecture and object scene integration
 
+> Historical subphase validation snapshot. Current transport/place capabilities and closure status are documented in [PHASE4_RELIABILITY](PHASE4_RELIABILITY.md).
+
 Phase 4.0 and Phase 4.1 are validated. **Phase 4 is not complete.** This implementation contains no grasp generation, gripper closure, physics contact detection, attachment, stabilization, lift, transport, place, or recovery execution.
 
 ## Package structure

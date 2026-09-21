@@ -42,7 +42,27 @@ class Phase2MujocoRuntime(MujocoJointStateBridge):
             self.create_service(Trigger, "/mujoco/cube/begin_grasp", self._begin_grasp),
             self.create_service(Trigger, "/mujoco/cube/verify_grasp", self._verify_grasp),
             self.create_service(SetBool, "/mujoco/cube/stabilize", self._stabilize),
+            self.create_service(Trigger, "/mujoco/cube/clear_dropped",
+                                lambda request, response: self._contact_call(response, self.cube_contact.clear_dropped)),
         ]
+        self.ball_contact = CubeContact(self.model, self.data, self.config, "purple_ball")
+        self.ball_contact_publisher = self.create_publisher(String, "/mujoco/objects/purple_ball/contact", 10)
+        for suffix, service, operation in (
+            ("begin_grasp", Trigger, lambda request: self.ball_contact.begin()),
+            ("verify_grasp", Trigger, lambda request: self.ball_contact.verify()),
+            ("stabilize", SetBool, lambda request: self.ball_contact.stabilize(request.data)),
+            ("clear_dropped", Trigger, lambda request: self.ball_contact.clear_dropped()),
+        ):
+            def callback(request, response, operation=operation):
+                try:
+                    operation(request)
+                    response.success = True
+                    response.message = json.dumps(self.ball_contact.observe())
+                except ValueError as exc:
+                    response.success = False
+                    response.message = str(exc)
+                return response
+            self.contact_services.append(self.create_service(service, "/mujoco/purple_ball/" + suffix, callback))
         self.ignore_commands_until = 0.0
         self.cancel_clients = [
             self.create_client(CancelGoal, f"/{name}/_action/cancel_goal")
@@ -117,6 +137,7 @@ class Phase2MujocoRuntime(MujocoJointStateBridge):
                 client.call_async(cancel)
         self.ignore_commands_until = time.monotonic() + 0.5
         self.cube_contact.reset()
+        self.ball_contact.reset()
         result = super()._reset_simulation(request, response)
         if result.success:
             self.debug_shifted = False
@@ -170,6 +191,7 @@ class Phase2MujocoRuntime(MujocoJointStateBridge):
         message.clock.nanosec = int((float(self.data.time) - seconds) * 1_000_000_000)
         self.clock_publisher.publish(message)
         self.contact_publisher.publish(String(data=json.dumps(self.cube_contact.observe())))
+        self.ball_contact_publisher.publish(String(data=json.dumps(self.ball_contact.observe())))
 
 
 def main(args=None):

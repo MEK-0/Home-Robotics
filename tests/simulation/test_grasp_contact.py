@@ -83,3 +83,56 @@ def test_physical_bilateral_close_then_preserving_weld():
         assert observer.observe()['support_contact']
         observer.stabilize(False)
         assert not sim.data.eq_active[observer.eq]
+
+
+def test_destination_support_and_unsupported_release_guard():
+    config=ConfigLoader(ROOT/'config').load()
+    with SceneBuilder(config).build(headless=True) as sim:
+        observer=CubeContact(sim.model,sim.data,config)
+        surface=config.scene['surfaces']['surface_left_2']
+        x,y,z=surface['pose']['position']
+        # Explicit offline physics fixture, never part of normal manipulation.
+        sim.set_free_joint_pose('cube_free_joint',(x,y,z+observer.width/2+0.001),(1,0,0,0))
+        sim.forward()
+        assert observer.observe()['near_support_surfaces']==['surface_left_2']
+        sim.data.eq_active[observer.eq]=True
+        observer.stabilize(False)
+        for _ in range(100): sim.step()
+        assert 'surface_left_2' in observer.observe()['support_surfaces']
+        sim.set_free_joint_pose('cube_free_joint',(x,y,z+0.2),(1,0,0,0));sim.forward()
+        sim.data.eq_active[observer.eq]=True
+        with pytest.raises(ValueError,match='support contact required'): observer.stabilize(False)
+        with pytest.raises(ValueError,match='healthy weld'): observer.clear_dropped()
+        sim.data.eq_active[observer.eq]=False
+        observer.clear_dropped()
+        assert not observer.verified
+
+
+def test_dropped_stabilization_cleanup_never_moves_object():
+    config=ConfigLoader(ROOT/'config').load()
+    with SceneBuilder(config).build(headless=True) as sim:
+        observer=CubeContact(sim.model,sim.data,config)
+        state=observer.observe()
+        observer.reference=np.array(state['relative_position'])+np.array([0.02,0,0])
+        observer.activation_position=sim.data.body('cube').xpos.copy()
+        observer.activation_time=sim.data.time
+        sim.data.eq_active[observer.eq]=True
+        before=sim.data.qpos.copy()
+        observer.clear_dropped()
+        assert observer.max_drift>0.01
+        assert not sim.data.eq_active[observer.eq]
+        assert not observer.verified
+        np.testing.assert_array_equal(before,sim.data.qpos)
+
+
+def test_second_observer_borrows_same_runtime_and_config_geometry():
+    config=ConfigLoader(ROOT/'config').load()
+    with SceneBuilder(config).build(headless=True) as sim:
+        cube=CubeContact(sim.model,sim.data,config)
+        ball=CubeContact(sim.model,sim.data,config,'purple_ball')
+        assert cube.model is ball.model is sim.model
+        assert cube.data is ball.data is sim.data
+        assert ball.width == 2*config.objects['purple_ball']['collision']['radius']
+        assert ball.observe()['object_id']=='purple_ball'
+        with pytest.raises(ValueError,match='verification required'): ball.stabilize(True)
+        assert not sim.data.eq_active[ball.eq]

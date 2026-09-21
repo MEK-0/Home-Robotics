@@ -46,11 +46,14 @@ GraspCandidate generateTopDownGrasp(const ObjectMetadata& object, const geometry
     std::isfinite(geometry.pad_half_height) && std::isfinite(geometry.maximum_open_width) &&
     geometry.hand_to_tcp > 0 && geometry.hand_to_pad > 0 && geometry.pad_half_height > 0 &&
     geometry.maximum_open_width > 0, "Invalid gripper geometry");
-  require(object.id == "cube" && object.collision_shape == CollisionShapeType::BOX,
-          "Only the cube BOX baseline is supported");
+  require((object.id == "cube" && object.collision_shape == CollisionShapeType::BOX) ||
+          (object.id == "purple_ball" && object.collision_shape == CollisionShapeType::SPHERE),
+          "Only cube BOX and purple_ball SPHERE baselines are supported");
   require(object.ownership == ObjectOwnership::WORLD, "Cube must remain in world");
   require(object.geometry.primitives.size() == 1, "Expected one cube box");
-  const auto& dimensions = object.geometry.primitives[0].dimensions;
+  auto dimensions = object.geometry.primitives[0].dimensions;
+  const bool sphere=object.collision_shape==CollisionShapeType::SPHERE;
+  if(sphere)dimensions.assign(3,2*dimensions.at(0));
   require(dimensions.size() == 3 && dimensions[0] > 0 &&
     std::abs(dimensions[0]-dimensions[1]) < 1e-8 && std::abs(dimensions[0]-dimensions[2]) < 1e-8, "Expected cube dimensions");
   require(parameters.approach_direction.isApprox(-Eigen::Vector3d::UnitZ(), 1e-8), "Baseline approach must be world -Z");
@@ -61,7 +64,7 @@ GraspCandidate generateTopDownGrasp(const ObjectMetadata& object, const geometry
   const auto& qmsg = object_pose.orientation;
   Eigen::Quaterniond q(qmsg.w,qmsg.x,qmsg.y,qmsg.z);
   require(q.coeffs().allFinite() && std::abs(q.norm()-1) <= 1e-6, "Invalid cube quaternion");
-  require((q * Eigen::Vector3d::UnitZ()).dot(Eigen::Vector3d::UnitZ()) > std::cos(0.05), "Cube tilt exceeds top-down baseline");
+  require(sphere || (q * Eigen::Vector3d::UnitZ()).dot(Eigen::Vector3d::UnitZ()) > std::cos(0.05), "Cube tilt exceeds top-down baseline");
   const double width = parameters.expected_cube_width == 0 ? dimensions[0] : parameters.expected_cube_width;
   require(std::isfinite(width) && std::abs(width-dimensions[0]) < 1e-8, "Width must match authoritative registry");
   const double opening = parameters.finger_open_width == 0 ? geometry.maximum_open_width : parameters.finger_open_width;
@@ -70,7 +73,7 @@ GraspCandidate generateTopDownGrasp(const ObjectMetadata& object, const geometry
   require(std::set<std::string>(parameters.allowed_touch_links.begin(), parameters.allowed_touch_links.end()) ==
           std::set<std::string>{"panda1_left_finger", "panda1_right_finger"} && parameters.allowed_touch_links.size() == 2,
           "Only the two finger touch links are permitted");
-  Eigen::Vector3d closing = q * Eigen::Vector3d::UnitX(); closing.z()=0; closing.normalize();
+  Eigen::Vector3d closing = sphere ? Eigen::Vector3d::UnitX().eval() : (q * Eigen::Vector3d::UnitX()).eval(); closing.z()=0; closing.normalize();
   const auto approach = parameters.approach_direction;
   Eigen::Matrix3d rotation;
   rotation.col(1)=closing; rotation.col(2)=approach; rotation.col(0)=closing.cross(approach);
@@ -95,7 +98,7 @@ bool pregraspJointNamesAllowed(const std::vector<std::string>& names) {
 }
 collision_detection::AllowedCollisionMatrix graspEvaluationACM(
     const collision_detection::AllowedCollisionMatrix& original, const GraspCandidate& candidate) {
-  require(candidate.object_id == "cube" && candidate.robot_id == "panda1", "Unsupported touch policy target");
+  require((candidate.object_id == "cube" || candidate.object_id == "purple_ball") && candidate.robot_id == "panda1", "Unsupported touch policy target");
   require(std::set<std::string>(candidate.allowed_touch_links.begin(),candidate.allowed_touch_links.end()) ==
     std::set<std::string>{"panda1_left_finger", "panda1_right_finger"} && candidate.allowed_touch_links.size()==2,
     "Broad touch allowances are prohibited");

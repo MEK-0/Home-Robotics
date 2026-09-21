@@ -1,0 +1,10 @@
+[cube_pick_place_demo-1] [INFO] [1789989056.212396811] [cube_pick_lift_return_demo]: Cartesian plan SUCCESS samples=51 points=245
+[cube_pick_place_demo-1] [WARN] [1789989056.222256996] [moveit_401265514.moveit.core.time_optimal_trajectory_generation]: There is a combination of revolute and prismatic joints in the robot model. TOTG's `path_tolerance` will not function correctly.
+[cube_pick_place_demo-1] [INFO] [1789989056.233630256] [cube_pick_lift_return_demo]: Cartesian plan SUCCESS samples=50 points=245
+[cube_pick_place_demo-1] [WARN] [1789989057.736281969] [moveit_401265514.moveit.core.time_optimal_trajectory_generation]: There is a combination of revolute and prismatic joints in the robot model. TOTG's `path_tolerance` will not function correctly.
+[cube_pick_place_demo-1] [ERROR] [1789989058.174534433] [moveit_401265514.moveit.core.time_optimal_trajectory_generation]: Error while integrating forward: Negative path velocity
+[cube_pick_place_demo-1] [ERROR] [1789989058.174599313] [moveit_401265514.moveit.core.time_optimal_trajectory_generation]: Trajectory not valid after integrateForward and integrateBackward.
+[cube_pick_place_demo-1] [ERROR] [1789989058.175115353] [moveit_401265514.moveit.core.time_optimal_trajectory_generation]: Couldn't create trajectory
+[cube_pick_place_demo-1] [INFO] [1789989058.181199120] [cube_pick_lift_return_demo]: STATE -> FAILED
+[cube_pick_place_demo-1] [ERROR] [1789989058.181217830] [cube_pick_lift_return_demo]: DEMO FAILED: Retiming failed; stabilization=0 attached=0 sync_paused=0. Supported release required; inspect/reset before retry.
+[ERROR] [cube_pick_place_demo-1]: process has died [pid 12693, exit code 1, cmd '/home/mek/Home-Robotics/ros2_ws/install/home_robotics_manipulation/lib/home_robotics_manipulation/cube_pick_place_demo --ros-args --params-file /tmp/launch_params_6sc4b92t --params-file /tmp/launch_params_bodclfc3 --params-file /tmp/launch_params_u927ne7j --params-file /tmp/launch_params_w8zjsd80 --params-file /tmp/launch_params_r79sxo4u'].

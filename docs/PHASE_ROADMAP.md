@@ -247,7 +247,10 @@ rail + arm trajectory execution
 - Phase 4.0 manipulation architecture complete: typed lifecycle/failures, component ownership, and config-backed object registry.
 - Phase 4.1 dynamic object PlanningScene integration complete: all five object poses and compound geometries validated, 14 static objects preserved, cube movement/reset and collision rejection validated, both safe Panda plans passed.
 - **Phase 4.2 — COMPLETE:** fresh-state, cube sync, top-down grasp/pre-grasp IK, collision evaluation, pre-grasp planning and sampled approach runtime validation passed (planning-only; optional execution not performed). [Measured results](PHASE4_GRASP_POSE.md).
-- **Phase 4 is not complete.** Gripper/object interaction, attachment, lift, transport, placement, and recovery remain future work.
+- **Phase 4.3–4.5 — COMPLETE:** physical contact-verified grasp, temporary stabilization and lift; the preserved cube lift-return regression passed again on final source.
+- **Phase 4.6–4.9 — COMPLETE (2026-09-21):** cube transport from surface_left_1 to surface_left_2, config-derived placement, supported release, ownership uniqueness, deterministic failure handling and **9/10** full physical acceptance trials. An additional final-source pick-place check passed. Simulation **92 passed**; ROS **44 tests, 0 errors, 0 failures, 1 skipped**.
+- Second-object bonus: purple_ball physical bilateral grasp, 9.967 cm lift and supported return passed once. Arbitrary/named sphere placement is not claimed.
+- **Full Phase 4 COMPLETE:** reliable simulated Panda1/cube pick-and-place baseline only. Phase 5 and later work remain unstarted. [Measured closure evidence and limitations](PHASE4_RELIABILITY.md).
 
 Architecture, measured evidence, and manual RViz commands: [Phase 4 manipulation architecture](PHASE4_MANIPULATION_ARCHITECTURE.md).
 

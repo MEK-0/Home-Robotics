@@ -240,6 +240,8 @@ class SceneBuilder:
         equality = root.find("equality")
         ET.SubElement(equality, "weld", name="panda1_cube_grasp", body1="panda1_hand",
                       body2="cube", active="false", solref="0.01 1")
+        ET.SubElement(equality, "weld", name="panda1_purple_ball_grasp", body1="panda1_hand",
+                      body2="purple_ball", active="false", solref="0.01 1")
         return ET.tostring(root, encoding="unicode")
 
     def build(self, *, headless: bool = True) -> Simulator:

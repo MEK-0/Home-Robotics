@@ -1,0 +1,27 @@
+{
+  "mode": "planning",
+  "reset": "sequential full stack restart from authoritative configuration",
+  "trials": [
+    {
+      "trial": 1,
+      "success": false,
+      "failure_stage": "STARTUP",
+      "grasp_verified": false,
+      "lift_success": false,
+      "transport_success": false,
+      "placement_success": false,
+      "target": "surface_left_2",
+      "execute": false,
+      "planning_time": 0.510607986,
+      "total_duration": 1.863484734,
+      "planning_only_pass": true,
+      "wall_duration": 13.712947324999732
+    }
+  ],
+  "success_count": 0,
+  "failure_count": 1,
+  "success_rate": 0.0,
+  "failures_by_stage": {
+    "STARTUP": 1
+  }
+}

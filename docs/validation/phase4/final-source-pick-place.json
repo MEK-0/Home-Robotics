@@ -1,0 +1,55 @@
+{
+  "mode": "pick_place",
+  "reset": "sequential full stack restart from authoritative configuration",
+  "trials": [
+    {
+      "trial": 1,
+      "success": true,
+      "planning_time": 1.0238628490000001,
+      "grasp_verified": true,
+      "lift_success": true,
+      "transport_success": true,
+      "placement_success": true,
+      "final_position_error": 0.0014685886267834973,
+      "total_duration": 100.276541883,
+      "target": "surface_left_2",
+      "object": "cube",
+      "cube_gripper_max_drift": 0.00010927532897637812,
+      "cube_lift": 0.09944692386940279,
+      "support_contact_before_release": false,
+      "support_proximity_before_release": true,
+      "gripper_open": true,
+      "stabilization_released": true,
+      "retreat_success": true,
+      "final_orientation_error": 0.00013336818770911594,
+      "panda2_max_drift": 2.65898414397725e-11,
+      "world_count": 1,
+      "attached_count": 0,
+      "target_pose": [
+        1.15,
+        0.49,
+        0.7060000000064933,
+        1.1601050369162054e-10,
+        1.3854399799811073e-11,
+        3.524761333016346e-17,
+        1
+      ],
+      "final_pose": [
+        1.1491644044484481,
+        0.48951894850219374,
+        0.7048922445797844,
+        -4.502680240594925e-11,
+        -1.0697364427676052e-10,
+        6.668409380486787e-05,
+        0.9999999977766155
+      ],
+      "execute": true,
+      "planning_only_pass": false,
+      "wall_duration": 111.54316399600066
+    }
+  ],
+  "success_count": 1,
+  "failure_count": 0,
+  "success_rate": 1.0,
+  "failures_by_stage": {}
+}

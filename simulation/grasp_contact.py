@@ -1,4 +1,4 @@
-"""Cube-only authoritative contact verification; borrows the runtime's model/data."""
+"""Known-primitive contact verification; both observers borrow one runtime model/data."""
 import numpy as np
 import mujoco
 
@@ -16,11 +16,15 @@ def verification_reason(state, open_width, original):
 
 
 class CubeContact:
-    def __init__(self, model, data, config):
+    def __init__(self, model, data, config, object_id="cube"):
+        self.object_id = object_id
         self.model, self.data = model, data
-        self.width = float(config.objects['cube']['collision']['dimensions'][0])
-        self.support = config.objects['cube']['initial']['support_surface'] + '_top'
-        self.eq = model.equality('panda1_cube_grasp').id
+        collision = config.objects[object_id]['collision']
+        self.spherical = collision['type'] == 'sphere'
+        self.width = 2 * float(collision['radius']) if self.spherical else float(collision['dimensions'][0])
+        self.support = config.objects[object_id]['initial']['support_surface'] + '_top'
+        self.surfaces = config.scene['surfaces']
+        self.eq = model.equality(f'panda1_{object_id}_grasp').id
         self.geom_sets = {}
         for side in ('left', 'right'):
             body = model.body(f'panda1_{side}_finger').id
@@ -42,12 +46,12 @@ class CubeContact:
 
     def observe(self):
         d, m = self.data, self.model
-        cube, hand = d.body('cube'), d.body('panda1_hand')
+        cube, hand = d.body(self.object_id), d.body('panda1_hand')
         rotation = hand.xmat.reshape(3, 3)
         relative = rotation.T @ (cube.xpos - hand.xpos)
         pairs, sides, support = [], set(), False
-        cube_id = m.geom('cube_collision').id
-        unexpected = []
+        cube_id = m.geom(self.object_id + '_collision').id
+        unexpected, support_surfaces = [], []
         for c in d.contact[:d.ncon]:
             if c.dist > 0 or c.efc_address < 0:
                 continue
@@ -61,8 +65,9 @@ class CubeContact:
             for side, geoms in self.geom_sets.items():
                 if other in geoms:
                     sides.add(side); found = True
-            if name == self.support:
+            if name in {key + '_top' for key in self.surfaces}:
                 support = True
+                support_surfaces.append(name[:-4])
             elif not found:
                 unexpected.append(name)
         width = sum(float(d.joint(f'panda1_finger_joint{i}').qpos[0]) for i in (1, 2))
@@ -77,9 +82,18 @@ class CubeContact:
             self.max_drift = max(self.max_drift, float(np.linalg.norm(relative - self.reference)))
             if d.time - self.activation_time <= 0.10:
                 self.activation_jump = max(self.activation_jump, float(np.linalg.norm(cube.xpos-self.activation_position)))
-        result = dict(object_id='cube', timestamp=float(d.time), left_finger_contact='left' in sides,
+        near_support = []
+        half = np.full(3, self.width / 2) if self.spherical else np.abs(cube.xmat.reshape(3, 3)) @ np.full(3, self.width / 2)
+        for key, surface in self.surfaces.items():
+            center = np.array(surface['pose']['position'][:2]) + np.array(surface['safe_place_region']['center'][:2])
+            fits = np.all(np.abs(cube.xpos[:2] - center) + half[:2] <= np.array(surface['safe_place_region']['size']) / 2)
+            gap = cube.xpos[2] - half[2] - surface['top_height']
+            if fits and -0.0005 <= gap <= 0.002:
+                near_support.append(key)
+        result = dict(object_id=self.object_id, timestamp=float(d.time), left_finger_contact='left' in sides,
             right_finger_contact='right' in sides, contact_count=len(pairs), contact_pairs=pairs,
-            support_contact=support, unexpected_contacts=unexpected, width=width,
+            support_contact=support, support_surfaces=sorted(set(support_surfaces)),
+            near_support_surfaces=near_support, unexpected_contacts=unexpected, width=width,
             between_fingers=bool(between), position=cube.xpos.tolist(), quaternion_wxyz=cube.xquat.tolist(),
             relative_position=relative.tolist(), stabilization_active=active,
             relative_drift=self.max_drift, activation_jump=self.activation_jump)
@@ -115,7 +129,7 @@ class CubeContact:
             self.verify()  # Recheck live physics; a historical success is insufficient.
             if self.data.eq_active[self.eq]:
                 raise ValueError('Already stabilized')
-            hand, cube = self.data.body('panda1_hand'), self.data.body('cube')
+            hand, cube = self.data.body('panda1_hand'), self.data.body(self.object_id)
             inv = np.empty(4); quat = np.empty(4)
             mujoco.mju_negQuat(inv, hand.xquat)
             mujoco.mju_mulQuat(quat, inv, cube.xquat)
@@ -128,8 +142,17 @@ class CubeContact:
             self.activation_time = float(self.data.time)
             self.max_drift = self.activation_jump = 0.0
         else:
-            if self.data.eq_active[self.eq] and not self.observe()['support_contact']:
+            state = self.observe()
+            if self.data.eq_active[self.eq] and not (state['support_contact'] or state['near_support_surfaces']):
                 raise ValueError('PLACE_FAILED: support contact required before release')
             self.verified = False
         self.data.eq_active[self.eq] = active
         # No qpos writes or extra physics steps.
+
+    def clear_dropped(self):
+        """Clear only a demonstrably stale weld; retain a healthy airborne grasp."""
+        state = self.observe()
+        if state['stabilization_active'] and state['relative_drift'] <= 0.01:
+            raise ValueError('GRASP_UNSTABLE: healthy weld must be retained')
+        self.data.eq_active[self.eq] = False
+        self.verified = False

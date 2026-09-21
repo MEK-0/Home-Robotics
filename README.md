@@ -391,7 +391,7 @@ cube
 top-down grasp
 ```
 
-The current Phase 4 work is focused on grasp-pose generation and reliable pre-grasp planning.
+The Phase 4 baseline now includes contact-verified cube grasp, stabilized lift, transport to `surface_left_2`, supported release and final placement verification. See [the demo](docs/DEMO.md) and [measured reliability](docs/PHASE4_RELIABILITY.md) for acceptance status and limitations.
 
 ---
 
@@ -486,7 +486,9 @@ The following components have been implemented and tested during development:
 
 ### Phase 4 — Reliable Pick & Place
 
-**In Progress**
+**Complete — simulated Panda1/cube baseline (9/10 acceptance trials).**
+
+Scope and evidence: [Phase 4 reliability](docs/PHASE4_RELIABILITY.md).
 
 - dynamic object synchronization,
 - manipulation state machine,
@@ -687,7 +689,7 @@ Phase 0  Foundation                  COMPLETE
 Phase 1  MuJoCo World               COMPLETE
 Phase 2  ROS 2 Control              COMPLETE
 Phase 3  MoveIt 2                   COMPLETE
-Phase 4  Reliable Pick & Place      IN PROGRESS
+Phase 4  Reliable Pick & Place      COMPLETE (Panda1/cube baseline)
 Phase 5  Task Executor              PLANNED
 Phase 6  VLA / LLM                  PLANNED
 Phase 7  Dual-Arm Coordination      PLANNED

@@ -66,3 +66,18 @@ TEST(Grasp, RejectsUnsafeParameters) {
   params={};params.allowed_touch_links.push_back("panda1_link7");
   EXPECT_THROW(hm::generateTopDownGrasp(registry().at("cube"),object_pose(),geometry,params),std::runtime_error);
 }
+
+TEST(Grasp, SphereUsesAuthoritativeDiameterAndFingerTouchOnly) {
+  auto ball=registry().at("purple_ball");
+  auto c=hm::generateTopDownGrasp(ball,object_pose(),geometry);
+  EXPECT_DOUBLE_EQ(c.expected_cube_width,2*ball.geometry.primitives[0].dimensions[0]);
+  EXPECT_DOUBLE_EQ(c.expected_gripper_width,geometry.maximum_open_width);
+  EXPECT_GT(c.expected_gripper_width-c.expected_cube_width,0.006);
+  EXPECT_EQ(c.object_id,"purple_ball");
+  collision_detection::AllowedCollisionMatrix acm;
+  auto touch=hm::graspEvaluationACM(acm,c);
+  collision_detection::AllowedCollision::Type type;
+  EXPECT_TRUE(touch.getAllowedCollision("panda1_left_finger","purple_ball",type));
+  EXPECT_EQ(type,collision_detection::AllowedCollision::ALWAYS);
+  EXPECT_FALSE(touch.getAllowedCollision("panda1_hand","purple_ball",type));
+}
