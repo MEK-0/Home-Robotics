@@ -128,6 +128,14 @@ int main(int argc, char** argv)
   bool execute = false;
   node->get_parameter_or<std::string>("mode", mode, "current");
   node->get_parameter_or("execute", execute, false);
+  const std::set<std::string> modes = {"current", "safe_panda1", "safe_panda2",
+    "cross_collision", "path_collision", "reverse_path_collision"};
+  const bool safe_mode = mode.rfind("safe_", 0) == 0;
+  if (!modes.count(mode) || (execute && !safe_mode)) {
+    RCLCPP_ERROR(node->get_logger(), "VALIDATION FAIL: %s", !modes.count(mode) ? "Unknown mode" : "execute=true is permitted only for safe modes");
+    rclcpp::shutdown();
+    return 1;
+  }
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
   std::thread spinner([&]() { executor.spin(); });
