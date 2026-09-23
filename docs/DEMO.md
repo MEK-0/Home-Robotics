@@ -105,6 +105,17 @@ ownership → open → vertical retreat → actual destination contact and final
 
 Headless results do not substitute for checking these visual boxes yourself.
 
+## Phase 5 Action API
+
+After Terminals 1-4 above are ready, start the executor in a separate terminal:
+
+```bash
+ros2 launch home_robotics_task_executor task_executor.launch.py execute:=false
+ros2 action send_goal --feedback /home_robotics/pick_and_place home_robotics_interfaces/action/PickAndPlace "{object_id: cube, target_id: surface_left_2}"
+```
+
+For physical execution use `execute:=true` only after the planning-only acceptance passes. Full invalid, busy, and cancellation commands are in [Phase 5 acceptance](PHASE5_ACCEPTANCE.md).
+
 ## Preserved lift-return regression
 
 From a fresh stack, use the original commands:
