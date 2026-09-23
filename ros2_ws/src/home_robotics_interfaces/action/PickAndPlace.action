@@ -1,0 +1,18 @@
+# A semantic, long-running task request.  Robot selection is intentionally
+# internal to the Phase 5 baseline (Panda1).
+string object_id
+string target_id
+---
+bool success
+string task_id
+string final_state
+string failure_reason
+string manipulation_failure_reason
+string message
+# An unavailable final pose is represented by an all-zero pose (including w).
+geometry_msgs/Pose final_object_pose
+---
+string task_id
+string current_state
+float32 progress
+string message
