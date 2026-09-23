@@ -12,7 +12,11 @@ class TaskExecutor : public rclcpp::Node {
  public:
   using PickAndPlace = home_robotics_interfaces::action::PickAndPlace;
   using GoalHandle = rclcpp_action::ServerGoalHandle<PickAndPlace>;
-  explicit TaskExecutor(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
+  explicit TaskExecutor(const rclcpp::NodeOptions & options = rclcpp::NodeOptions(),
+    std::unique_ptr<ManipulationAdapter> adapter = nullptr);
+ public:
+  // Narrow test hook: validation is side-effect free and runs before adapter delegation.
+  bool validate_for_test(const TaskRequest & request, TaskResult & result) const { return validate(request, result); }
  private:
   rclcpp_action::GoalResponse on_goal(const rclcpp_action::GoalUUID &, std::shared_ptr<const PickAndPlace::Goal> goal);
   rclcpp_action::CancelResponse on_cancel(const std::shared_ptr<GoalHandle> goal_handle);

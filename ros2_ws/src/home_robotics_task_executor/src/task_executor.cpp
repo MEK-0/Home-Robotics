@@ -14,9 +14,9 @@ namespace home_robotics_task_executor {
 const char * to_string(TaskState s) { static const char * n[] = {"IDLE","VALIDATING_REQUEST","RESOLVING_OBJECT","RESOLVING_TARGET","PREPARING","EXECUTING_PICK","EXECUTING_LIFT","EXECUTING_TRANSPORT","EXECUTING_PLACE","VERIFYING_RESULT","SUCCEEDED","FAILED","CANCELING","CANCELED"}; return n[static_cast<int>(s)]; }
 const char * to_string(TaskFailureReason r) { static const char * n[] = {"NONE","INVALID_REQUEST","UNSUPPORTED_TASK","OBJECT_NOT_FOUND","TARGET_NOT_FOUND","OBJECT_NOT_MOVABLE","INVALID_TARGET","ROBOT_UNAVAILABLE","SCENE_NOT_READY","CONTROLLER_NOT_READY","MANIPULATION_FAILED","TASK_BUSY","CANCELED","INTERNAL_ERROR"}; return n[static_cast<int>(r)]; }
 
-TaskExecutor::TaskExecutor(const rclcpp::NodeOptions & options) : Node("task_executor", options) {
+TaskExecutor::TaskExecutor(const rclcpp::NodeOptions & options, std::unique_ptr<ManipulationAdapter> adapter) : Node("task_executor", options) {
   execute_ = declare_parameter<bool>("execute", false);
-  adapter_ = std::make_unique<ManipulationAdapter>(get_logger());
+  adapter_ = adapter ? std::move(adapter) : std::make_unique<Phase4ManipulationAdapter>(get_logger());
   server_ = rclcpp_action::create_server<PickAndPlace>(this, "/home_robotics/pick_and_place",
     std::bind(&TaskExecutor::on_goal, this, std::placeholders::_1, std::placeholders::_2),
     std::bind(&TaskExecutor::on_cancel, this, std::placeholders::_1),

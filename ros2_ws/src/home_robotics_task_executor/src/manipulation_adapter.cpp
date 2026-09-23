@@ -28,7 +28,7 @@ geometry_msgs::msg::Pose parse_pose(const YAML::Node & node) {
 }
 }  // namespace
 
-ManipulationResult ManipulationAdapter::pick_and_place(const TaskRequest & request, bool execute,
+ManipulationResult Phase4ManipulationAdapter::pick_and_place(const TaskRequest & request, bool execute,
   const std::function<bool()> & cancellation_requested) const {
   ManipulationResult result;
   if (cancellation_requested()) {
