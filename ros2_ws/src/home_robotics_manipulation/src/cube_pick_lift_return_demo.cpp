@@ -258,6 +258,12 @@ int main(int argc,char** argv) {
     preview();
     if(!execute){
       report["planning_only_pass"]=true;
+      // A completed preflight is a successful task outcome. No final physical
+      // pose is claimed because the robot and object were deliberately not moved.
+      report["success"]=true;
+      report["planning_only"]=true;
+      report["failure_reason"]="NONE";
+      report["failure_detail"]="Planning-only preflight passed; no physical commands issued";
       RCLCPP_INFO(log,"PLANNING_ONLY PASS: no physical commands, services mutating physics, or remote scene changes; physical contact not verified");result=0;
     }else{
       gate();require((transform(pose().pose).translation()-transform(initial_pose.pose).translation()).norm()<0.002,"Cube moved since selection");
