@@ -250,7 +250,7 @@ rail + arm trajectory execution
 - **Phase 4.3–4.5 — COMPLETE:** physical contact-verified grasp, temporary stabilization and lift; the preserved cube lift-return regression passed again on final source.
 - **Phase 4.6–4.9 — COMPLETE (2026-09-21):** cube transport from surface_left_1 to surface_left_2, config-derived placement, supported release, ownership uniqueness, deterministic failure handling and **9/10** full physical acceptance trials. An additional final-source pick-place check passed. Simulation **92 passed**; ROS **44 tests, 0 errors, 0 failures, 1 skipped**.
 - Second-object bonus: purple_ball physical bilateral grasp, 9.967 cm lift and supported return passed once. Arbitrary/named sphere placement is not claimed.
-- **Full Phase 4 COMPLETE:** reliable simulated Panda1/cube pick-and-place baseline only. Phase 5 Task Executor API implementation is in progress; Phase 6 and later work remain unstarted. [Measured closure evidence and limitations](PHASE4_RELIABILITY.md).
+- **Full Phase 4 COMPLETE:** reliable simulated Panda1/cube pick-and-place baseline only. Phase 5 Task Executor API is COMPLETE; Phase 6 and later work remain unstarted. [Measured closure evidence and limitations](PHASE4_RELIABILITY.md).
 
 Architecture, measured evidence, and manual RViz commands: [Phase 4 manipulation architecture](PHASE4_MANIPULATION_ARCHITECTURE.md).
 
@@ -367,7 +367,7 @@ without knowing any joint or Cartesian values.
 
 ## Phase 5 implementation note
 
-The Phase 5 baseline adds `home_robotics_interfaces` and `home_robotics_task_executor` with a single `PickAndPlace` Action endpoint. See [Phase 5 architecture](PHASE5_TASK_EXECUTOR_ARCHITECTURE.md) and [acceptance](PHASE5_ACCEPTANCE.md). Only cube pick-and-place is executable; this does not start Phase 6.
+**Phase 5 — COMPLETE (2026-09-23).** The baseline provides `home_robotics_interfaces` and `home_robotics_task_executor` with a single `PickAndPlace` Action endpoint, deterministic validation, feedback, task IDs, single-task execution, planning-only cancellation and Phase 4 delegation. Automated acceptance and live evidence are in [Phase 5 acceptance](PHASE5_ACCEPTANCE.md); Phase 6 was not started.
 
 ## 8. Phase 6 — LLM Orchestration
 

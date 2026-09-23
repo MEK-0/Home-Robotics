@@ -51,5 +51,26 @@ python -m colcon build
 source install/setup.bash
 colcon test
 colcon test-result --verbose
-# 47 tests, 0 errors, 0 failures, 1 skipped
+# 56 tests, 0 errors, 0 failures, 1 skipped
 ```
+
+
+## Automated acceptance matrix — Phase 5.8
+
+`test_task_executor_action` uses a condition-variable-controlled fake `ManipulationAdapter`; it never starts MuJoCo, MoveIt or a controller. It protects the Action-layer contract deterministically:
+
+| Test | Protection |
+| --- | --- |
+| `SuccessPropagatesPoseTaskIdAndMonotonicFeedback` | Non-decreasing feedback ending at 100, structured success, pose propagation. |
+| `BusyGoalIsRejectedWithoutSecondAdapterCall` | One active task only; second goal is rejected and cannot invoke the adapter. |
+| `CancellationIsProcessedWhileAdapterIsBlocked` | A blocked fake task still processes cancellation; protects the separate Action execution thread. |
+| `ManipulationFailureIsMappedAndPreserved` | `NO_CONTACT` remains visible while task failure is `MANIPULATION_FAILED`. |
+| `InvalidRequestsDoNotCallAdapter` | Empty, unknown object and unknown target validation completes before delegation. |
+| `SequentialTaskIdsAreUnique` | Sequential accepted tasks receive non-empty, distinct IDs. |
+| `TaskArchitecture.*` | No MuJoCo ownership/raw MoveIt planning, correct dependency direction, `execute:=false`, and independent Phase 4 demo target. |
+
+Focused Phase 5 suite: **10 tests passed** (`test_task_contract`: 4; `test_task_executor_action`: 6), with no skipped Phase 5 test.
+
+Final Phase 5.8 regressions (2026-09-23): simulation **92 passed**; full ROS build **8 packages**; ROS tests **56 tests, 0 errors, 0 failures, 1 existing skipped**. The only warnings are the existing MoveIt fixture logging warning (rclcpp context absent in a local PlanningScene test) and a deprecation warning for `tl_expected`; neither is a test failure.
+
+**Phase 5.8: COMPLETE. Full Phase 5: COMPLETE. Phase 6 was not started.**
