@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Home Robotics: a simulation platform with two Franka Panda manipulators on a shared rail. Architecture, validated Panda1 cube manipulation, ROS Action interface, and measured results.">
+  <title>Home Robotics — Dual Franka Manipulation on a Shared Rail</title>
+  <style>
+    /* Typography, dimensions, and report conventions follow the Turbofan archive. */
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; color: #222; font: 14px/1.45 Arial, Helvetica, sans-serif; }
+    .page { max-width: 880px; margin: 18px auto 28px; padding: 0 24px; }
+    a { color: #222; text-decoration: underline; text-underline-offset: 2px; }
+    a:visited { color: #444; }
+    a:hover { color: #000; }
+    :focus-visible { outline: 2px solid #333; outline-offset: 3px; }
+    .archive-header { display: flex; align-items: center; gap: 16px; margin: 10px 0 8px; }
+    .logo { flex: none; }
+    .archive-name { font-size: 22px; font-weight: bold; }
+    .archive-series { margin-top: 3px; color: #444; font-size: 13px; }
+    .breadcrumb, footer { font-size: 12px; }
+    .breadcrumb { margin: 12px 0; }
+    hr { border: 0; border-top: 1px solid #999; margin: 16px 0; }
+    h1 { font-size: 26px; line-height: 1.2; margin: 20px 0 8px; }
+    h2 { font-size: 19px; margin: 25px 0 10px; line-height: 1.3; }
+    h3 { font-size: 15px; margin: 16px 0 8px; }
+    p { margin: 10px 0; }
+    .subtitle { font-size: 15px; }
+    .stack { color: #444; font-size: 13px; }
+    .metadata { display: grid; grid-template-columns: 130px 1fr; gap: 3px 12px; margin: 16px 0; }
+    .metadata dt { font-weight: bold; }
+    .metadata dd { margin: 0; }
+    ul, ol { padding-left: 27px; margin: 10px 0; }
+    li { margin-bottom: 5px; }
+    .contents { list-style: none; padding: 0; columns: 2; column-gap: 28px; }
+    .contents li { margin-bottom: 2px; break-inside: avoid; }
+    .contents a { display: inline-block; padding: 2px 0; }
+    section, nav { scroll-margin-top: 12px; }
+    .table-scroll { overflow-x: auto; margin: 14px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 0; font-size: 13px; }
+    caption { text-align: left; margin-bottom: 7px; color: #333; }
+    th, td { border: 1px solid #999; padding: 6px 9px; text-align: left; vertical-align: top; }
+    thead { background: #eee; }
+    tbody th { font-weight: normal; }
+    figure { margin: 22px auto; max-width: 700px; }
+    figcaption { margin-top: 7px; font-size: 12px; line-height: 1.4; font-style: italic; }
+    code, pre { font-family: "Courier New", Courier, monospace; }
+    code, td, th, dd, a { overflow-wrap: anywhere; }
+    pre code { overflow-wrap: normal; }
+    pre { padding: 10px 12px; border: 1px solid #aaa; background: #f5f5f5; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+    .architecture { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 16px; border: 1px solid #999; }
+    .architecture > div { min-width: 0; }
+    .architecture h3 { margin: 0 0 12px; text-align: center; }
+    .flow { list-style: none; padding: 0; margin: 0; }
+    .flow li { margin: 0; text-align: center; }
+    .flow li + li::before { content: "↓"; display: block; padding: 3px 0; color: #555; }
+    .flow span { display: block; border: 1px solid #aaa; padding: 6px 8px; }
+    .flow small { display: block; color: #444; }
+    .diagram-note { font-size: 12px; color: #444; }
+    .sequence { display: flex; flex-wrap: wrap; gap: 7px 0; list-style: none; padding: 12px; margin: 0; border: 1px solid #999; }
+    .sequence li { margin: 0; }
+    .sequence li:not(:last-child)::after { content: " → "; white-space: pre; color: #555; }
+    footer p { margin: 6px 0; }
+    @media (max-width: 600px) {
+      .page { margin-top: 12px; padding: 0 14px; }
+      .archive-header { gap: 10px; }
+      .logo { width: 62px; height: auto; }
+      .archive-name { font-size: 19px; }
+      h1 { font-size: 24px; }
+      .metadata { grid-template-columns: 105px 1fr; }
+      .contents { columns: 1; }
+      .contents a { padding: 4px 0; }
+      th, td { padding: 5px; }
+      .architecture { grid-template-columns: 1fr; gap: 20px; }
+      .wide-table { min-width: 540px; }
+    }
+    @media print {
+      .page { max-width: none; padding: 0; }
+      figure, table { break-inside: avoid; }
+      .table-scroll { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+<div class="page" id="top">
+  <a href="#main">Skip to report</a>
+  <header class="archive-header">
+    <svg class="logo" width="84" height="56" viewBox="0 0 84 56" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M4 44h76M4 50h76M15 50v4m54-4v4M17 38V26l13-12 10 8m27 16V26L54 14l-10 8"/>
+      <path d="M35 20l5 2-1 6m10-8-5 2 1 6"/>
+      <rect x="10" y="38" width="14" height="6"/><rect x="60" y="38" width="14" height="6"/>
+      <circle cx="17" cy="26" r="2.5" fill="white"/><circle cx="30" cy="14" r="2.5" fill="white"/>
+      <circle cx="67" cy="26" r="2.5" fill="white"/><circle cx="54" cy="14" r="2.5" fill="white"/>
+    </svg>
+    <div><div class="archive-name">Technical Project Archive</div><div class="archive-series">Robotic manipulation · Project reports</div></div>
+  </header>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="#top">Home</a> &gt; <a href="#contents">Technical Reports</a> &gt; <span>Home Robotics</span>
+  </nav>
+  <hr>
+  <main id="main">
+    <h1>Home Robotics</h1>
+    <p class="subtitle">Dual Franka Manipulation on a Shared Rail</p>
+    <p class="stack">ROS 2 · MuJoCo · MoveIt 2 · ros2_control</p>
+    <dl class="metadata">
+      <dt>Author</dt><dd>Mahmut Esat Kolay</dd>
+      <dt>Date</dt><dd><time datetime="2026-09">September 2026</time></dd>
+    </dl>
+    <p><strong>Project links:</strong> <a href="https://github.com/MEK-0/Home-Robotics">Repository</a> | <a href="#validation">Validation</a> | <a href="https://github.com/MEK-0/Home-Robotics#readme">README</a> | <a href="./DEMO.md">Demo</a></p>
+    <hr>
+
+    <section id="abstract" aria-labelledby="abstract-title">
+      <h2 id="abstract-title">Abstract</h2>
+      <p>Home Robotics is a simulation platform for manipulation with two Franka Panda robots on independent carriers of a shared linear rail. MuJoCo supplies physics and authoritative object state; ROS 2 Jazzy and ros2_control integrate the runtime and controllers; MoveIt 2 provides motion planning and collision checking. The current validated baseline is Panda1 grasping, lifting, transporting, placing, and releasing a cube with grasp and placement verification. Phase 5 exposes this sequence through a single-task <code>PickAndPlace</code> ROS Action. All reported manipulation results are from simulation.</p>
+    </section>
+
+    <nav id="contents" aria-labelledby="contents-title">
+      <h2 id="contents-title">Contents</h2>
+      <ol class="contents">
+        <li><a href="#scope">1. Project Scope</a></li>
+        <li><a href="#architecture">2. System Architecture</a></li>
+        <li><a href="#simulation">3. Simulation Environment</a></li>
+        <li><a href="#robots">4. Dual Panda and Shared Rail</a></li>
+        <li><a href="#control">5. ROS 2 Control Stack</a></li>
+        <li><a href="#planning">6. Motion Planning with MoveIt 2</a></li>
+        <li><a href="#synchronization">7. Dynamic Object Synchronization</a></li>
+        <li><a href="#manipulation">8. Manipulation Pipeline</a></li>
+        <li><a href="#task-api">9. Task Executor API</a></li>
+        <li><a href="#validation">10. Validation and Results</a></li>
+        <li><a href="#development">11. Development Environment</a></li>
+        <li><a href="#limitations">12. Limitations</a></li>
+        <li><a href="#future">13. Future Work</a></li>
+        <li><a href="#repository">14. Repository Structure</a></li>
+        <li><a href="#links">15. Project Links</a></li>
+      </ol>
+    </nav>
+    <hr>
+
+    <section id="scope" aria-labelledby="scope-title">
+      <h2 id="scope-title">1. Project Scope</h2>
+      <p>The platform establishes a reproducible path from simulated physics to controller execution, collision-aware planning, and a task interface. A shared rail gives two manipulators access to an extended workspace while introducing explicit carriage-separation constraints.</p>
+      <p><strong>Current implementation:</strong> Phases 0–5 are complete within the documented scope. Panda1 is the primary manipulation baseline; cube placement at <code>surface_left_2</code> is an example validated task. Panda2 has its own control and planning chain, but coordinated manipulation is not implemented.</p>
+      <p><strong>Future direction:</strong> demonstration-based task reproduction and broader sensing and coordination remain future work. Phase 6 and later are on hold.</p>
+    </section>
+
+    <section id="architecture" aria-labelledby="architecture-title">
+      <h2 id="architecture-title">2. System Architecture</h2>
+      <h3 id="runtime-graph">ROS 2 Runtime Graph</h3>
+      <figure>
+        <div class="architecture">
+          <div>
+            <h3>Task and execution path</h3>
+            <ol class="flow" aria-label="Task and execution path, in order">
+              <li><span>Task Client<small>PickAndPlace Action goal</small></span></li>
+              <li><span><code>task_executor</code><small>ROS node → Phase 4 launch subprocess</small></span></li>
+              <li><span><code>cube_pick_place_demo</code><small>Manipulation executable; node name below</small></span></li>
+              <li><span><code>move_group</code><small>MoveIt node / trajectory execution</small></span></li>
+              <li><span><code>controller_manager</code><small>ros2_control node hosting controllers</small></span></li>
+              <li><span><code>MujocoTopicSystem</code><small>Hardware plugin → /mujoco/command</small></span></li>
+              <li><span><code>mujoco_runtime</code><small>ROS node → MuJoCo simulator and joint actuators</small></span></li>
+            </ol>
+          </div>
+          <div>
+            <h3>State feedback path</h3>
+            <ol class="flow" aria-label="State feedback path, in order">
+              <li><span>MuJoCo / <code>mujoco_runtime</code><small>Authoritative state / ROS publisher</small></span></li>
+              <li><span><code>/mujoco/objects/cube/pose</code><small>PoseStamped topic; example object</small></span></li>
+              <li><span><code>dynamic_object_scene_sync</code><small>ROS node using ObjectRegistry metadata</small></span></li>
+              <li><span><code>/apply_planning_scene</code><small>Service → MoveIt PlanningScene</small></span></li>
+            </ol>
+            <p class="diagram-note">Joint feedback: <code>/mujoco/joint_states</code> → hardware plugin → ros2_control state interfaces → <code>joint_state_broadcaster</code> → <code>/joint_states</code> → MoveIt / monitoring.</p>
+            <p class="diagram-note">Contact feedback: <code>/mujoco/objects/cube/contact</code> → manipulation verification. The manipulation process sends gripper goals directly to the gripper controller, outside the MoveIt arm-trajectory path.</p>
+          </div>
+        </div>
+        <figcaption>Figure 1. Main ROS 2 execution and feedback paths. Controllers and the hardware plugin run within the ros2_control stack; MuJoCo is owned by the runtime node. Boxes are labeled by role and do not each represent a separate ROS node.</figcaption>
+      </figure>
+      <p><strong>MuJoCo</strong> owns physics, contact, and authoritative object state. <strong>MoveIt</strong> owns planning and collision reasoning. <strong>ros2_control</strong> is the execution boundary. The <strong>Task Executor</strong> provides the high-level ROS Action interface without owning MuJoCo or MoveIt internals. Static environment geometry and synchronized object poses supply the planning scene.</p>
+      <p><a href="./ARCHITECTURE.md">Architecture notes</a> describe these boundaries in more detail.</p>
+    </section>
+
+    <section id="simulation" aria-labelledby="simulation-title">
+      <h2 id="simulation-title">3. Simulation Environment</h2>
+      <p>The MuJoCo environment contains the shared rail, two robot carriers, six work surfaces, a floor and arena boundary, and configured objects. Scene geometry, robot setup, and physics parameters are maintained centrally in <code>config/</code>.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Simulation environment table">
+        <table>
+          <caption>Table 1. Selected environment properties from repository configuration.</caption>
+          <thead><tr><th scope="col">Property</th><th scope="col">Configuration</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Reference frame / units</th><td><code>world</code> / SI</td></tr>
+            <tr><th scope="row">Rail and carriers</th><td>One 3.4 m rail; two independently controlled carriers</td></tr>
+            <tr><th scope="row">Work surfaces</th><td>Six tables, three on each side; top height 0.68 m</td></tr>
+            <tr><th scope="row">Dynamic objects</th><td><code>cube</code>, <code>apple</code>, <code>purple_ball</code></td></tr>
+            <tr><th scope="row">Static scene objects</th><td><code>bowl</code>, <code>pan</code></td></tr>
+            <tr><th scope="row">Physics step / gravity</th><td>0.002 s / −9.81 m/s² along Z</td></tr>
+            <tr><th scope="row">Central files</th><td><code>scene.yaml</code>, <code>robots.yaml</code>, <code>objects.yaml</code>, <code>physics.yaml</code>; location and grasp-profile metadata in <code>locations.yaml</code> and <code>grasp_profiles.yaml</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>An object's presence in the scene or registry does not establish manipulation support. The cube is the validated end-to-end object; apple, bowl, and pan manipulation are not supported.</p>
+    </section>
+
+    <section id="robots" aria-labelledby="robots-title">
+      <h2 id="robots-title">4. Dual Panda and Shared Rail</h2>
+      <p>Each Franka Panda combines seven arm joints with one independently controlled prismatic rail joint: <strong>8 DOF per manipulator planning group</strong>. Each robot has a separate Franka Hand gripper, outside the eight-joint chain. The carriers share a physical rail and must maintain at least <strong>0.70 m separation</strong>; crossing is prohibited.</p>
+      <p>Shared-rail separation safety at the hardware/control boundary and MoveIt geometric collision checking are separate layers. Rail separation alone does not establish collision-free arm motion. Panda2 remains available as a second robot; coordinated dual-arm manipulation has not been validated or implemented.</p>
+    </section>
+
+    <section id="control" aria-labelledby="control-title">
+      <h2 id="control-title">5. ROS 2 Control Stack</h2>
+      <p>The ROS 2 Jazzy runtime exposes a custom MuJoCo hardware interface, <code>home_robotics_mujoco_hardware/MujocoTopicSystem</code>, to ros2_control. Standard trajectory controllers command each rail-and-arm chain, while separate gripper controllers command the Franka Hands. The <code>joint_state_broadcaster</code> publishes measured joint state.</p>
+      <p>Controller actions pass through the hardware interface to the authoritative MuJoCo runtime. Simulation time and reset belong to that runtime; MoveIt does not write directly to the physics state. The <a href="./DEMO.md">demo instructions</a> start the Phase 2 stack, MoveIt, static scene loader, and dynamic object synchronizer in separate terminals.</p>
+    </section>
+
+    <section id="planning" aria-labelledby="planning-title">
+      <h2 id="planning-title">6. Motion Planning with MoveIt 2</h2>
+      <p>The two manipulator groups are <code>panda1_manipulator</code> (<code>shared_rail → panda1_tcp</code>) and <code>panda2_manipulator</code> (<code>shared_rail → panda2_tcp</code>). Each uses KDL inverse kinematics and OMPL planning with collision checks against the PlanningScene.</p>
+      <p>The static PlanningScene represents fixed environment geometry; synchronized CollisionObjects represent configured objects. There is currently <strong>no coordinated 16-DOF dual-arm planning group</strong>.</p>
+    </section>
+
+    <section id="synchronization" aria-labelledby="synchronization-title">
+      <h2 id="synchronization-title">7. Dynamic Object Synchronization</h2>
+      <p><code>mujoco_runtime</code> publishes <code>geometry_msgs/msg/PoseStamped</code> on <code>/mujoco/objects/{object_id}/pose</code> for configured planning-scene objects, including <code>/mujoco/objects/cube/pose</code>. The <code>dynamic_object_scene_sync</code> node combines these poses with <code>ObjectRegistry</code> geometry to construct MoveIt CollisionObjects and apply PlanningScene diffs. Its launch sets <code>sync_rate=20.0</code>; MuJoCo remains the authority and MoveIt receives a planning representation.</p>
+      <p>The planning-object lifecycle is <code>WORLD → ATTACHED → WORLD</code>. The synchronizer queries <code>/get_planning_scene</code> for attached IDs and excludes them from world updates. Manipulation pauses/drains synchronization around ownership changes: verified grasp and stabilization precede attachment, and supported placement/release restores one WORLD object with no stale attachment. Contact state is consumed separately by manipulation verification.</p>
+    </section>
+
+    <section id="manipulation" aria-labelledby="manipulation-title">
+      <h2 id="manipulation-title">8. Manipulation Pipeline</h2>
+      <figure>
+        <ol class="sequence" aria-label="Manipulation sequence, in order">
+          <li>Object selection</li><li>Pre-grasp</li><li>Approach</li><li>Gripper close</li>
+          <li>Contact verification</li><li>Stabilization</li><li>Lift</li><li>Transport</li>
+          <li>Place</li><li>Stabilization release</li><li>Gripper open</li><li>Placement verification</li>
+        </ol>
+        <figcaption>Figure 2. Panda1 cube manipulation sequence. Contact and gripper closure are verified before temporary stabilization is activated.</figcaption>
+      </figure>
+      <p>The pipeline combines a physical simulated grasp with temporary MuJoCo stabilization during handling. Stabilization is conditional on successful grasp verification. MoveIt attachment separately represents the held object for collision reasoning. After placement support checks, stabilization is removed, the gripper opens, and final pose, support, and scene ownership are verified.</p>
+      <p>The cube baseline includes transfer from its configured source to a named surface such as <code>surface_left_2</code>. A separate <code>purple_ball</code> trial demonstrated grasp, lift, and return; it does not establish named-target sphere placement or reliability and is outside the Phase 5 Action scope.</p>
+    </section>
+
+    <section id="task-api" aria-labelledby="task-api-title">
+      <h2 id="task-api-title">9. Task Executor API</h2>
+      <p>Endpoint: <code>/home_robotics/pick_and_place</code><br>Interface: <code>home_robotics_interfaces/action/PickAndPlace.action</code></p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="PickAndPlace interface table">
+        <table>
+          <caption>Table 2. Implemented PickAndPlace Action fields.</caption>
+          <thead><tr><th scope="col">Part</th><th scope="col">Fields and types</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Goal</th><td><code>object_id</code>, <code>target_id</code> — string</td></tr>
+            <tr><th scope="row">Feedback</th><td><code>task_id</code>, <code>current_state</code>, <code>message</code> — string; <code>progress</code> — float32</td></tr>
+            <tr><th scope="row">Result</th><td><code>success</code> — bool; <code>task_id</code>, <code>final_state</code>, <code>failure_reason</code>, <code>manipulation_failure_reason</code>, <code>message</code> — string; <code>final_object_pose</code> — geometry_msgs/Pose</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Only one task can be active; a concurrent goal is rejected. Requests are checked for empty or unknown IDs, supported manipulation scope, and valid named targets. The current Action accepts only <code>cube</code> with Panda1; the target must differ from the source surface. Structured results preserve both task-level and manipulation failure reasons. An unavailable final pose is represented by an all-zero pose, including quaternion W.</p>
+      <p><code>execute=false</code> is the default node/launch safety setting, not a Goal field. Planning-only preflight issues no physical motion commands; its success does not mean that a placement occurred. <code>execute=true</code> enables simulated execution.</p>
+      <p>The executor currently delegates Phase 4 through a <code>ros2 launch</code> subprocess. Planning-only cancellation is supported at safe boundaries; execution-mode cancellation requests are rejected because arbitrary interruption is not supported. A direct reusable manipulation API remains a possible future refactor.</p>
+      <p><a href="./TASK_EXECUTOR_API.md">Full implemented API contract</a>.</p>
+    </section>
+
+    <section id="validation" aria-labelledby="validation-title">
+      <h2 id="validation-title">10. Validation and Results</h2>
+      <p>These are recorded repository results. The test layers check different properties and should not be combined into a single score.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Validation results table; scroll horizontally on small screens">
+        <table class="wide-table">
+          <caption>Table 3. Validation evidence and its scope.</caption>
+          <thead><tr><th scope="col">Evidence</th><th scope="col">Recorded result</th><th scope="col">Scope</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Deterministic simulation tests</th><td>92 passed</td><td>Configuration, scene, control, reset, contact, rail constraints, and utilities</td></tr>
+            <tr><th scope="row">ROS package tests</th><td>56 total; 0 errors; 0 failures; 1 existing skipped</td><td>Package contracts and component behavior after workspace build</td></tr>
+            <tr><th scope="row">Phase 5 focused tests</th><td>10 passed</td><td>Task Executor contract and fake-adapter Action tests; part of the ROS suite</td></tr>
+            <tr><th scope="row">Phase 4 full-stack cube benchmark</th><td>9 / 10 successful</td><td>Independent simulated manipulation trials to surface_left_2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Retained failure:</strong> benchmark trial 2 failed before motion during planning/retiming. MoveIt TOTG reported negative path velocity on a hypothetical transport trajectory. The failed trial remains in the evidence; it was not replaced by a later successful run. Successful trials recorded final position errors of 1.416–1.923 mm, with a mean of 1.598 mm.</p>
+      <p>Runtime integration checks compose the control stack, planning, scene synchronization, and manipulation or Action entry point. Manual RViz checks inspect geometry and state visually; they are not automated tests. The focused Action suite uses a fake adapter and does not substitute for a full-stack run.</p>
+      <p><a href="./VALIDATION.md">Validation summary</a> | <a href="./PHASE4_RELIABILITY.md">Benchmark interpretation</a> | <a href="./archive/evidence/validation/phase4/benchmark.json">Per-trial benchmark data (JSON)</a> | <a href="./PHASE5_ACCEPTANCE.md">Phase 5 acceptance</a></p>
+    </section>
+
+    <section id="development" aria-labelledby="development-title">
+      <h2 id="development-title">11. Development Environment</h2>
+      <p>Primary development used an <strong>Apple MacBook with an Apple M4 chip, 16 GB unified memory, and a 512 GB SSD</strong>. The robotics runtime was developed primarily in an <strong>Ubuntu 24.04 ARM64 virtual machine</strong>, using ROS 2 Jazzy, MuJoCo, MoveIt 2, and ros2_control.</p>
+      <p>This describes development hardware, not a performance benchmark. Local compute and memory constraints have influenced scope; VLA/LLM-heavy work is deferred.</p>
+    </section>
+
+    <section id="limitations" aria-labelledby="limitations-title">
+      <h2 id="limitations-title">12. Limitations</h2>
+      <ul>
+        <li>Simulation only; no real-robot deployment or hardware validation.</li>
+        <li>Panda1 is the primary validated manipulation baseline. The cube is the validated named-placement object; other scene objects do not establish generic manipulation.</li>
+        <li>Object poses and contacts come from ground-truth simulation state. No perception pipeline or semantic vision is implemented.</li>
+        <li>No coordinated dual-arm manipulation, generic task scheduler, or autonomous robot allocation.</li>
+        <li>Task Executor execution uses process-level Phase 4 delegation. Execution-mode cancellation is rejected; planning-only cancellation has supported safe boundaries.</li>
+        <li>No VLA/LLM runtime. The retained planning/retiming failure limits any claim of repeatable success.</li>
+      </ul>
+    </section>
+
+    <section id="future" aria-labelledby="future-title">
+      <h2 id="future-title">13. Future Work</h2>
+      <p><strong>Not implemented; Phase 6+ is on hold.</strong> Directions include Logitech F710 teleoperation of Panda2, human demonstration recording, semantic/task extraction from demonstrations, and Panda1 autonomous reproduction of demonstrated tasks. Later work may address perception, coordinated dual-arm manipulation, VLA/LLM integration, and sim-to-real transfer.</p>
+    </section>
+
+    <section id="repository" aria-labelledby="repository-title">
+      <h2 id="repository-title">14. Repository Structure</h2>
+      <pre tabindex="0" aria-label="Repository directory tree"><code>Home-Robotics/
+├── config/
+├── simulation/
+├── tests/
+├── ros2_ws/src/
+│   ├── home_robotics_control/
+│   ├── home_robotics_description/
+│   ├── home_robotics_mujoco_hardware/
+│   ├── home_robotics_bringup/
+│   ├── home_robotics_moveit_config/
+│   ├── home_robotics_manipulation/
+│   ├── home_robotics_interfaces/
+│   └── home_robotics_task_executor/
+└── docs/</code></pre>
+      <p>Configuration and simulation are separate from the ROS packages. Technical documentation is in <code>docs/</code>; historical phase notes and measured evidence are preserved under <code>docs/archive/</code>.</p>
+    </section>
+
+    <section id="links" aria-labelledby="links-title">
+      <h2 id="links-title">15. Project Links</h2>
+      <ul>
+        <li><a href="https://github.com/MEK-0/Home-Robotics">GitHub Repository</a> — source, configuration, and project history.</li>
+        <li><a href="https://github.com/MEK-0/Home-Robotics#readme">README</a> — current capability and quick start.</li>
+        <li><a href="./ARCHITECTURE.md">Architecture</a> — runtime ownership and interfaces.</li>
+        <li><a href="./VALIDATION.md">Validation</a> — evidence and reproduction commands.</li>
+        <li><a href="./DEMO.md">Demo</a> — build, stack startup, planning-only and execution modes.</li>
+      </ul>
+      <p>Project license has not yet been finalized. Third-party Panda source and mesh attribution remain with the assets in the repository.</p>
+    </section>
+  </main>
+  <hr>
+  <footer>
+    <p>Mahmut Esat Kolay · Technical Project Archive · September 2026</p>
+    <p>Static project documentation. Running the robotics demo requires the local simulation and ROS environment.</p>
+    <p><a href="#top">Back to top</a> | <a href="https://mek-0.github.io/Turbofan-RUL-Prediction-LSTM/">Turbofan RUL project</a></p>
+  </footer>
+</div>
+</body>
+</html>
