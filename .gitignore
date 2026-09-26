@@ -9,6 +9,14 @@ ros2_ws/log/
 # Python
 __pycache__/
 *.pyc
+MJDATA.TXT
+MJMODEL.TXT
+
+# Local diagnostics and captures
+*.tmp
+*.bak
+screenshots/
+debug/
 
 # IDE / editor
 .vscode/
