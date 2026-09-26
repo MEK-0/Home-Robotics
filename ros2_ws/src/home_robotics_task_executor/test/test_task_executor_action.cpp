@@ -135,6 +135,8 @@ TEST_F(TaskExecutorActionTest, SuccessPropagatesPoseTaskIdAndMonotonicFeedback) 
 TEST_F(TaskExecutorActionTest, InvalidRequestsDoNotCallAdapter) {
   const std::vector<std::pair<hrt::TaskRequest, std::string>> cases = {
     {{hrt::TaskType::PICK_AND_PLACE, "does_not_exist", "surface_left_2", "panda1"}, "OBJECT_NOT_FOUND"},
+    {{hrt::TaskType::PICK_AND_PLACE, "apple", "surface_left_2", "panda1"}, "UNSUPPORTED_TASK"},
+    {{hrt::TaskType::PICK_AND_PLACE, "purple_ball", "surface_left_1", "panda1"}, "UNSUPPORTED_TASK"},
     {{hrt::TaskType::PICK_AND_PLACE, "cube", "does_not_exist", "panda1"}, "TARGET_NOT_FOUND"},
     {{hrt::TaskType::PICK_AND_PLACE, "", "surface_left_2", "panda1"}, "INVALID_REQUEST"},
     {{hrt::TaskType::PICK_AND_PLACE, "cube", "", "panda1"}, "INVALID_REQUEST"},

@@ -42,6 +42,13 @@ bool TaskExecutor::validate(const TaskRequest & request, TaskResult & result) co
     home_robotics_manipulation::ObjectRegistry registry(config + "objects.yaml");
     const auto & object = registry.at(request.object_id);
     if (!object.movable) { result.failure_reason = TaskFailureReason::OBJECT_NOT_MOVABLE; result.message = "object is not movable"; return false; }
+    // The registry describes scene objects; it is not a manipulation-capability list.
+    // Phase 5 delegates to the validated Phase 4 named-target cube path only.
+    if (request.object_id != "cube") {
+      result.failure_reason = TaskFailureReason::UNSUPPORTED_TASK;
+      result.message = "PickAndPlace currently supports only the validated cube baseline";
+      return false;
+    }
     const auto scene = YAML::LoadFile(config + "scene.yaml");
     if (!scene["scene"]["surfaces"][request.target_id]) { result.failure_reason = TaskFailureReason::TARGET_NOT_FOUND; result.message = "target_id is absent from the authoritative scene"; return false; }
     const auto source = YAML::LoadFile(config + "objects.yaml")["objects"][request.object_id]["initial"]["support_surface"].as<std::string>();
