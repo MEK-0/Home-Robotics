@@ -42,6 +42,8 @@
     th, td { border: 1px solid #999; padding: 6px 9px; text-align: left; vertical-align: top; }
     thead { background: #eee; }
     tbody th { font-weight: normal; }
+    .wide-table.interface-table { min-width: 760px; }
+    .interface-table tr > :nth-child(2) { white-space: nowrap; }
     figure { margin: 22px auto; max-width: 700px; }
     figcaption { margin-top: 7px; font-size: 12px; line-height: 1.4; font-style: italic; }
     code, pre { font-family: "Courier New", Courier, monospace; }
@@ -176,6 +178,24 @@
       </figure>
       <p><strong>MuJoCo</strong> owns physics, contact, and authoritative object state. <strong>MoveIt</strong> owns planning and collision reasoning. <strong>ros2_control</strong> is the execution boundary. The <strong>Task Executor</strong> provides the high-level ROS Action interface without owning MuJoCo or MoveIt internals. Static environment geometry and synchronized object poses supply the planning scene.</p>
       <p><a href="./ARCHITECTURE.md">Architecture notes</a> describe these boundaries in more detail.</p>
+      <h3 id="runtime-components">Main ROS 2 Nodes and Runtime Components</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Main ROS 2 runtime components">
+        <table class="wide-table">
+          <caption>Table 1. Main components in the documented launch path.</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Responsibility</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>task_executor</code></th><td>ROS Node</td><td>Action server, request validation and single-task ownership; package <code>home_robotics_task_executor</code>.</td></tr>
+            <tr><th scope="row"><code>cube_pick_lift_return_demo</code></th><td>ROS Node</td><td>Phase 4 manipulation; launched by executable <code>cube_pick_place_demo</code> in <code>home_robotics_manipulation</code>.</td></tr>
+            <tr><th scope="row"><code>move_group</code></th><td>MoveIt Node</td><td>Planning, collision reasoning and trajectory execution; package <code>moveit_ros_move_group</code>.</td></tr>
+            <tr><th scope="row"><code>planning_scene_environment</code></th><td>ROS Node</td><td>Loads fixed scene geometry; package <code>home_robotics_moveit_config</code>.</td></tr>
+            <tr><th scope="row"><code>dynamic_object_scene_sync</code></th><td>ROS Node</td><td>Updates world objects from poses and registry geometry; package <code>home_robotics_manipulation</code>.</td></tr>
+            <tr><th scope="row"><code>controller_manager</code></th><td>ROS Node</td><td>Hosts controllers and hardware read/update/write cycle; executable <code>ros2_control_node</code> in package <code>controller_manager</code>.</td></tr>
+            <tr><th scope="row"><code>home_robotics_mujoco_hardware/MujocoTopicSystem</code></th><td>Hardware Interface</td><td>Exchanges joint commands and state with the runtime; enforces rail separation at the hardware boundary.</td></tr>
+            <tr><th scope="row"><code>mujoco_runtime</code></th><td>ROS Node / Simulation Component</td><td>Owns MuJoCo model/data, advances physics, publishes state and clock; package <code>home_robotics_bringup</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="diagram-note">Names describe the normal launch configuration. The runtime reuses the bridge implementation from <code>home_robotics_control</code>; this does not require a second simulator or a separate legacy bridge node. Controllers are listed in Section 5.</p>
     </section>
 
     <section id="simulation" aria-labelledby="simulation-title">
@@ -183,7 +203,7 @@
       <p>The MuJoCo environment contains the shared rail, two robot carriers, six work surfaces, a floor and arena boundary, and configured objects. Scene geometry, robot setup, and physics parameters are maintained centrally in <code>config/</code>.</p>
       <div class="table-scroll" tabindex="0" role="region" aria-label="Simulation environment table">
         <table>
-          <caption>Table 1. Selected environment properties from repository configuration.</caption>
+          <caption>Table 2. Selected environment properties from repository configuration.</caption>
           <thead><tr><th scope="col">Property</th><th scope="col">Configuration</th></tr></thead>
           <tbody>
             <tr><th scope="row">Reference frame / units</th><td><code>world</code> / SI</td></tr>
@@ -209,6 +229,43 @@
       <h2 id="control-title">5. ROS 2 Control Stack</h2>
       <p>The ROS 2 Jazzy runtime exposes a custom MuJoCo hardware interface, <code>home_robotics_mujoco_hardware/MujocoTopicSystem</code>, to ros2_control. Standard trajectory controllers command each rail-and-arm chain, while separate gripper controllers command the Franka Hands. The <code>joint_state_broadcaster</code> publishes measured joint state.</p>
       <p>Controller actions pass through the hardware interface to the authoritative MuJoCo runtime. Simulation time and reset belong to that runtime; MoveIt does not write directly to the physics state. The <a href="./DEMO.md">demo instructions</a> start the Phase 2 stack, MoveIt, static scene loader, and dynamic object synchronizer in separate terminals.</p>
+      <h3>Command and State Flow</h3>
+      <p><strong>Command:</strong> MoveIt trajectory → <code>panda1_trajectory_controller</code> → ros2_control position command interfaces → <code>MujocoTopicSystem.write()</code> → <code>/mujoco/command</code> → <code>mujoco_runtime</code> → simulated joint actuators. Panda2 has an equivalent independent controller path.</p>
+      <p><strong>Feedback:</strong> MuJoCo joint state → <code>/mujoco/joint_states</code> → <code>MujocoTopicSystem.read()</code> → ros2_control position/velocity state interfaces → <code>joint_state_broadcaster</code> → <code>/joint_states</code> → MoveIt and monitoring. The private transport uses <code>sensor_msgs/msg/JointState</code> in both directions. Controller manager is configured for 100 Hz; ROS consumers use <code>use_sim_time=true</code>.</p>
+      <h3>Configured Controllers</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Configured ros2_control controllers">
+        <table>
+          <caption>Table 3. Controllers configured in home_robotics_bringup/config/controllers.yaml.</caption>
+          <thead><tr><th scope="col">Controller name</th><th scope="col">Responsibility</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>joint_state_broadcaster</code></th><td>Publishes measured state on <code>/joint_states</code>.</td></tr>
+            <tr><th scope="row"><code>panda1_trajectory_controller</code></th><td>Panda1 rail + seven arm joints; position commands, position/velocity feedback.</td></tr>
+            <tr><th scope="row"><code>panda2_trajectory_controller</code></th><td>Panda2 rail + seven arm joints; independent trajectory execution.</td></tr>
+            <tr><th scope="row"><code>panda1_gripper_controller</code></th><td>Separate Franka Hand control via <code>panda1_finger_joint1</code>.</td></tr>
+            <tr><th scope="row"><code>panda2_gripper_controller</code></th><td>Separate Franka Hand control via <code>panda2_finger_joint1</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="ros-interfaces">Key ROS 2 Interfaces</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Key ROS 2 interfaces; scroll horizontally on small screens">
+        <table class="wide-table interface-table">
+          <caption>Table 4. Selected interfaces; arrows identify request or data direction. Action feedback/results return to the client.</caption>
+          <thead><tr><th scope="col">Interface</th><th scope="col">Kind</th><th scope="col">Direction / Producer</th><th scope="col">Consumer</th><th scope="col">Purpose</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>/home_robotics/pick_and_place</code></th><td>Action</td><td>Task client →</td><td><code>task_executor</code></td><td>Cube named-placement goal; structured feedback/result.</td></tr>
+            <tr><th scope="row"><code>/joint_states</code></th><td>Topic</td><td><code>joint_state_broadcaster</code> →</td><td>MoveIt / manipulation / robot state publishing</td><td>Measured robot state.</td></tr>
+            <tr><th scope="row"><code>/clock</code></th><td>Topic</td><td><code>mujoco_runtime</code> →</td><td>Nodes using simulation time</td><td>Time derived from MuJoCo.</td></tr>
+            <tr><th scope="row"><code>/mujoco/command</code></th><td>Topic</td><td><code>MujocoTopicSystem</code> →</td><td><code>mujoco_runtime</code></td><td>Private joint position command transport.</td></tr>
+            <tr><th scope="row"><code>/mujoco/joint_states</code></th><td>Topic</td><td><code>mujoco_runtime</code> →</td><td><code>MujocoTopicSystem</code></td><td>Private measured joint-state transport; launch remapping of the bridge publisher.</td></tr>
+            <tr><th scope="row"><code>/mujoco/objects/cube/pose</code></th><td>Topic</td><td><code>mujoco_runtime</code> →</td><td><code>dynamic_object_scene_sync</code> / manipulation</td><td>Timestamped ground-truth cube pose.</td></tr>
+            <tr><th scope="row"><code>/mujoco/objects/cube/contact</code></th><td>Topic</td><td><code>mujoco_runtime</code> →</td><td>Manipulation verification</td><td>Contact / grasp state encoded as JSON in <code>std_msgs/msg/String</code>.</td></tr>
+            <tr><th scope="row"><code>/panda1_trajectory_controller/follow_joint_trajectory</code><br><code>/panda2_trajectory_controller/follow_joint_trajectory</code></th><td>Action</td><td>MoveIt execution →</td><td>Corresponding trajectory controller</td><td><code>FollowJointTrajectory</code> for each rail-and-arm chain.</td></tr>
+            <tr><th scope="row"><code>/panda1_gripper_controller/gripper_cmd</code><br><code>/panda2_gripper_controller/gripper_cmd</code></th><td>Action</td><td>Gripper client →</td><td>Corresponding gripper controller</td><td><code>GripperCommand</code>; Phase 4 directly uses Panda1.</td></tr>
+            <tr><th scope="row"><code>/apply_planning_scene</code></th><td>Service</td><td>Scene loaders / synchronization / manipulation →</td><td>MoveIt</td><td>Apply static geometry, dynamic objects and attachment diffs.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="diagram-note">Controller Action paths combine the configured controller names with <code>action_ns</code> in <code>home_robotics_moveit_config/config/moveit_controllers.yaml</code>. Both robots' endpoints are configured; the validated manipulation task uses Panda1.</p>
     </section>
 
     <section id="planning" aria-labelledby="planning-title">
@@ -242,7 +299,7 @@
       <p>Endpoint: <code>/home_robotics/pick_and_place</code><br>Interface: <code>home_robotics_interfaces/action/PickAndPlace.action</code></p>
       <div class="table-scroll" tabindex="0" role="region" aria-label="PickAndPlace interface table">
         <table>
-          <caption>Table 2. Implemented PickAndPlace Action fields.</caption>
+          <caption>Table 5. Implemented PickAndPlace Action fields.</caption>
           <thead><tr><th scope="col">Part</th><th scope="col">Fields and types</th></tr></thead>
           <tbody>
             <tr><th scope="row">Goal</th><td><code>object_id</code>, <code>target_id</code> — string</td></tr>
@@ -255,6 +312,22 @@
       <p><code>execute=false</code> is the default node/launch safety setting, not a Goal field. Planning-only preflight issues no physical motion commands; its success does not mean that a placement occurred. <code>execute=true</code> enables simulated execution.</p>
       <p>The executor currently delegates Phase 4 through a <code>ros2 launch</code> subprocess. Planning-only cancellation is supported at safe boundaries; execution-mode cancellation requests are rejected because arbitrary interruption is not supported. A direct reusable manipulation API remains a possible future refactor.</p>
       <p><a href="./TASK_EXECUTOR_API.md">Full implemented API contract</a>.</p>
+      <h3 id="execution-flow">End-to-End Task Execution</h3>
+      <p>For the validated <code>cube → surface_left_2</code> task with <code>execute=true</code>:</p>
+      <ol>
+        <li>The client sends a <code>PickAndPlace</code> goal; the executor admits it only if no task is active.</li>
+        <li><code>task_executor</code> validates the cube capability and named target against the registry and scene configuration.</li>
+        <li>The adapter starts <code>cube_pick_place_demo.launch.py</code> as a <code>ros2 launch</code> subprocess, passing the object, target, execution flag and result-file path.</li>
+        <li>The manipulation process obtains fresh joint/object state and checks controllers, scene synchronization, rail separation and collision preconditions.</li>
+        <li>MoveIt and the manipulation layer plan/check pre-grasp and Cartesian stages, including hypothetical attached transport. Planning-only mode would finish here without motion.</li>
+        <li>The gripper opens; pre-grasp is replanned from measured state. Pre-grasp and approach execute through MoveIt, the Panda1 trajectory controller and the hardware bridge while MuJoCo publishes state feedback.</li>
+        <li>The grasp observer starts, the gripper closes via <code>/panda1_gripper_controller/gripper_cmd</code>, and physical grasp verification must pass.</li>
+        <li>Temporary MuJoCo stabilization activates; after settling checks, the PlanningScene object changes from WORLD to ATTACHED.</li>
+        <li>The arm lifts and transports the cube to the target, checking lift and placement support/region conditions.</li>
+        <li>Stabilization is removed, WORLD ownership is restored, the gripper opens, and the arm retreats.</li>
+        <li>Final pose, support, open width, ownership and Panda2 drift checks determine the Phase 4 result.</li>
+        <li>The adapter reads the process report and exit status; the executor returns the Action result, preserving manipulation failure details when present.</li>
+      </ol>
     </section>
 
     <section id="validation" aria-labelledby="validation-title">
@@ -262,7 +335,7 @@
       <p>These are recorded repository results. The test layers check different properties and should not be combined into a single score.</p>
       <div class="table-scroll" tabindex="0" role="region" aria-label="Validation results table; scroll horizontally on small screens">
         <table class="wide-table">
-          <caption>Table 3. Validation evidence and its scope.</caption>
+          <caption>Table 6. Validation evidence and its scope.</caption>
           <thead><tr><th scope="col">Evidence</th><th scope="col">Recorded result</th><th scope="col">Scope</th></tr></thead>
           <tbody>
             <tr><th scope="row">Deterministic simulation tests</th><td>92 passed</td><td>Configuration, scene, control, reset, contact, rail constraints, and utilities</td></tr>
