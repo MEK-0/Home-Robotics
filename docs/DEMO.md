@@ -1,6 +1,9 @@
-# Phase 4 — Panda1 cube pick and place
+# Demo
 
-Build first:
+This is the primary Panda1 cube pick/place path. Use a clean ROS domain and
+source the workspace in every terminal.
+
+## Build
 
 ```bash
 cd ~/Home-Robotics
@@ -11,220 +14,67 @@ python -m colcon build
 source install/setup.bash
 ```
 
-In EACH terminal, source the same environment:
+## Runtime
+
+Start these processes in separate terminals:
 
 ```bash
-cd ~/Home-Robotics
-source .ros_venv/bin/activate
-source /opt/ros/jazzy/setup.bash
-source ros2_ws/install/setup.bash
-```
-
-Use one ROS domain consistently and only one Phase 2 runtime. Stop previous demo
-stacks before starting. Wait for each readiness message before the next terminal.
-
-## Terminal 1 — MuJoCo / Phase 2 control
-
-```bash
-ros2 launch home_robotics_bringup phase2_control.launch.py use_viewer:=true
-```
-
-Wait for `All Phase 2 controllers are active`. For headless operation use
-`use_viewer:=false`. Do not start the old independent joint-state bridge alongside it.
-
-## Terminal 2 — MoveIt
-
-```bash
+ros2 launch home_robotics_bringup phase2_control.launch.py use_viewer:=false
 ros2 launch home_robotics_moveit_config move_group.launch.py
-```
-
-Wait for `You can start planning now`.
-
-## Terminal 3 — static PlanningScene
-
-```bash
 ros2 launch home_robotics_moveit_config planning_scene_environment.launch.py
-```
-
-The one-shot loader exits normally after loading the environment.
-
-## Terminal 4 — dynamic objects
-
-```bash
 ros2 launch home_robotics_manipulation dynamic_object_scene_sync.launch.py
 ```
 
-Wait for `Dynamic world diff accepted`. All five configured objects must be present.
-
-## Terminal 5 — RViz (optional)
+The first command starts the Phase 2 MuJoCo/ros2_control stack. `move_group`
+provides planning; the static PlanningScene adds environment geometry; dynamic
+synchronization updates configured object poses from MuJoCo. RViz is optional:
 
 ```bash
 ros2 launch home_robotics_moveit_config moveit_rviz.launch.py
 ```
 
-Use Fixed Frame `world` and display planning-scene geometry. Panda2 remains part of
-collision checking and must remain stationary.
+## Cube pick/place
 
-## Terminal 6 — planning-only, then physical execution
+Use planning-only mode first. It validates the route without motion commands:
 
 ```bash
 ros2 launch home_robotics_manipulation cube_pick_place_demo.launch.py \
   robot:=panda1 object:=cube target:=surface_left_2 execute:=false
 ```
 
-Require `PLANNING_ONLY PASS`. This validates the full hypothetical attached route
-without physical commands or remote scene mutations. It does not verify grasp contact.
-Execution is always opt-in:
+For the physical simulation sequence, reset or restart the stack, then run:
 
 ```bash
 ros2 launch home_robotics_manipulation cube_pick_place_demo.launch.py \
-  robot:=panda1 object:=cube target:=surface_left_2 execute:=true \
-  result_file:=/tmp/cube-pick-place.yaml
+  robot:=panda1 object:=cube target:=surface_left_2 execute:=true
 ```
 
-Expected: approach → physical close → bilateral contact verification → temporary
-stabilization → unique attachment → 10 cm lift → transport to the OTHER surface →
-pre-place → descent → target support/proximity check → stabilization removal → WORLD
-ownership → open → vertical retreat → actual destination contact and final pose check.
+The implemented sequence verifies grasp contact before temporary stabilization,
+then lifts, transports, places, releases, and verifies the cube. Panda1/cube is
+the supported named-placement baseline.
 
-## Manual success checklist
+## Phase 5 Action
 
-- [ ] Panda1 approaches the cube and gripper physically closes.
-- [ ] Grasp verification succeeds before stabilization/attachment.
-- [ ] Cube leaves source table and remains stable during lift.
-- [ ] Panda1 transports toward surface_left_2; Panda2 remains stationary.
-- [ ] Cube does not intersect environment during transport.
-- [ ] Panda1 reaches pre-place and lowers the cube to destination support.
-- [ ] Requested support/contact or bounded support proximity is verified.
-- [ ] Stabilization is removed and gripper opens.
-- [ ] Cube remains on destination table with actual contact after release.
-- [ ] Panda1 retreats.
-- [ ] Cube exists exactly once in PlanningScene, as WORLD, with no attachment.
-- [ ] Cube final footprint is inside target region and position error ≤ 0.03 m.
-- [ ] No broad ACM disabling occurred.
-
-Headless results do not substitute for checking these visual boxes yourself.
-
-## Phase 5 Action API
-
-After Terminals 1-4 above are ready, start the executor in a separate terminal:
+The Action uses the same Phase 4 path. Start it after the four runtime processes:
 
 ```bash
 ros2 launch home_robotics_task_executor task_executor.launch.py execute:=false
-ros2 action send_goal --feedback /home_robotics/pick_and_place home_robotics_interfaces/action/PickAndPlace "{object_id: cube, target_id: surface_left_2}"
+ros2 action send_goal --feedback /home_robotics/pick_and_place \
+  home_robotics_interfaces/action/PickAndPlace \
+  "{object_id: cube, target_id: surface_left_2}"
 ```
 
-For physical execution use `execute:=true` only after the planning-only acceptance passes. Full invalid, busy, and cancellation commands are in [Phase 5 acceptance](PHASE5_ACCEPTANCE.md).
-
-## Preserved lift-return regression
-
-From a fresh stack, use the original commands:
-
-```bash
-ros2 launch home_robotics_manipulation cube_pick_lift_return_demo.launch.py execute:=false
-ros2 launch home_robotics_manipulation cube_pick_lift_return_demo.launch.py execute:=true
-```
-
-This demo returns to the original support position; it remains a regression, not the
-acceptance pick-place task.
-
-## Second object baseline
-
-`purple_ball` uses its authoritative 0.035 m sphere radius and the same Panda1
-orchestrator. Only grasp/lift/return is enabled for this bonus baseline; named sphere
-placement is deliberately unsupported. Start from a fresh stack:
-
-```bash
-ros2 launch home_robotics_manipulation cube_pick_lift_return_demo.launch.py \
-  object:=purple_ball execute:=false
-ros2 launch home_robotics_manipulation cube_pick_lift_return_demo.launch.py \
-  object:=purple_ball execute:=true result_file:=/tmp/purple-ball.yaml
-```
-
-The gripper must close and bilateral contact must pass before stabilization/attachment.
-The current physical result and any limitation are recorded in the reliability document.
+`execute:=false` is a safety mode: preflight may run, but no physical simulation
+commands are issued. After a clean reset, launch with `execute:=true` to execute
+the simulated cube task. The Action accepts only one active request.
 
 ## Reset and troubleshooting
 
-After a completed task or any failure, stop Terminal 6 before reset. For a clean
-repeat, stop Terminals 1, 2, 4 and 5 with Ctrl+C, then restart Terminals 1–5 in order.
-This deterministically resets physics, controller targets and the PlanningScene.
-The benchmark automates this exact full-stack reset. Never start a second runtime
-while the first is still alive.
+Use the runtime reset service or restart all four runtime processes before a new
+physical execution after a failure or interruption. Ensure controllers are active
+and the static scene and object synchronizer are running before starting the demo.
 
-`/reset_simulation` remains available for existing controlled reset workflows:
-
-```bash
-ros2 service call /reset_simulation std_srvs/srv/Trigger '{}'
-```
-
-After an interrupted attached task, use the full-stack restart: resetting physics
-alone is not proof that stale MoveIt attachment/controller goals were cleared.
-
-- Missing/stale joint state or clock: check Terminal 1 and consistent ROS domain;
-  do not bypass the freshness gate.
-- `SCENE_SYNC_FAILED`: verify static loader completion and dynamic sync readiness;
-  restarting MoveIt requires reloading both scenes.
-- IK/planning/retiming failure: no preflight motion occurs; preserve the result and
-  inspect the collision/path diagnostic. Do not disable collision checking.
-- `NO_CONTACT` / `GRASP_UNSTABLE`: do not force weld activation. Supported open/retreat
-  is attempted; reset before retry.
-- `PLACE_FAILED`: healthy grasp remains held; do not manually open while unsupported.
-- `OBJECT_DROPPED`: subsequent stages stop; inspect cleanup result and reset.
-
-## Repeatable headless benchmark
-
-Stop any stack using the selected benchmark domain first:
-
-```bash
-ros2 run home_robotics_manipulation benchmark_pick_place.py --trials 10 --domain 64 \
-  --output docs/validation/phase4/benchmark.json
-```
-
-Raw logs stay in `/tmp/phase4-benchmark`; all trial outcomes are included in JSON.
-See [measured reliability](PHASE4_RELIABILITY.md).
-
-## Regression Tests
-
-### Simulation
-
-```bash
-cd ~/Home-Robotics
-source .venv/bin/activate
-
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-python -m pytest -q tests/simulation
-```
-
-Historical pre-closure baseline:
-
-```text
-75 passed
-```
-
-### ROS 2
-
-```bash
-cd ~/Home-Robotics
-source .ros_venv/bin/activate
-source /opt/ros/jazzy/setup.bash
-
-cd ros2_ws
-python -m colcon build
-source install/setup.bash
-
-ROS_DOMAIN_ID=65 colcon test
-colcon test-result --verbose
-```
-
-Historical Phase 4.2 baseline:
-
-```text
-31 tests
-0 errors
-0 failures
-1 skipped
-```
-
-
-Current closure results are recorded in [PHASE4_RELIABILITY](PHASE4_RELIABILITY.md).
+Common causes of failure are stale state, missing controller/scene processes, an
+object not at its configured source state, and planning/retiming rejection. The
+known benchmark retiming failure is preserved in the validation evidence; do not
+treat planning-only success as a physical-execution result.

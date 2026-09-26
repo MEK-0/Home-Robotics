@@ -34,8 +34,8 @@ actions, `/joint_states`, TF, `/clock`, and `/reset_simulation`.
 - `panda2_gripper_controller`: Panda 2 coupled finger position action.
 - `joint_state_broadcaster`: authoritative publisher for all 20 joint states.
 
-Both robots and carriages are low-level-control active in Phase 2. Phase 7 adds high-level task
-allocation, collision-aware coordination, synchronized manipulation, and shared-resource policy.
+Both robots and carriages are low-level-control active in Phase 2. High-level
+allocation and coordinated manipulation are future work, not Phase 2 capability.
 
 ## Shared-rail safety
 
